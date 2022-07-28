@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.phonepe.platform</groupId>
+    <artifactId>columbus</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>columbus-resources</module>
+        <module>columbus-search-extras</module>
+        <module>columbus-core</module>
+    </modules>
+
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <columbus.models.version>1.0.0</columbus.models.version>
+
+        <!-- Maven Plugins -->
+        <lombok.maven.version>1.18.20.0</lombok.maven.version>
+        <maven.shade.version>3.2.4</maven.shade.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.deploy.skip>false</maven.deploy.skip>
+
+        <!-- Dropwizard Bundles -->
+        <dropwizard.version>2.0.23</dropwizard.version>
+        <dropwizard.rabbitmq.version>2.0.23-1</dropwizard.rabbitmq.version>
+        <aerospike.bundle.version>2.0.18-1</aerospike.bundle.version>
+        <requestinfo.version>2.0.23-1</requestinfo.version>
+
+        <!-- Hystrix Versions -->
+        <hystrix.function.wrapper.version>1.1.9</hystrix.function.wrapper.version>
+        <hystrix.dropwizard.version>0.4</hystrix.dropwizard.version>
+
+        <!-- Libraries -->
+        <guava.version>22.0</guava.version>
+        <lombok.version>1.18.22</lombok.version>
+        <jackson.version>2.12.1</jackson.version>
+        <http.client.version>2.0.23</http.client.version>
+        <guice.version>5.3.0</guice.version>
+        <zookeeper.version>3.4.6</zookeeper.version>
+        <curator.version>4.0.1</curator.version>
+
+        <!-- Test Libraries -->
+        <junit.jupiter.version>5.8.1</junit.jupiter.version>
+        <mockito.version>4.3.1</mockito.version>
+        <junit.testcontainers.version>1.0.6</junit.testcontainers.version>
+        <rabbitmq.client.version>5.5.3</rabbitmq.client.version>
+
+        <aspectjrt.version>1.9.8</aspectjrt.version>
+        <aspectj.plugin.version>1.11</aspectj.plugin.version>
+        <tracing.bundle.version>1.0.4</tracing.bundle.version>
+        <opentracing.annotations.version>1.0.3</opentracing.annotations.version>
+
+        <!-- Sonar settings -->
+        <sonar.coverage.exclusions>
+            **com/phonepe/platform/columbus/*/Columbus*Feature*,
+            **com/phonepe/platform/columbus/core/ColumbusBundle*,
+            **com/phonepe/platform/columbus/core/models/worker/**,
+            **com/phonepe/platform/columbus/core/models/operation/**,
+            **com/phonepe/platform/columbus/resources/ColumbusTenantTypeParam*,
+            **com/phonepe/platform/columbus/core/exception/*
+        </sonar.coverage.exclusions>
+
+        <sonar.exclusions>
+            **src/main/resources/**
+        </sonar.exclusions>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>0.10.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.phonepe.platform.http.v2</groupId>
+                <artifactId>http-client-all</artifactId>
+                <version>${http.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-core</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-log4j12</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.zookeeper</groupId>
+                        <artifactId>zookeeper</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>com.phonepe.platform</groupId>
+                <artifactId>aerospike-bundle</artifactId>
+                <version>${aerospike.bundle.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.appform.dropwizard.actors</groupId>
+                <artifactId>dropwizard-rabbitmq-actors</artifactId>
+                <version>${dropwizard.rabbitmq.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq.client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.phonepe.platform</groupId>
+                <artifactId>requestinfo-models</artifactId>
+                <version>${requestinfo.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.phonepe.platform</groupId>
+                <artifactId>requestinfo-bundle</artifactId>
+                <version>${requestinfo.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>2.9.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-caffeine</artifactId>
+                <version>4.1.23</version>
+            </dependency>
+
+            <!-- Models -->
+            <dependency>
+                <groupId>com.phonepe.platform</groupId>
+                <artifactId>columbus-core-models</artifactId>
+                <version>${columbus.models.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.phonepe.platform</groupId>
+                <artifactId>columbus-search-models</artifactId>
+                <version>${columbus.models.version}</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-params</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-testing</artifactId>
+                <version>${dropwizard.version}</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.dropwizard</groupId>
+                        <artifactId>dropwizard-jersey</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>${maven.compiler.release}</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,62 @@
+server:
+  maxThreads: 128
+  minThreads: 128
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0
+  applicationContextPath: /
+  requestLog:
+    appenders:
+      - type: console
+        timeZone: IST
+
+logging:
+  level: INFO
+
+columbusCoreConfig:
+  elasticConfiguration:
+    servers:
+      - host: "@@elastic.host@@"
+        port: "@@elastic.port@@"
+
+  workerConfig:
+    configType: KAFKA_WORKER_CONFIG
+    kafkaConfig:
+      timeoutMs: 10000
+      callbackParallelism: 1
+      retryMs: 100
+      blockingSleepMs: 1000
+      shutdownWaitTimeMs: 10000
+
+      allTopicConfig:
+        entityConfigMap:
+          TEST_TENANT:
+            topicName: test_tenant
+            numPartitions: 1
+          default_topic:
+            topicName: "xyz"
+            numPartitions: 2
+
+      allConsumerConfig:
+        entityConfigMap:
+          TEST_TENANT:
+            topicName: test_tenant
+            groupName: test_tenant_processor
+          default_topic:
+            topicName: "xyz"
+            groupName: "xyz"
+
+      producerConfig:
+        bootstrapServers: "@@kafka.bootstrap@@"
+        acks: all
+        retries: 1
+        lingerMs: 0
+        bufferMemory: 16777216
+
+      consumerConfig:
+        bootstrapServers: "@@kafka.bootstrap@@"
+        autoCommitIntervalMs: 1000
+        pollTimeMs: 1000
