@@ -1,12 +1,10 @@
 package com.phonepe.platform.columbus.core.utils;
 
 import com.phonepe.platform.columbus.models.core.category.Category;
-import com.phonepe.platform.columbus.models.core.category.Platform;
 import com.phonepe.platform.columbus.models.core.category.StoredCategory;
 import com.phonepe.platform.columbus.models.core.request.category.CreateCategoryRequest;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,7 +52,7 @@ public class CategoryTransformUtils {
             .extras(categoryEntityInsertRequest.getExtras())
             .updatedAt(System.currentTimeMillis())
             .createdAt(System.currentTimeMillis())
-            .supportedPlatforms(List.of(Platform.values()))
+            .supportedPlatforms(toList(categoryEntityInsertRequest.getSupportedPlatforms()))
             .createdBy(categoryEntityInsertRequest.getCreatedBy())
             .mapped(categoryEntityInsertRequest.isMapped())
             .build();
