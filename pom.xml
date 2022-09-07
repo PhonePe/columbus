@@ -5,7 +5,7 @@
     <groupId>com.phonepe.platform</groupId>
     <artifactId>columbus</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <modules>
         <module>columbus-resources</module>
@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <columbus.models.version>1.0.1</columbus.models.version>
+        <columbus.models.version>1.0.2</columbus.models.version>
 
         <!-- Maven Plugins -->
         <lombok.maven.version>1.18.20.0</lombok.maven.version>
@@ -46,6 +46,7 @@
         <guice.version>5.3.0</guice.version>
         <zookeeper.version>3.4.6</zookeeper.version>
         <curator.version>4.0.1</curator.version>
+        <commons.codec.version>1.13</commons.codec.version>
 
         <!-- Test Libraries -->
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
@@ -189,6 +190,11 @@
                 <groupId>com.phonepe.platform</groupId>
                 <artifactId>columbus-search-models</artifactId>
                 <version>${columbus.models.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons.codec.version}</version>
             </dependency>
 
             <!-- Test -->

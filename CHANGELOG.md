@@ -4,6 +4,13 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.2] - 2022-09-07
+
+### Added
+
+- Add SymSpell autocorrection, word splitting/combining, and keyboard-weighted
+  edit distance for the v1 implementation.
+
 ## [1.0.1] - 2022-09-05
 
 ### Fixed
