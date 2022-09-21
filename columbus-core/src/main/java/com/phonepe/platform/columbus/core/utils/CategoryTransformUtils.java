@@ -28,7 +28,7 @@ public class CategoryTransformUtils {
             .root(categoryStorageEntity.isRoot())
             .searchMeta(categoryStorageEntity.getSearchMeta())
             .extras(categoryStorageEntity.getExtras())
-            .updatedAt(System.currentTimeMillis())
+            .updatedAt(categoryStorageEntity.getUpdatedAt())
             .createdAt(categoryStorageEntity.getCreatedAt())
             .supportedPlatforms(categoryStorageEntity.getSupportedPlatforms())
             .mapped(categoryStorageEntity.isMapped())

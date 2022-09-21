@@ -4,6 +4,13 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.3] - 2022-09-21
+
+### Fixed
+
+- Preserve category `updatedAt` values during reads.
+- Correct entity-type deserialization.
+
 ## [1.0.2] - 2022-09-07
 
 ### Added

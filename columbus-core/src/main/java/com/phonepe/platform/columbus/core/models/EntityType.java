@@ -1,9 +1,7 @@
 package com.phonepe.platform.columbus.core.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum EntityType {
-    @JsonProperty("category")
     CATEGORY {
         @Override
         public <T> T accept(EntityTypeVisitor<T> entityTypeVisitor) {
@@ -11,7 +9,6 @@ public enum EntityType {
         }
     },
 
-    @JsonProperty("unit")
     UNIT {
         @Override
         public <T> T accept(EntityTypeVisitor<T> entityTypeVisitor) {
