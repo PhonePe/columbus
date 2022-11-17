@@ -4,6 +4,13 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.4] - 2022-11-17
+
+### Fixed
+
+- Correct analysis settings in index-template creation.
+- Default omitted category platforms to all platforms.
+
 ## [1.0.3] - 2022-09-21
 
 ### Fixed

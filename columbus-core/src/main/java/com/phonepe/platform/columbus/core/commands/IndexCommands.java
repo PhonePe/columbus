@@ -31,7 +31,7 @@ public abstract class IndexCommands implements ColumbusCommands {
             mapElement.putAll(createTemplateOperation.getMappings());
 
             MapElement analysis = new MapElement();
-            mapElement.putAll(createTemplateOperation.getAnalysis());
+            analysis.putAll(createTemplateOperation.getAnalysis());
             CreateTemplateRequest createTemplateRequest = CreateTemplateRequest.builder()
                 .templateName(createTemplateOperation.getTemplateName())
                 .indexPattern(createTemplateOperation.getIndexPattern())
