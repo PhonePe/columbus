@@ -40,7 +40,7 @@ class CategoryCacheTest {
 
         var columbusTree = getCategoryTree();
 
-        lenient().when(categoryEntityCommands.getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values())))
+        lenient().when(categoryEntityCommands.getTreeForCache(TestTenant.TEST_TENANT))
             .thenReturn(columbusTree);
     }
 
@@ -49,7 +49,7 @@ class CategoryCacheTest {
         var response = categoryCache.get(ColumbusCategoryCacheKey.forTenant(TestTenant.TEST_TENANT));
 
         verify(categoryEntityCommands, timeout(5000).times(1))
-            .getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values()));
+            .getTreeForCache(TestTenant.TEST_TENANT);
 
         var categoryEntity = response.getCategory("entityId1");
 
@@ -58,7 +58,7 @@ class CategoryCacheTest {
         var response2 = categoryCache.get(ColumbusCategoryCacheKey.forTenant(TestTenant.TEST_TENANT));
 
         verify(categoryEntityCommands, timeout(5000).times(1))
-            .getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values()));
+            .getTreeForCache(TestTenant.TEST_TENANT);
 
         var categoryEntity2 = response2.getCategory("entityId1");
 
@@ -70,12 +70,12 @@ class CategoryCacheTest {
         categoryCache.refresh(ColumbusCategoryCacheKey.forTenant(TestTenant.TEST_TENANT));
 
         verify(categoryEntityCommands, timeout(5000).times(1))
-            .getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values()));
+            .getTreeForCache(TestTenant.TEST_TENANT);
 
         var response = categoryCache.get(ColumbusCategoryCacheKey.forTenant(TestTenant.TEST_TENANT));
 
         verify(categoryEntityCommands, timeout(5000).times(1))
-            .getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values()));
+            .getTreeForCache(TestTenant.TEST_TENANT);
 
         assertEquals("name12", response.getCategory("entityId1").getName());
     }
@@ -87,7 +87,7 @@ class CategoryCacheTest {
         var response = categoryCache.get(ColumbusCategoryCacheKey.forTenant(TestTenant.TEST_TENANT));
 
         verify(categoryEntityCommands, timeout(5000).times(0))
-            .getTreeForCache(TestTenant.TEST_TENANT, List.of(Platform.values()));
+            .getTreeForCache(TestTenant.TEST_TENANT);
 
         assertEquals("name12", response.getCategory("entityId1").getName());
     }

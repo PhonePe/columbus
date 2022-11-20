@@ -83,9 +83,9 @@ public class CategoryEntityCommands extends EntityCommands {
                 "Tenant records not found"));
     }
 
-    public CategoryTree getTreeForCache(final ColumbusTenantType columbusTenantType, final List<Platform> supportedPlatforms) {
-        return getTreeIfExists(columbusTenantType, supportedPlatforms)
-            .orElse(CategoryTree.build(columbusTenantType, List.of()));
+    public CategoryTree getTreeForCache(final ColumbusTenantType columbusTenantType) {
+        return getTreeIfExists(columbusTenantType)
+                .orElse(CategoryTree.build(columbusTenantType, List.of()));
     }
 
     public Optional<Category> getById(ColumbusTenantType columbusTenantType, String documentId) {
@@ -108,5 +108,10 @@ public class CategoryEntityCommands extends EntityCommands {
                     category.getSupportedPlatforms().stream().anyMatch(supportedPlatforms::contains))
                 .toList())
             .map(categories -> CategoryTree.build(columbusTenantType, categories));
+    }
+
+    private Optional<CategoryTree> getTreeIfExists(ColumbusTenantType columbusTenantType) {
+        return getAll(columbusTenantType)
+                .map(categories -> CategoryTree.build(columbusTenantType, categories));
     }
 }

@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.5] - 2022-11-20
+
+### Fixed
+
+- Cache all categories regardless of their supported platforms.
+
 ## [1.0.4] - 2022-11-17
 
 ### Fixed

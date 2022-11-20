@@ -5,7 +5,7 @@
     <groupId>com.phonepe.platform</groupId>
     <artifactId>columbus</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <modules>
         <module>columbus-resources</module>

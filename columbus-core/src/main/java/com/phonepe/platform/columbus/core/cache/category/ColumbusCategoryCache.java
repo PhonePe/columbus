@@ -26,7 +26,7 @@ public class ColumbusCategoryCache extends ColumbusBaseCache<ColumbusCategoryCac
             cacheConfig,
             metricRegistry,
             IndexUtils.getCacheName(EntityType.CATEGORY, columbusTenantType.name()),
-            key -> categoryEntityCommands.getTreeForCache(columbusTenantType, List.of(Platform.values()))
+            key -> categoryEntityCommands.getTreeForCache(columbusTenantType)
         );
     }
 }
