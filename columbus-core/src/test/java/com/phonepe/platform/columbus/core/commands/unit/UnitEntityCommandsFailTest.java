@@ -16,6 +16,7 @@ import com.phonepe.platform.columbus.core.models.operations.MultiGetOperation;
 import com.phonepe.platform.columbus.core.models.operations.UnitSearchOperation;
 import com.phonepe.platform.columbus.core.search.resolver.SearchQueryBuilder;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.core.utils.MapperUtils;
 import com.phonepe.platform.columbus.core.utils.ReflectionUtils;
 import com.phonepe.platform.columbus.core.visitors.Visitor;
@@ -69,7 +70,7 @@ class UnitEntityCommandsFailTest {
                 .references(List.of())
                 .build());
         lenient().when(searchQueryBuilder.buildSorters(unitSearchOperation.getSorterSelections()))
-                .thenReturn(List.of());
+                .thenReturn(ResolvedSorter.builder().build());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.phonepe.platform.columbus.core.search.resolver.impl;
 
 import com.phonepe.platform.columbus.core.search.resolver.ColumbusResolver;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.predicate.AndFilter;
@@ -59,12 +60,18 @@ class DefaultSearchQueryBuilderTest {
         .field("relevance")
         .order(SortOrder.ASC)
         .build();
+    private final ResolvedSorter resolvedSorter1 = ResolvedSorter.builder()
+        .sorter(sorter1)
+        .build();
+    private final ResolvedSorter resolvedSorter2 = ResolvedSorter.builder()
+        .sorter(sorter2)
+        .build();
 
     @BeforeEach
     void setUp() {
         defaultSearchQueryBuilder = new DefaultSearchQueryBuilder(columbusResolver);
-        lenient().when(columbusResolver.resolveSorter(sorterSelection1)).thenReturn(List.of(sorter1));
-        lenient().when(columbusResolver.resolveSorter(sorterSelection2)).thenReturn(List.of(sorter2));
+        lenient().when(columbusResolver.resolveSorter(sorterSelection1)).thenReturn(resolvedSorter1);
+        lenient().when(columbusResolver.resolveSorter(sorterSelection2)).thenReturn(resolvedSorter2);
         lenient().when(columbusResolver.resolveFilter(filterSelection1)).thenReturn(ResolvedFilter.builder().filter(filter1).build());
         lenient().when(columbusResolver.resolveFilter(filterSelection2)).thenReturn(ResolvedFilter.builder().build());
     }
@@ -100,8 +107,9 @@ class DefaultSearchQueryBuilderTest {
 
     @Test
     void testBuildSorter() {
-        List<Sorter> sorterList = defaultSearchQueryBuilder.buildSorters(List.of(sorterSelection1, sorterSelection2));
+        ResolvedSorter sorter = defaultSearchQueryBuilder.buildSorters(List.of(sorterSelection1, sorterSelection2));
 
+        List<Sorter> sorterList = sorter.getSorters();
         assertEquals(2, sorterList.size());
         assertEquals(sorter1, sorterList.get(0));
         assertEquals(sorter2, sorterList.get(1));

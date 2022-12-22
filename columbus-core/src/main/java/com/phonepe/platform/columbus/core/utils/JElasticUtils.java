@@ -26,8 +26,10 @@ public class JElasticUtils {
             .visit(filter);
     }
 
-    public Set<Sorter> toJElasticSorters(Set<com.phonepe.platform.columbus.models.core.search.sorter.Sorter> sorters, ObjectMapper mapper) {
-        final JElasticSorterBuilderContext sorterBuilder = JElasticSorterBuilderContext.withDefaults(mapper).build();
+    public Set<Sorter> toJElasticSorters(Set<com.phonepe.platform.columbus.models.core.search.sorter.Sorter> sorters, ReferenceMap references, ObjectMapper mapper) {
+        final JElasticSorterBuilderContext sorterBuilder = JElasticSorterBuilderContext.withDefaults(mapper)
+            .references(references)
+            .build();
         return sorters.stream()
             .map(sorterBuilder::visit)
             .collect(Collectors.toCollection(TreeSet::new));
@@ -43,7 +45,7 @@ public class JElasticUtils {
     public <T> Query toJElasticQuery(EntitiesSearchOperation<T> operation, ObjectMapper mapper) {
         return Query.builder()
             .filters(Collections.singleton(toJElasticFilter(operation.getFilter(), operation.getReferences(), mapper)))
-            .sorters(toJElasticSorters(operation.getSorters(), mapper))
+            .sorters(toJElasticSorters(operation.getSorters(), operation.getReferences(), mapper))
             .pageWindow(toJElasticPageWindow(operation.getPageNumber(), operation.getPageSize()))
             .build();
     }

@@ -2,10 +2,10 @@ package com.phonepe.platform.columbus.core.search.resolver;
 
 import com.phonepe.platform.columbus.core.exception.ColumbusException;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.exceptions.ColumbusCoreErrorCode;
 import com.phonepe.platform.columbus.models.core.search.query.FilterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.SorterSelection;
-import com.phonepe.platform.columbus.models.core.search.sorter.Sorter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +33,7 @@ public class ColumbusResolver {
             });
     }
 
-    public List<Sorter> resolveSorter(SorterSelection selection) {
+    public ResolvedSorter resolveSorter(SorterSelection selection) {
         return sorterResolvers.stream()
             .map(sorterResolver -> sorterResolver.resolve(selection))
             .filter(Optional::isPresent)

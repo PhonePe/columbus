@@ -7,6 +7,7 @@ import com.phonepe.platform.columbus.core.models.operations.EntitiesSearchOperat
 import com.phonepe.platform.columbus.core.models.operations.UnitSearchOperation;
 import com.phonepe.platform.columbus.core.search.resolver.SearchQueryBuilder;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.search.value.ReferenceMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,15 +40,17 @@ public class UnitEntityCommands extends EntityCommands {
 
     private <T> EntitiesSearchOperation<T> processSelection(final UnitSearchOperation<T> operation) {
         ResolvedFilter filter = searchQueryBuilder.buildFilter(operation.getFilterSelections(), operation.getQueryFilter());
+        ResolvedSorter sorter = searchQueryBuilder.buildSorters(operation.getSorterSelections());
         ReferenceMap references = new ReferenceMap();
         filter.getReferences().forEach(entry -> references.put(entry.getName(), entry.getValue()));
+        sorter.getReferences().forEach(entry -> references.put(entry.getName(), entry.getValue()));
         return EntitiesSearchOperation.<T>builder()
             .entityType(operation.getEntityType())
             .indexName(operation.getIndexName())
             .valueClassType(operation.getValueClassType())
             .routingKeys(operation.getRoutingKeys())
             .filter(filter.getFilter())
-            .sorters(searchQueryBuilder.buildSorters(operation.getSorterSelections()))
+            .sorters(sorter.getSorters())
             .references(references)
             .preprocessors(operation.getPreprocessors())
             .query(operation.getQuery())

@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.6] - 2022-12-22
+
+### Added
+
+- Support sorter context and resolve references in stored sorters.
+
 ## [1.0.5] - 2022-11-20
 
 ### Fixed

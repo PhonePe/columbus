@@ -5,8 +5,8 @@ import com.grookage.jelastic.core.config.JElasticConfiguration;
 import com.phonepe.platform.columbus.core.cache.CacheConfig;
 import com.phonepe.platform.columbus.core.models.worker.ColumbusWorkerConfig;
 import com.phonepe.platform.columbus.core.search.resolver.models.FilterEntry;
+import com.phonepe.platform.columbus.core.search.resolver.models.SorterEntry;
 import com.phonepe.platform.columbus.models.core.ColumbusTenantType;
-import com.phonepe.platform.columbus.models.core.search.sorter.Sorter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -36,5 +35,5 @@ public class ColumbusCoreConfig {
     private Map<String, FilterEntry> storedFilters;
 
     @Valid
-    private Map<String, List<Sorter>> storedSorters;
+    private Map<String, SorterEntry> storedSorters;
 }

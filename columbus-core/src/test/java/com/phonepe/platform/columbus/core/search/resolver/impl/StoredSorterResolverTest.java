@@ -1,6 +1,9 @@
 package com.phonepe.platform.columbus.core.search.resolver.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
+import com.phonepe.platform.columbus.core.search.resolver.models.SorterEntry;
+import com.phonepe.platform.columbus.core.search.value.ReferenceMapEntry;
 import com.phonepe.platform.columbus.core.utils.MapperUtils;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.BidirectionalSorterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.SorterSelection;
@@ -8,6 +11,7 @@ import com.phonepe.platform.columbus.models.core.search.query.sorter.Unidirectio
 import com.phonepe.platform.columbus.models.core.search.sorter.FieldSorter;
 import com.phonepe.platform.columbus.models.core.search.sorter.SortOrder;
 import com.phonepe.platform.columbus.models.core.search.sorter.Sorter;
+import com.phonepe.platform.columbus.models.core.search.value.Value;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,9 +40,13 @@ class StoredSorterResolverTest {
 
     @BeforeEach
     void setUp() {
-        Map<String, List<Sorter>> storedSorters = new HashMap<>();
-        storedSorters.put("relevance", List.of(relevanceSorter));
-        storedSorters.put("price", List.of(priceLowToHighSorter));
+        Map<String, SorterEntry> storedSorters = new HashMap<>();
+        storedSorters.put("relevance", sorterEntry(relevanceSorter));
+        storedSorters.put("price", sorterEntry(priceLowToHighSorter));
+        storedSorters.put("context", SorterEntry.builder()
+            .sorter(relevanceSorter)
+            .reference("reference")
+            .build());
         storedSorterResolver = new StoredSorterResolver(storedSorters);
     }
 
@@ -77,16 +85,41 @@ class StoredSorterResolverTest {
             .sorterName("abc")
             .build();
 
-        Optional<List<Sorter>> sorterListOptional = storedSorterResolver.resolve(sorterSelection);
+        Optional<ResolvedSorter> resolvedSorter = storedSorterResolver.resolve(sorterSelection);
 
-        assertTrue(sorterListOptional.isEmpty());
+        assertTrue(resolvedSorter.isEmpty());
+    }
+
+    @Test
+    void testSorterWithContext() {
+        SorterSelection sorterSelection = UnidirectionalSorterSelection.builder()
+            .sorterName("context")
+            .context(Value.exact(10))
+            .build();
+        ReferenceMapEntry referenceMapEntry = ReferenceMapEntry.builder()
+            .name("reference")
+            .value(10)
+            .build();
+
+        Optional<ResolvedSorter> optionalResolvedSorter = storedSorterResolver.resolve(sorterSelection);
+
+        assertTrue(optionalResolvedSorter.isPresent());
+        var resolvedSorter = optionalResolvedSorter.get();
+        assertEquals(List.of(relevanceSorter), resolvedSorter.getSorters());
+        assertEquals(List.of(referenceMapEntry), resolvedSorter.getReferences());
     }
 
     private void checkResolution(SorterSelection sorterSelection, List<Sorter> sorters) {
-        Optional<List<Sorter>> sorterListOptional = storedSorterResolver.resolve(sorterSelection);
+        Optional<ResolvedSorter> resolvedSorter = storedSorterResolver.resolve(sorterSelection);
 
-        assertTrue(sorterListOptional.isPresent());
-        List<Sorter> sorterList = sorterListOptional.get();
+        assertTrue(resolvedSorter.isPresent());
+        List<Sorter> sorterList = resolvedSorter.get().getSorters();
         assertEquals(sorters, sorterList);
+    }
+
+    private SorterEntry sorterEntry(final Sorter sorter) {
+        return SorterEntry.builder()
+            .sorter(sorter)
+            .build();
     }
 }

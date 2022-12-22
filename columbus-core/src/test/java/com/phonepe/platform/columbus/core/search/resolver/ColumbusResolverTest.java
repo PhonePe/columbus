@@ -2,6 +2,7 @@ package com.phonepe.platform.columbus.core.search.resolver;
 
 import com.phonepe.platform.columbus.core.exception.ColumbusException;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.GreaterEqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.query.FilterSelection;
@@ -22,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,13 +50,16 @@ class ColumbusResolverTest {
     private final Sorter sorter = FieldSorter.builder()
         .field("price").order(SortOrder.ASC)
         .build();
+    private final ResolvedSorter resolvedSorter = ResolvedSorter.builder()
+        .sorter(sorter)
+        .build();
 
     @BeforeEach
     void setUp() {
         filterResolvers = new ArrayList<>();
         sorterResolvers = new ArrayList<>();
         lenient().when(filterResolver.resolve(filterSelection)).thenReturn(Optional.of(resolvedFilter));
-        lenient().when(sorterResolver.resolve(sorterSelection)).thenReturn(Optional.of(List.of(sorter)));
+        lenient().when(sorterResolver.resolve(sorterSelection)).thenReturn(Optional.of(resolvedSorter));
         lenient().when(filterResolver.resolve(filterSelection)).thenReturn(Optional.of(resolvedFilter));
         filterResolvers.add(filterResolver);
         sorterResolvers.add(sorterResolver);
@@ -82,7 +85,7 @@ class ColumbusResolverTest {
 
     @Test
     void testResolveSorterSuccess() {
-        List<Sorter> sorterList = columbusResolver.resolveSorter(sorterSelection);
+        List<Sorter> sorterList = columbusResolver.resolveSorter(sorterSelection).getSorters();
         assertEquals(1, sorterList.size());
         assertEquals(sorter, sorterList.get(0));
     }

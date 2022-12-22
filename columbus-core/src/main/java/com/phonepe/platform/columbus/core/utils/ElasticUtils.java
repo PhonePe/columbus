@@ -31,13 +31,15 @@ public class ElasticUtils {
             .query(toElasticQuery(operation.getFilter(), operation.getReferences(), mapper))
             .from(operation.getPageNumber() * operation.getPageSize())
             .size(operation.getPageSize());
-        toElasticSorters(operation.getSorters(), mapper).forEach(source::sort);
+        toElasticSorters(operation.getSorters(), mapper, operation.getReferences()).forEach(source::sort);
         return source;
     }
 
     @SuppressWarnings({"java:S3958", "java:S1905"}) // SonarQube fix
-    private List<SortBuilder<?>> toElasticSorters(Set<Sorter> sorters, ObjectMapper mapper) {
-        ElasticSorterBuilderContext sorterBuilder = ElasticSorterBuilderContext.withDefaults(mapper).build();
+    private List<SortBuilder<?>> toElasticSorters(Set<Sorter> sorters, ObjectMapper mapper, ReferenceMap references) {
+        ElasticSorterBuilderContext sorterBuilder = ElasticSorterBuilderContext.withDefaults(mapper)
+            .references(references)
+            .build();
         return sorters.stream()
             .sorted()
             .map((Function<Sorter, SortBuilder<?>>) sorterBuilder::visit)

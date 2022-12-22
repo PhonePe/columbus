@@ -1,6 +1,7 @@
 package com.phonepe.platform.columbus.core.search.resolver.impl;
 
 import com.phonepe.platform.columbus.core.search.resolver.SorterResolver;
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.BidirectionalSorterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.SorterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.SorterSelectionVisitor;
@@ -9,18 +10,18 @@ import com.phonepe.platform.columbus.models.core.search.sorter.FieldSorter;
 import com.phonepe.platform.columbus.models.core.search.sorter.SortOrder;
 import com.phonepe.platform.columbus.models.core.search.sorter.Sorter;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 public class DefaultSorterResolver implements SorterResolver {
     @Override
-    public Optional<List<Sorter>> resolve(SorterSelection selection) {
+    public Optional<ResolvedSorter> resolve(SorterSelection selection) {
         String name = selection.getSorterName();
         // Resolves the sorters supported by Columbus: the names start with #
         if (name.startsWith("#")) {
             return Optional.ofNullable(parseFieldSorter(selection))
-                .map(Collections::singletonList);
+                .map(sorter -> ResolvedSorter.builder()
+                    .sorter(sorter)
+                    .build());
         }
         return Optional.empty();
     }

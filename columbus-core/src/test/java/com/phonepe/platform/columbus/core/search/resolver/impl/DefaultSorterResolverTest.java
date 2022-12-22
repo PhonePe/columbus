@@ -1,5 +1,6 @@
 package com.phonepe.platform.columbus.core.search.resolver.impl;
 
+import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.BidirectionalSorterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.SorterSelection;
 import com.phonepe.platform.columbus.models.core.search.query.sorter.UnidirectionalSorterSelection;
@@ -106,15 +107,15 @@ class DefaultSorterResolverTest {
     }
 
     private void checkNoResolution(SorterSelection selection) {
-        Optional<List<Sorter>> sorters = defaultSorterResolver.resolve(selection);
+        Optional<ResolvedSorter> resolvedSorter = defaultSorterResolver.resolve(selection);
 
-        assertTrue(sorters.isEmpty());
+        assertTrue(resolvedSorter.isEmpty());
     }
     private void checkResolution(SorterSelection sorterSelection, Sorter sorter) {
-        Optional<List<Sorter>> sorterListOptional = defaultSorterResolver.resolve(sorterSelection);
+        Optional<ResolvedSorter> resolvedSorter = defaultSorterResolver.resolve(sorterSelection);
 
-        assertTrue(sorterListOptional.isPresent());
-        List<Sorter> sorterList = sorterListOptional.get();
+        assertTrue(resolvedSorter.isPresent());
+        List<Sorter> sorterList = resolvedSorter.get().getSorters();
         assertEquals(1, sorterList.size());
         assertEquals(sorter, sorterList.get(0));
     }
