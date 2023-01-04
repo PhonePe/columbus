@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.7] - 2023-01-04
+
+### Changed
+
+- Version-only release; no source changes relative to 1.0.6.
+
 ## [1.0.6] - 2022-12-22
 
 ### Added
