@@ -22,6 +22,7 @@ import com.phonepe.platform.columbus.core.utils.ElasticUtils;
 import com.phonepe.platform.columbus.core.utils.JElasticUtils;
 import com.phonepe.platform.columbus.core.utils.MapperUtils;
 import com.phonepe.platform.columbus.models.core.exceptions.ColumbusCoreErrorCode;
+import com.phonepe.platform.columbus.models.core.search.Page;
 import com.phonepe.platform.columbus.models.core.search.value.ReferenceMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -71,6 +72,11 @@ public abstract class EntityCommands implements ColumbusCommands {
         return requestElasticSearch(entitiesSearchOperation);
     }
 
+    public <T> Page<T> paginatedElasticSearch(final EntitiesSearchOperation<T> entitiesSearchOperation){
+        preprocess(entitiesSearchOperation);
+        return requestPaginatedElasticSearch(entitiesSearchOperation);
+    }
+
     public <T> List<T> jElasticSearch(final EntitiesSearchOperation<T> entitiesSearchOperation) {
         preprocess(entitiesSearchOperation);
         return requestJElasticSearch(entitiesSearchOperation);
@@ -116,6 +122,20 @@ public abstract class EntityCommands implements ColumbusCommands {
             log.error("Failed to query ElasticSearch", e);
             throw ColumbusException.propagate(ColumbusCoreErrorCode.ELASTIC_SEARCH_ERROR, e);
         } catch (Exception ex) {
+            log.error("Error while executing search operation for {}", entitiesSearchOperation.getIndexName(), ex);
+            throw ColumbusException.propagate(ColumbusCoreErrorCode.ENTITY_FETCH_ERROR, ex);
+        }
+    }
+
+    private <T> Page<T> requestPaginatedElasticSearch(final EntitiesSearchOperation<T> entitiesSearchOperation){
+        org.elasticsearch.action.search.SearchRequest searchRequest = ElasticUtils.toElasticSearchRequest(entitiesSearchOperation, mapper);
+        try {
+            var response = this.getElasticRepository().getElasticClient().getClient().search(searchRequest, RequestOptions.DEFAULT);
+            return ElasticUtils.getPaginatedResponse(response,entitiesSearchOperation.getValueClassType());
+        } catch (IOException e) {
+            log.error("Failed to query ElasticSearch", e);
+            throw ColumbusException.propagate(ColumbusCoreErrorCode.ELASTIC_SEARCH_ERROR, e);
+        } catch (Exception ex){
             log.error("Error while executing search operation for {}", entitiesSearchOperation.getIndexName(), ex);
             throw ColumbusException.propagate(ColumbusCoreErrorCode.ENTITY_FETCH_ERROR, ex);
         }

@@ -10,8 +10,6 @@ import com.phonepe.platform.columbus.core.utils.IndexUtils;
 import com.phonepe.platform.columbus.core.utils.MapperUtils;
 import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.value.Value;
-import java.util.HashMap;
-import java.util.List;
 import lombok.SneakyThrows;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.client.RequestOptions;
@@ -19,6 +17,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.List;
 
 class UnitEntityCommandsTest extends BaseTest {
 
@@ -130,8 +131,20 @@ class UnitEntityCommandsTest extends BaseTest {
         Assertions.assertEquals("id103", response2.get(0).getCarId());
     }
 
+    @Test
+    void testPaginatedElasticSearch() {
+        var indexName = IndexUtils.getIndexName(EntityType.UNIT, TestUnit.class.getSimpleName());
+
+        var response = columbusCoreFeature.getUnitEntityCommands()
+            .paginatedElasticSearch(getUnitSearchOperation(indexName, "car2"));
+
+        Assertions.assertEquals(1, response.getCount());
+        Assertions.assertEquals(1, response.getEntities().size());
+        Assertions.assertEquals("id102", response.getEntities().get(0).getCarId());
+    }
+
     private UnitSearchOperation<TestUnit> getUnitSearchOperation(String indexName,
-        String filterValue) {
+                                                                 String filterValue) {
         return UnitSearchOperation.<TestUnit>builder()
             .entityType(EntityType.UNIT)
             .indexName(indexName)

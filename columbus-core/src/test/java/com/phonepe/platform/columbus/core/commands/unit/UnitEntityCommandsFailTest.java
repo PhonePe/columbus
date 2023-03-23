@@ -63,14 +63,14 @@ class UnitEntityCommandsFailTest {
         unitSearchOperation = getUnitSearchOperation();
 
         lenient().when(searchQueryBuilder.buildFilter(
-                unitSearchOperation.getFilterSelections(),
-                unitSearchOperation.getQueryFilter()
+            unitSearchOperation.getFilterSelections(),
+            unitSearchOperation.getQueryFilter()
         )).thenReturn(ResolvedFilter.builder()
-                .filter(unitSearchOperation.getQueryFilter())
-                .references(List.of())
-                .build());
+            .filter(unitSearchOperation.getQueryFilter())
+            .references(List.of())
+            .build());
         lenient().when(searchQueryBuilder.buildSorters(unitSearchOperation.getSorterSelections()))
-                .thenReturn(ResolvedSorter.builder().build());
+            .thenReturn(ResolvedSorter.builder().build());
     }
 
     @Test
@@ -91,6 +91,13 @@ class UnitEntityCommandsFailTest {
     }
 
     @Test
+    void testPaginatedElasticSearchIoException() {
+        doThrow(RuntimeException.class).when(elasticRepository).getElasticClient();
+        var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.paginatedElasticSearch(unitSearchOperation));
+        assertEquals(ColumbusCoreErrorCode.ENTITY_FETCH_ERROR, exception.getErrorCode());
+    }
+
+    @Test
     void testJelasticSearch() {
         doThrow(JelasticException.class).when(elasticRepository).enumeratedSearch(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.jElasticSearch(unitSearchOperation));
@@ -100,13 +107,13 @@ class UnitEntityCommandsFailTest {
     @Test
     void testEntitySave() {
         var operation = EntitySaveOperation.builder()
-                .entityType(EntityType.UNIT)
-                .indexName("ab")
-                .documentId("cd")
-                .value(Value
-                        .exact("abcd"))
-                .routingKey("wxyz")
-                .build();
+            .entityType(EntityType.UNIT)
+            .indexName("ab")
+            .documentId("cd")
+            .value(Value
+                .exact("abcd"))
+            .routingKey("wxyz")
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).save(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entitySave(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_CREATE_ERROR, exception.getErrorCode());
@@ -115,11 +122,11 @@ class UnitEntityCommandsFailTest {
     @Test
     void testMultiGetByIds() {
         var operation = MultiGetOperation.<String>builder()
-                .entityType(EntityType.UNIT)
-                .indexName("ab")
-                .documentIds(List.of("cd", "ef", "gh"))
-                .entityClassType(String.class)
-                .build();
+            .entityType(EntityType.UNIT)
+            .indexName("ab")
+            .documentIds(List.of("cd", "ef", "gh"))
+            .entityClassType(String.class)
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).searchByIds(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.multiGetByIds(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_FETCH_ERROR, exception.getErrorCode());
@@ -129,13 +136,13 @@ class UnitEntityCommandsFailTest {
     @Test
     void testEntityFieldUpdate() {
         var operation = EntityFieldsUpdateOperation.builder()
-                .entityType(EntityType.UNIT)
-                .documentId("ab")
-                .entityFieldValueData(new HashMap<>())
-                .indexName("cd")
-                .retryCount(1)
-                .routingKey("wxyz")
-                .build();
+            .entityType(EntityType.UNIT)
+            .documentId("ab")
+            .entityFieldValueData(new HashMap<>())
+            .indexName("cd")
+            .retryCount(1)
+            .routingKey("wxyz")
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).updateField(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entityFieldsUpdate(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_UPDATE_ERROR, exception.getErrorCode());
@@ -145,12 +152,12 @@ class UnitEntityCommandsFailTest {
     @Test
     void testEntityUpdate() {
         var operation = EntityUpdateOperation.builder()
-                .entityType(EntityType.UNIT)
-                .indexName("ab")
-                .documentId("cd")
-                .value(Value.exact("xyz"))
-                .routingKey("wxyz")
-                .build();
+            .entityType(EntityType.UNIT)
+            .indexName("ab")
+            .documentId("cd")
+            .value(Value.exact("xyz"))
+            .routingKey("wxyz")
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).update(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entityUpdate(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_UPDATE_ERROR, exception.getErrorCode());
@@ -159,12 +166,12 @@ class UnitEntityCommandsFailTest {
     @Test
     void testEntityGet() {
         var operation = EntityGetOperation.<String>builder()
-                .entityType(EntityType.UNIT)
-                .indexName("ab")
-                .documentId("cd")
-                .routingKey("wxyz")
-                .entityClassType(String.class)
-                .build();
+            .entityType(EntityType.UNIT)
+            .indexName("ab")
+            .documentId("cd")
+            .routingKey("wxyz")
+            .entityClassType(String.class)
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).get(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entityGet(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_FETCH_ERROR, exception.getErrorCode());
@@ -173,11 +180,11 @@ class UnitEntityCommandsFailTest {
     @Test
     void testEntityDelete() {
         var operation = EntityDeleteOperation.builder()
-                .entityType(EntityType.UNIT)
-                .documentId("ab")
-                .indexName("cd")
-                .routingKey("wxyz")
-                .build();
+            .entityType(EntityType.UNIT)
+            .documentId("ab")
+            .indexName("cd")
+            .routingKey("wxyz")
+            .build();
         doThrow(JelasticException.class).when(elasticRepository).delete(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entityDelete(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_DELETE_ERROR, exception.getErrorCode());
@@ -186,20 +193,20 @@ class UnitEntityCommandsFailTest {
 
     private UnitSearchOperation<TestUnit> getUnitSearchOperation() {
         return UnitSearchOperation.<TestUnit>builder()
-                .entityType(EntityType.UNIT)
-                .indexName("ab")
-                .valueClassType(TestUnit.class)
-                .filterSelection(FilterSelection.builder()
-                        .filterName("#=name")
-                        .value(Value.exact("cd"))
-                        .build())
-                .queryFilter(EqualsFilter.builder()
-                        .field("carName")
-                        .value(Value.exact("cd"))
-                        .build())
-                .pageNumber(0)
-                .pageSize(1000)
-                .build();
+            .entityType(EntityType.UNIT)
+            .indexName("ab")
+            .valueClassType(TestUnit.class)
+            .filterSelection(FilterSelection.builder()
+                .filterName("#=name")
+                .value(Value.exact("cd"))
+                .build())
+            .queryFilter(EqualsFilter.builder()
+                .field("carName")
+                .value(Value.exact("cd"))
+                .build())
+            .pageNumber(0)
+            .pageSize(1000)
+            .build();
     }
 
 

@@ -8,6 +8,7 @@ import com.phonepe.platform.columbus.core.models.operations.UnitSearchOperation;
 import com.phonepe.platform.columbus.core.search.resolver.SearchQueryBuilder;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedFilter;
 import com.phonepe.platform.columbus.core.search.resolver.models.ResolvedSorter;
+import com.phonepe.platform.columbus.models.core.search.Page;
 import com.phonepe.platform.columbus.models.core.search.value.ReferenceMap;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,6 +33,10 @@ public class UnitEntityCommands extends EntityCommands {
 
     public <T> List<T> elasticSearch(final UnitSearchOperation<T> operation) {
         return elasticSearch(processSelection(operation));
+    }
+
+    public <T> Page<T> paginatedElasticSearch(final UnitSearchOperation<T> operation){
+        return paginatedElasticSearch(processSelection(operation));
     }
 
     public <T> List<T> jElasticSearch(final UnitSearchOperation<T> operation) {

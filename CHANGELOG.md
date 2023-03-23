@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.8] - 2023-03-23
+
+### Added
+
+- Add paginated Elasticsearch search returning entities and the total match count.
+
 ## [1.0.7] - 2023-01-04
 
 ### Changed

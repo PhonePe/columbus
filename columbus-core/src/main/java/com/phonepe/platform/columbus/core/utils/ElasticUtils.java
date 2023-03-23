@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phonepe.platform.columbus.core.models.operations.EntitiesSearchOperation;
 import com.phonepe.platform.columbus.core.search.querybuilder.elastic.ElasticQueryBuilderContext;
 import com.phonepe.platform.columbus.core.search.sorter.elastic.ElasticSorterBuilderContext;
+import com.phonepe.platform.columbus.models.core.search.Page;
 import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.sorter.Sorter;
 import com.phonepe.platform.columbus.models.core.search.value.ReferenceMap;
@@ -55,5 +56,14 @@ public class ElasticUtils {
 
     public <T> List<T> getResponse(SearchResponse response, Class<T> resultType) {
         return com.grookage.jelastic.core.utils.ElasticUtils.getResponse(response, resultType);
+    }
+
+    public  <T> Page<T> getPaginatedResponse(SearchResponse response, Class<T> resultType){
+        var entities = com.grookage.jelastic.core.utils.ElasticUtils.getResponse(response, resultType);
+        long totalCount = response.getHits().getTotalHits().value;
+        return Page.<T>builder()
+            .count(totalCount)
+            .entities(entities)
+            .build();
     }
 }
