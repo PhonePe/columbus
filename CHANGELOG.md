@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.9] - 2023-05-29
+
+### Added
+
+- Add an operation to delete multiple entities.
+
 ## [1.0.8] - 2023-03-23
 
 ### Added

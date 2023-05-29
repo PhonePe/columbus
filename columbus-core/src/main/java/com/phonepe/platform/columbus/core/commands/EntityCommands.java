@@ -11,6 +11,7 @@ import com.grookage.jelastic.core.models.source.UpdateFieldRequest;
 import com.grookage.jelastic.core.repository.ElasticRepository;
 import com.phonepe.platform.columbus.core.constants.SearchConstants;
 import com.phonepe.platform.columbus.core.exception.ColumbusException;
+import com.phonepe.platform.columbus.core.models.operations.EntitiesDeleteOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntitiesSearchOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntityDeleteOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntityFieldsUpdateOperation;
@@ -33,6 +34,9 @@ import org.elasticsearch.client.RequestOptions;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
 
 @Slf4j
 @Getter
@@ -220,6 +224,28 @@ public abstract class EntityCommands implements ColumbusCommands {
             this.getElasticRepository().delete(deleteEntityRequest);
         } catch (Exception ex) {
             log.error("Error while deleting entity for {} and documentId {}", entityDeleteOperation.getIndexName(),
+                entityDeleteOperation.getDocumentId(), ex);
+            throw ColumbusException.propagate(ColumbusCoreErrorCode.ENTITY_DELETE_ERROR, ex);
+        }
+    }
+
+    public BulkByScrollResponse deleteEntities( final EntitiesDeleteOperation entityDeleteOperation) {
+        try {
+            var deleteByQueryRequest = new DeleteByQueryRequest(
+                entityDeleteOperation.getIndexName());
+
+            deleteByQueryRequest.setQuery(
+                QueryBuilders
+                    .idsQuery()
+                    .addIds(entityDeleteOperation.getDocumentId().toArray(new String[]{}))
+                    .queryName("deleteUnitsRequest")
+            );
+
+            return this.getElasticRepository().getElasticClient()
+                .getClient().deleteByQuery(deleteByQueryRequest, RequestOptions.DEFAULT);
+        } catch (Exception ex) {
+            log.error("Error while deleting entities for {} and documentIds {}",
+                entityDeleteOperation.getIndexName(),
                 entityDeleteOperation.getDocumentId(), ex);
             throw ColumbusException.propagate(ColumbusCoreErrorCode.ENTITY_DELETE_ERROR, ex);
         }

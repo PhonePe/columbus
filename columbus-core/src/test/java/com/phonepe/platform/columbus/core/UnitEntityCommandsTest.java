@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.phonepe.platform.columbus.core.models.EntityType;
 import com.phonepe.platform.columbus.core.models.operations.CreateIndexOperation;
 import com.phonepe.platform.columbus.core.models.operations.CreateTemplateOperation;
+import com.phonepe.platform.columbus.core.models.operations.EntitiesDeleteOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntitySaveOperation;
 import com.phonepe.platform.columbus.core.models.operations.UnitSearchOperation;
 import com.phonepe.platform.columbus.core.utils.IndexUtils;
@@ -141,6 +142,22 @@ class UnitEntityCommandsTest extends BaseTest {
         Assertions.assertEquals(1, response.getCount());
         Assertions.assertEquals(1, response.getEntities().size());
         Assertions.assertEquals("id102", response.getEntities().get(0).getCarId());
+    }
+    @Test
+    void testDeleteEntities() {
+        var indexName = IndexUtils.getIndexName(EntityType.UNIT, TestUnit.class.getSimpleName());
+
+        var response = columbusCoreFeature.getUnitEntityCommands().deleteEntities(
+            EntitiesDeleteOperation.builder()
+                .documentId(List.of("id104"))
+                .indexName(indexName)
+                .entityType(EntityType.UNIT)
+                .build()
+        );
+
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(1, response.getStatus().getDeleted());
+        Assertions.assertEquals(1, response.getStatus().getTotal());
     }
 
     private UnitSearchOperation<TestUnit> getUnitSearchOperation(String indexName,

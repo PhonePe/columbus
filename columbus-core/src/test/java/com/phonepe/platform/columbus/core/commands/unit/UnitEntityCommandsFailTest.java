@@ -1,5 +1,11 @@
 package com.phonepe.platform.columbus.core.commands.unit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.grookage.jelastic.core.exception.JelasticException;
@@ -7,6 +13,7 @@ import com.grookage.jelastic.core.repository.ElasticRepository;
 import com.phonepe.platform.columbus.core.TestUnit;
 import com.phonepe.platform.columbus.core.exception.ColumbusException;
 import com.phonepe.platform.columbus.core.models.EntityType;
+import com.phonepe.platform.columbus.core.models.operations.EntitiesDeleteOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntityDeleteOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntityFieldsUpdateOperation;
 import com.phonepe.platform.columbus.core.models.operations.EntityGetOperation;
@@ -26,20 +33,14 @@ import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFil
 import com.phonepe.platform.columbus.models.core.search.query.FilterSelection;
 import com.phonepe.platform.columbus.models.core.search.value.Value;
 import io.dropwizard.jackson.Jackson;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.HashMap;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class UnitEntityCommandsFailTest {
@@ -187,6 +188,19 @@ class UnitEntityCommandsFailTest {
             .build();
         doThrow(JelasticException.class).when(elasticRepository).delete(any());
         var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.entityDelete(operation));
+        assertEquals(ColumbusCoreErrorCode.ENTITY_DELETE_ERROR, exception.getErrorCode());
+    }
+
+    @Test
+    void testEntitiesDelete() throws IOException {
+        var operation = EntitiesDeleteOperation.builder()
+            .entityType(EntityType.UNIT)
+            .documentId(List.of("test"))
+            .indexName("test")
+            .routingKey("test")
+            .build();
+        doThrow(JelasticException.class).when(elasticRepository).getElasticClient();
+        var exception = assertThrows(ColumbusException.class, () -> unitEntityCommands.deleteEntities(operation));
         assertEquals(ColumbusCoreErrorCode.ENTITY_DELETE_ERROR, exception.getErrorCode());
     }
 

@@ -10,5 +10,9 @@
   {
     "carId": "id103",
     "carName": "car3"
+  },
+  {
+    "carId": "id104",
+    "carName": "car4 for deletion"
   }
 ]

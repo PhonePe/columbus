@@ -23,6 +23,7 @@ import lombok.experimental.SuperBuilder;
     @JsonSubTypes.Type(value = MultiGetOperation.class, name = "ENTITY_MULTI_GET"),
         @JsonSubTypes.Type(value = EntitiesSearchOperation.class, name = "ENTITIES_SEARCH"),
         @JsonSubTypes.Type(value = UnitSearchOperation.class, name = "UNIT_SEARCH"),
+    @JsonSubTypes.Type(value = EntitiesDeleteOperation.class, name = "ENTITY_MULTI_DELETE"),
 })
 @SuperBuilder
 @Data
