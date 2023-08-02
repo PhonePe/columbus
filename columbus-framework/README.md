@@ -12,6 +12,7 @@ The building blocks and utilities used by Columbus.
    4. [Command](#command)
 3. Utilities
    1. [Pair](#pair)
+   2. [Initializers](#initializers)
 
 ## Dependency
 
@@ -210,4 +211,75 @@ pairs.stream()
         .map(PairFunctions.combine(String::repeat))
         .mapToInt(String::length)
         .sum();
+```
+
+### Initializers
+
+An object that represents a value that can be initialized exactly once. This is similar to the behaviour of `final`,
+except the value can be created after the constructor is called.
+
+#### Late Initializer
+
+An initializer which allows setting the value exactly once, in a thread-safe way.
+
+##### Examples
+
+Create with or without an initial value. If an initial value is not specified, the value can be set later, once.
+
+```java
+LateInit<String> empty = new LateInit<>();
+LateInit<String> initialized = new LateInit<>("some-value");
+```
+
+Check the status of initialization.
+
+```java
+empty.isPresent()          // = false
+initialized.isPresent()    // = true
+```
+
+Get the value from the wrapper.
+
+```java
+initialized.get()    // = "some-value"
+empty.get()          // throws IllegalStateException
+```
+
+Set a value.
+
+```java
+empty.initialize("some-value")    // to know if the initialization was successful
+empty.set("some-value")           // to set, or fail if it is already initialized
+empty.initializeWith(             // create and set a value if not already initialized
+        () -> "expensive-value")
+```
+
+#### Lazy Initializer
+
+An object to create a value lazily. A precondition can be provided to check if the value can be initialized. The value
+will be initialized when it is asked for, if the precondition is satisfied.
+
+##### Examples
+
+Simple lazy value with a factory.
+
+```java
+LazyInit<Integer> lazyInt = new LazyInit<>(()-> /* calculate and return an integer */);
+lazyInt.isPresent()   // returns true
+lazyInt.get()         // returns the integer
+```
+
+A lazy value with a condition.
+
+```java
+LazyInit<Integer> lazyConditionalInt = new LazyInit<>(
+    () -> /* some condition to check */ someValue.isPresent(),
+    () -> /* calculate and return an integer */ someValue.get() + 10
+);
+
+// with someValue.isPresent() == false
+lazyConditionalInt.isPresent()   // returns false
+// modify someValue
+lazyConditionalInt.isPresent()   // returns true
+lazyConditionalInt.get()         // returns the computed value
 ```
