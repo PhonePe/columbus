@@ -22,6 +22,11 @@
         <dependencies>
             <dependency>
                 <groupId>com.phonepe.platform.columbus</groupId>
+                <artifactId>columbus-framework</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.phonepe.platform.columbus</groupId>
                 <artifactId>columbus-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>

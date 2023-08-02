@@ -19,6 +19,7 @@
         <module>columbus-bom</module>
         <module>columbus-dependencies</module>
 
+        <module>columbus-framework</module>
         <module>columbus-bundle</module>
     </modules>
 
