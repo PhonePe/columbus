@@ -22,22 +22,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.phonepe.platform.columbus</groupId>
-                <artifactId>columbus-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.phonepe.platform.columbus</groupId>
-                <artifactId>columbus-dropwizard</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.phonepe.platform.columbus</groupId>
-                <artifactId>columbus-elasticsearch</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.phonepe.platform.columbus</groupId>
-                <artifactId>columbus-kafka</artifactId>
+                <artifactId>columbus-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

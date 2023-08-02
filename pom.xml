@@ -10,22 +10,23 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>Columbus</name>
+    <description>
+        A one stop solution for all search and discovery requirements
+    </description>
+
     <modules>
-        <!-- Setup -->
         <module>columbus-bom</module>
         <module>columbus-dependencies</module>
 
-        <!-- Features -->
-        <module>columbus-core</module>
-        <module>columbus-dropwizard</module>
-        <module>columbus-elasticsearch</module>
-        <module>columbus-kafka</module>
+        <module>columbus-bundle</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Maven Plugins -->
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
@@ -36,5 +37,34 @@
             **src/main/resources/**
         </sonar.exclusions>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <release>${maven.compiler.release}</release>
+                    <compilerArgument>-Xlint:-path</compilerArgument>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven.deploy.plugin.version}</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

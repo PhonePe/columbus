@@ -19,42 +19,6 @@
         A bill of materials to ensure consistent set of versions are used for transitive dependencies.
     </description>
 
-    <properties>
-        <dropwizard.version>2.0.34</dropwizard.version>
-        <jackson.version>2.13.1</jackson.version>
-        <reflections.version>0.10.2</reflections.version>
-        <function.metrics.version>1.0.14</function.metrics.version>
-    </properties>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.dropwizard</groupId>
-                <artifactId>dropwizard-bom</artifactId>
-                <version>${dropwizard.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.reflections</groupId>
-                <artifactId>reflections</artifactId>
-                <version>${reflections.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.appform.functionmetrics</groupId>
-                <artifactId>function-metrics</artifactId>
-                <version>${function.metrics.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>

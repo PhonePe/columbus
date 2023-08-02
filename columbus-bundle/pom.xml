@@ -11,18 +11,10 @@
         <relativePath>../columbus-dependencies</relativePath>
     </parent>
 
-    <artifactId>columbus-dropwizard</artifactId>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.phonepe.platform.columbus</groupId>
-            <artifactId>columbus-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+    <artifactId>columbus-bundle</artifactId>
+    <name>Columbus Bundle</name>
+    <description>
+        A plugin to use all the features of Columbus within a Dropwizard application.
+    </description>
 
 </project>
