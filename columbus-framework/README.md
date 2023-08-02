@@ -7,6 +7,7 @@ The building blocks and utilities used by Columbus.
 1. [Dependency](#dependency)
 2. Features
    1. [Reflect](#reflect)
+   2. [Registry](#registry)
 3. Utilities
    1. [Pair](#pair)
 
@@ -77,6 +78,50 @@ Note that existing annotations on the main class will be ignored.
 
 Fetching all the types with a given annotation also returns the types that have a registered mixin with the given
 annotation.
+
+---
+
+## Registry
+
+A generic way to create a collection of key - value pairs of any type, focused more on configurability.
+
+Very useful to dynamically create a collection of classes identified uniquely by some property. The same can be extended
+in a type-safe way to configure different behaviors for different classes.
+
+### Usage
+
+#### Creation
+
+```java
+MutableRegistry<String, Integer> stored = Registries.stored(Map.of("zero", 0, "one", 1));
+Registry<String, Integer> transforming = Registries.transformingKey(String::toLowerCase, stored);
+RegistryChain<String, Integer> chain = Registries.chaining(stored, transforming).build();
+```
+
+#### Get
+
+```java
+Integer one = chain.get("One").orElseThrow(); // this will be 1
+```
+
+#### Register
+
+```java
+stored.register("two", 2);
+Integer two = chain.get("two");
+```
+
+#### Types
+
+Different types of registries that are available for use can be found in, and created
+using, [Registries](src/main/java/com/phonepe/platform/columbus/registry/Registries.java).
+
+### Advanced Usage
+
+#### Monitoring
+
+Use a `MonitoredRegistry` to know how a registry is performing. The successes and failures of `get()` calls can be
+tracked by providing a listener.
 
 ---
 
