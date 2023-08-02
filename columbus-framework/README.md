@@ -5,7 +5,9 @@ The building blocks and utilities used by Columbus.
 ## Table of Contents
 
 1. [Dependency](#dependency)
-2. Utilities
+2. Features
+   1. [Reflect](#reflect)
+3. Utilities
    1. [Pair](#pair)
 
 ## Dependency
@@ -18,6 +20,63 @@ Add the following dependency to `pom.xml`:
     <artifactId>columbus-framework</artifactId>
 </dependency>
 ```
+
+---
+
+## Reflect
+
+A configurable set of utilities using reflections and generics.
+
+### Usage
+
+#### Initialization
+
+```java
+ReflectSettings settings = ReflectSettings.builder()
+        // set other parameters
+        .build();
+ReflectFactory factory = new SimpleReflectFactory();
+Reflect reflect = factory.create(settings);
+```
+
+#### Methods
+
+Use the provided methods on `Reflect` to fetch annotations, subtypes, and subtypes with a given annotation.
+
+### Advanced Usage
+
+#### Reflection initialization
+
+Reflect uses `SimpleReflectionInitializer` by default, but any other implementation can be provided
+by specifying `initializerOverride` in `ReflectSettings`.
+
+#### Mixins
+
+Mixins allow modifying or adding annotations to a class that cannot be edited.
+
+Create an interface and add the necessary annotations on it. Register this as a mixin for the class you wish to modify.
+All annotation related operations will use the mixin's annotations instead of the main class.
+
+```java
+class ExternalNonModifiableClass {
+    // ... members
+}
+
+@MyCustomAnnotation()
+interface MyCustomMixin {
+}
+
+// while creating settings, do
+settings.mixin(ExternalNonModifiableClass.class, MyCustomMixin.class);
+
+// to get the type to use for annotation, use
+reflect.getAnnotatedType(ExternalNonModifiableClass.class) // returns MyCustomMixin.class
+```
+
+Note that existing annotations on the main class will be ignored.
+
+Fetching all the types with a given annotation also returns the types that have a registered mixin with the given
+annotation.
 
 ---
 

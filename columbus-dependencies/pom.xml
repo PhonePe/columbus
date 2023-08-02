@@ -21,6 +21,7 @@
 
     <properties>
         <jackson.bom.version>2.13.4.20221013</jackson.bom.version>
+        <reflections.version>0.10.2</reflections.version>
 
         <!-- Test dependencies -->
         <junit.version>5.9.2</junit.version>
@@ -52,6 +53,13 @@
                 <version>${mockito.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Common dependencies -->
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
