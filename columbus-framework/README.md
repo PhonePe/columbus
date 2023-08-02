@@ -13,6 +13,7 @@ The building blocks and utilities used by Columbus.
 3. Utilities
    1. [Pair](#pair)
    2. [Initializers](#initializers)
+   3. [Entity type](#entity-type)
 
 ## Dependency
 
@@ -282,4 +283,29 @@ lazyConditionalInt.isPresent()   // returns false
 // modify someValue
 lazyConditionalInt.isPresent()   // returns true
 lazyConditionalInt.get()         // returns the computed value
+```
+
+### Entity Type
+
+A wrapper over Java's `Type` instances to support referencing them by name, especially for serialization and
+deserialization. A registry is used for resolving the names to their corresponding `Type`s.
+
+#### Examples
+
+Create an instance of `EntityType` in one of the following ways.
+
+```java
+JavaType<String> string = Types.forClass(String.class);
+JavaType<List<Integer>> integers = Types.forTypeReference(new TypeReference<>() {});
+NamedType<String> nameString = Types.forName("str");
+```
+
+Use a registry and a resolver to find the matching `JavaType` instance for a given `NamedType`.
+
+```java
+Map<String, JavaType<?>> types = Map.of("str", string);
+TypeRegistry typeRegistry = Types.typeRegistry(Registries.stored(types));
+TypeResolver resolver = Types.resolver(typeRegistry);
+
+resolver.toJavaType(nameString) // = string: JavaType<String>
 ```
