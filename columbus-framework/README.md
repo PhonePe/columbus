@@ -8,6 +8,7 @@ The building blocks and utilities used by Columbus.
 2. Features
    1. [Reflect](#reflect)
    2. [Registry](#registry)
+   3. [Visitor](#visitor)
 3. Utilities
    1. [Pair](#pair)
 
@@ -122,6 +123,25 @@ using, [Registries](src/main/java/com/phonepe/platform/columbus/registry/Registr
 
 Use a `MonitoredRegistry` to know how a registry is performing. The successes and failures of `get()` calls can be
 tracked by providing a listener.
+
+---
+
+## Visitor
+
+A dynamic way to create and bind visitors with classes, without having to worry about cyclic dependencies. The classes
+being visited need not be aware of the visitors, allowing new classes to be introduced into the two hierarchies
+seamlessly, across modules.
+
+### Usage
+
+1. Define a context object extending `VisitorContext`, with fields for necessary data.
+2. Define the visitor classes implementing `EntityVisitor` for each value that needs to be visited using the context.
+   Create a common base class to help group the visitors for a context.
+3. Determine a strategy to differentiate between classes being visited. Create a registry to resolve to the
+   corresponding visitors.
+4. Create resolver and context instances and use it.
+
+See [Visitors](src/test/java/com/phonepe/platform/columbus/internal/visitor/Visitors.java) for an example.
 
 ---
 
