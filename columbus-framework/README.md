@@ -9,6 +9,7 @@ The building blocks and utilities used by Columbus.
    1. [Reflect](#reflect)
    2. [Registry](#registry)
    3. [Visitor](#visitor)
+   4. [Command](#command)
 3. Utilities
    1. [Pair](#pair)
 
@@ -142,6 +143,25 @@ seamlessly, across modules.
 4. Create resolver and context instances and use it.
 
 See [Visitors](src/test/java/com/phonepe/platform/columbus/internal/visitor/Visitors.java) for an example.
+
+---
+
+## Command
+
+A command is an operation represented as data, performed by the executors. Each command might be executed differently
+depending on the executor, but all executors are expected to return the same type.
+
+This library provides an easy way to define commands and executors, and also extend them across modules.
+
+### Usage
+
+1. Define the `Command`s to represent different operations, with their corresponding return types.
+2. Define the executor class to perform operations in different environments.
+3. Define the handler classes implementing `CommandHandler` for each command that needs to be executed by the executor.
+4. Determine a strategy to differentiate between all the commands and create a registry.
+5. Create resolver and executor instances and use it.
+
+See [Commands](src/test/java/com/phonepe/platform/columbus/internal/command/Commands.java) for an example.
 
 ---
 
