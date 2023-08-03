@@ -10,6 +10,7 @@ The building blocks and utilities used by Columbus.
    2. [Registry](#registry)
    3. [Visitor](#visitor)
    4. [Command](#command)
+   5. [SerDe](#serde) (Serializer - Deserializer)
 3. Utilities
    1. [Pair](#pair)
    2. [Initializers](#initializers)
@@ -164,6 +165,24 @@ This library provides an easy way to define commands and executors, and also ext
 5. Create resolver and executor instances and use it.
 
 See [Commands](src/test/java/com/phonepe/platform/columbus/internal/command/Commands.java) for an example.
+
+---
+
+## SerDe
+
+A serde is responsible for serializing data to some format and deserializing it. It also supports
+the [Entity types](#entity-type) to allow deserializing types by just their names.
+
+The library provides a definition for JSON format.
+
+### Examples
+
+Create a serde with the help of the factory.
+
+```java
+JsonSerDe serDe = SerDes.json(/* Jackson's ObjectMapper */ mapper, typeResolver);
+```
+See [SerDe](src/main/java/com/phonepe/platform/columbus/serde/SerDe.java) for the different methods supported.
 
 ---
 
