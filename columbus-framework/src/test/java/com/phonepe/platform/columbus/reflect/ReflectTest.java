@@ -1,7 +1,6 @@
 package com.phonepe.platform.columbus.reflect;
 
 import com.phonepe.platform.columbus.common.pair.Pair;
-import com.phonepe.platform.columbus.internal.reflect.SimpleReflectFactory;
 import com.phonepe.platform.columbus.reflect.SampleInterface.SampleWithAnnotation;
 import com.phonepe.platform.columbus.reflect.SampleInterface.SampleWithMixin;
 import com.phonepe.platform.columbus.reflect.SampleInterface.SampleWithMixinOverride;
@@ -22,10 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ReflectTest {
 
-    private static final Reflect reflect = new SimpleReflectFactory().create(ReflectSettings.builder()
-            .mixin(SampleWithMixin.class, SampleMixin.class)
-            .mixin(SampleWithMixinOverride.class, SampleMixin.class)
-            .build());
+    private static final Reflect reflect = ReflectHelpers.reflectFactory()
+            .create(ReflectSettings.builder()
+                    .mixin(SampleWithMixin.class, SampleMixin.class)
+                    .mixin(SampleWithMixinOverride.class, SampleMixin.class)
+                    .initializerOverride(ReflectHelpers.reflectionInitializer())
+                    .instanceFactory(ReflectHelpers.instanceFactory())
+                    .build());
 
     @Nested
     @DisplayName("annotated type")

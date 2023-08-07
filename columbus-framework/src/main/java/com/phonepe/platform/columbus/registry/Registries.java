@@ -10,6 +10,7 @@ import com.phonepe.platform.columbus.internal.registry.MutableCachedRegistry;
 import com.phonepe.platform.columbus.internal.registry.StoredRegistry;
 import com.phonepe.platform.columbus.internal.registry.TransformedRegistry;
 import com.phonepe.platform.columbus.internal.registry.ValueTransformedRegistry;
+import com.phonepe.platform.columbus.reflect.Generics;
 import lombok.experimental.UtilityClass;
 
 import java.util.Arrays;
@@ -145,5 +146,16 @@ public class Registries {
 
     public <K, V> boolean isEmpty(final Registry<K, V> registry) {
         return registry instanceof EmptyRegistry;
+    }
+
+    public <K, V> Registry<K, V> usingClassHierarchy(
+            final Registry<? super Class<?>, ? extends V> registry,
+            final Class<K> baseType
+    ) {
+        return transformingKey(
+                Object::getClass,
+                Registries.<Class<?>, V>hierarchicalKey(
+                        registry,
+                        type -> Optional.ofNullable(Generics.getSuperTypeTowards(type, baseType))));
     }
 }

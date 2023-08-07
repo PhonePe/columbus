@@ -27,6 +27,8 @@ Add the following dependency to `pom.xml`:
 </dependency>
 ```
 
+Either add the version, or include the bom in `dependencyManagement` as specified [here](../README.md#dependency).
+
 ---
 
 ## Reflect
@@ -41,13 +43,19 @@ A configurable set of utilities using reflections and generics.
 ReflectSettings settings = ReflectSettings.builder()
         // set other parameters
         .build();
-ReflectFactory factory = new SimpleReflectFactory();
+        // use ReflectSettings.defaults(); for default settings.
+ReflectFactory factory = ReflectHelpers.reflectFactory();
 Reflect reflect = factory.create(settings);
 ```
 
 #### Methods
 
-Use the provided methods on `Reflect` to fetch annotations, subtypes, and subtypes with a given annotation.
+Use the provided methods on [`Reflect`](src/main/java/com/phonepe/platform/columbus/reflect/Reflect.java) to fetch
+annotations, subtypes, and subtypes with a given annotation.
+
+#### Utilities
+
+See [`Generics`](src/main/java/com/phonepe/platform/columbus/reflect/Generics.java) for utilities on `Type`.
 
 ### Advanced Usage
 
@@ -128,6 +136,17 @@ using, [Registries](src/main/java/com/phonepe/platform/columbus/registry/Registr
 Use a `MonitoredRegistry` to know how a registry is performing. The successes and failures of `get()` calls can be
 tracked by providing a listener.
 
+#### Registry Factory
+
+Registries whose values are instances of different types can be created using annotations. Annotate the different
+classes with `@ReflectKey` and specify `name` and / or `type`. Use a `ReflectFactory` and `ReflectOptions` to collect
+the classes and their annotations to create a registry.
+
+See [BaseType](src/test/java/com/phonepe/platform/columbus/internal/registry/factory/BaseType.java) for an example.
+
+See [RegistryHelpers](src/main/java/com/phonepe/platform/columbus/registry/RegistryHelpers.java) to create options for
+specific registries.
+
 ---
 
 ## Visitor
@@ -147,6 +166,14 @@ seamlessly, across modules.
 
 See [Visitors](src/test/java/com/phonepe/platform/columbus/internal/visitor/Visitors.java) for an example.
 
+### Advanced Usage
+
+Use `VisitorRegistryFactory` to create registries of visitors using the annotation.
+See [Registry factory](#registry-factory) for more details.
+
+See [VisitorHelpers](src/main/java/com/phonepe/platform/columbus/visitor/VisitorHelpers.java) to create different
+options and specific registries.
+
 ---
 
 ## Command
@@ -165,6 +192,14 @@ This library provides an easy way to define commands and executors, and also ext
 5. Create resolver and executor instances and use it.
 
 See [Commands](src/test/java/com/phonepe/platform/columbus/internal/command/Commands.java) for an example.
+
+### Advanced Usage
+
+Use `HandlerRegistryFactory` to create registries of handlers using the annotation.
+See [Registry factory](#registry-factory) for more details.
+
+See [CommandHelpers](src/main/java/com/phonepe/platform/columbus/command/CommandHelpers.java) to create different
+options and specific registries.
 
 ---
 

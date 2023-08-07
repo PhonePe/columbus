@@ -4,7 +4,9 @@ import com.phonepe.platform.columbus.internal.registry.StoredRegistry;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.AbstractCollection;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -128,6 +130,23 @@ class RegistriesTest {
         final var delegate = Registries.<String, Object>empty();
         final var registry = Registries.hierarchicalKey(delegate, object -> Optional.empty());
         assertRegistriesAreEmpty(delegate, registry);
+    }
+
+    @Test
+    @DisplayName("class hierarchy identifies parent class types")
+    void testClassHierarchyRegistry() {
+        final var classRegistry = Registries.stored(Map.of(
+                AbstractCollection.class, "collection",
+                Object.class, "object"
+        ));
+        final var registry = Registries.usingClassHierarchy(classRegistry, null);
+        final var list = List.of();
+        final var string = "sample";
+
+        assertAll(
+                "registry entry",
+                () -> assertEquals("collection", registry.get(list).orElse(null), "list is resolved as a collection"),
+                () -> assertEquals("object", registry.get(string).orElse(null), "string is resolved as an object"));
     }
 
     private static void assertRegistriesAreEmpty(final Registry<?, ?>... registries) {
