@@ -15,6 +15,7 @@ import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.InFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.NotEqualsFilter;
+import com.phonepe.platform.columbus.models.core.search.filter.general.WildCardFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.predicate.AndFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.predicate.OrFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.BetweenFilter;
@@ -171,6 +172,22 @@ class FilterTests extends BaseTest {
                 .build(),
             Set.of("id2")
         );
+    }
+
+    @Test
+    void testWildcardTesting() {
+        String indexName = IndexUtils.getIndexName(EntityType.CATEGORY,
+            TestTenant.TEST_TENANT.name());
+
+        var filter = WildCardFilter.builder()
+            .field("name")
+            .value(Value.exact("name*"))
+            .build();
+
+        var elasticResponse = columbusCoreFeature.getCategoryEntityCommands()
+            .elasticSearch(getCategorySearchOperation(indexName, filter));
+
+        assertResponseIds(Set.of("id1", "id2", "id3"), elasticResponse);
     }
 
     @Test

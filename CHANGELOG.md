@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.10] - 2023-08-09
+
+### Added
+
+- Add wildcard filtering.
+
 ## [1.0.9] - 2023-05-29
 
 ### Added

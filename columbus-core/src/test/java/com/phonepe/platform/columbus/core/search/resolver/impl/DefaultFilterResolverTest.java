@@ -5,6 +5,7 @@ import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.InFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.NotEqualsFilter;
+import com.phonepe.platform.columbus.models.core.search.filter.general.WildCardFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.BetweenFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.GreaterEqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.GreaterThanFilter;
@@ -39,6 +40,20 @@ class DefaultFilterResolverTest {
         Filter filter = EqualsFilter.<Integer>builder()
             .field("price")
             .value(Value.exact(1))
+            .build();
+
+        checkResolution(filterSelection, filter);
+    }
+
+    @Test
+    void testResolveWildcard() {
+        FilterSelection filterSelection = FilterSelection.builder()
+            .filterName("#wc:price")
+            .value(Value.exact("price"))
+            .build();
+        Filter filter = WildCardFilter.builder()
+            .field("price")
+            .value(Value.exact("price"))
             .build();
 
         checkResolution(filterSelection, filter);

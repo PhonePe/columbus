@@ -7,6 +7,7 @@ import com.phonepe.platform.columbus.models.core.search.filter.Filter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.EqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.InFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.general.NotEqualsFilter;
+import com.phonepe.platform.columbus.models.core.search.filter.general.WildCardFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.BetweenFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.GreaterEqualsFilter;
 import com.phonepe.platform.columbus.models.core.search.filter.range.GreaterThanFilter;
@@ -52,12 +53,20 @@ public class DefaultFilterResolver implements FilterResolver {
                 case "<=" -> createLessEqualsFilter(selection.getValue(), field);
                 case ">" -> createGreaterThanFilter(selection.getValue(), field);
                 case ">=" -> createGreaterEqualsFilter(selection.getValue(), field);
+                case "wc" -> createWildcardFilter(selection.getValue(), field);
                 default -> null;
             };
         } else if (splits.length == 3) {
             return parseBetweenFilter(selection.getValue(), splits);
         }
         return null;
+    }
+
+    private Filter createWildcardFilter(Value<Object> value, String field) {
+        return WildCardFilter.builder()
+            .field(field)
+            .value(value)
+            .build();
     }
 
     private Filter createEqualsFilter(Value<Object> value, String field) {
