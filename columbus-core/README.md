@@ -1,0 +1,51 @@
+# Columbus Core
+
+All the main features provided by Columbus.
+
+## Table of Contents
+
+1. [Dependency](#dependency)
+2. Features
+    1. [Toolkit](#toolkit)
+
+## Dependency
+
+Add the following dependency to `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.phonepe.platform.columbus</groupId>
+    <artifactId>columbus-core</artifactId>
+</dependency>
+```
+
+Either add the version, or include the bom in `dependencyManagement` as specified [here](../README.md#dependency).
+
+---
+
+## Toolkit
+
+A collection of all the building blocks used by Columbus.
+
+An initializer ([ToolkitInitializer](/src/main/java/com/phonepe/platform/columbus/core/toolkit/ToolkitInitializer.java))
+is used to initialize the toolkit. It initializes the value lazily, using the provided fields.
+
+### Usage
+
+Create a new initializer and provide the fields via the `use()` methods.
+
+```java
+ToolkitInitializer initializer = ToolkitHelpers.initializer();
+initializer.use(/* create */ typeRegistry);
+initializer.use(/* create */ mapper);
+initializer.use(/* create */ settings);
+
+Toolkit toolkit = initializer.get();
+```
+
+### Advanced Usage
+
+The initializer can be completely customized by providing a custom implementation extending
+[DefaultToolkitInitializer](/src/main/java/com/phonepe/platform/columbus/internal/core/toolkit/DefaultToolkitInitializer.java)
+or its parents. The lazy initializers allow for different dependencies to exist without having to modify the order of
+execution of the methods.
