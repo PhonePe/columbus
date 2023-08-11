@@ -8,6 +8,7 @@ All the main features provided by Columbus.
 2. Features
     1. [Toolkit](#toolkit)
     2. [Storage](#storage)
+3. [Initialization and Usage](#initialization-and-usage)
 
 ## Dependency
 
@@ -120,3 +121,24 @@ and its final subclass
 for an example.
 
 The visitor will only pick those `StorageClientProvider`s which can work with the provided context class.
+
+---
+
+## Initialization and Usage
+
+Columbus requires settings, configuration, and some additional attributes like `ObjectMapper`, during initialization.
+It is handled by `ColumbusInitializer` and is designed to perform the initialization lazily, as and when the attributes
+become available, depending on the framework being integrated with.
+
+```java
+ColumbusInitializer initializer = new DefaultColumbusInitializer();
+initializer.use(/* create */ settings);
+initializer.use(/* create */ mapper);
+initializer.use(/* create */ configuration);
+
+Columbus columbus = initializer.get();
+
+columbus.toolkit()                  // returns the initialized, underlying toolkit
+columbus.storages()                 // returns all the storages
+columbus.storage("<storage-name>")  // returns the storage with the given name
+```
