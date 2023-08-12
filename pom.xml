@@ -22,6 +22,7 @@
         <module>columbus-framework</module>
         <module>columbus-core</module>
         <module>columbus-bundle</module>
+        <module>columbus-dropwizard</module>
     </modules>
 
     <properties>
