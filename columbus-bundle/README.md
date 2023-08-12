@@ -19,3 +19,10 @@ Add the following dependency to `pom.xml`:
 ```
 
 ## Usage
+
+```java
+ColumbusBundle bundle = ColumbusBundle.configure()
+        // set the required parameters
+        .build()
+        .toBundle(config -> /* extract ColumbusBundleConfiguration from config */);
+```
