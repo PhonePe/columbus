@@ -40,6 +40,11 @@
                 <artifactId>columbus-bundle</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.phonepe.platform.columbus</groupId>
+                <artifactId>columbus-test-suite</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

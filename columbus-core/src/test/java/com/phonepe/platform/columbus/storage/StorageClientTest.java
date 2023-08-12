@@ -2,14 +2,16 @@ package com.phonepe.platform.columbus.storage;
 
 import com.phonepe.platform.columbus.command.Command;
 import com.phonepe.platform.columbus.command.CommandHelpers;
+import com.phonepe.platform.columbus.core.toolkit.Toolkit;
+import com.phonepe.platform.columbus.core.utils.RegistryCreators;
+import com.phonepe.platform.columbus.extensions.toolkit.WithToolkit;
 import com.phonepe.platform.columbus.reflect.Generics;
-import com.phonepe.platform.columbus.reflect.ReflectHelpers;
 import com.phonepe.platform.columbus.registry.Registries;
-import com.phonepe.platform.columbus.registry.RegistryHelpers;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
 import com.phonepe.platform.columbus.storage.memory.MemoryStorage;
 import com.phonepe.platform.columbus.storage.memory.MemoryStorageConfiguration;
 import com.phonepe.platform.columbus.storage.memory.handlers.MemoryStorageCommandHandler;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@WithToolkit.All
 class StorageClientTest {
 
     private static final MemoryStorageConfiguration configuration = MemoryStorageConfiguration.builder()
@@ -27,7 +30,7 @@ class StorageClientTest {
     @Nested
     class MemoryStorageHandlersTest {
 
-        private static final StorageClient storage;
+        private static StorageClient storage;
 
         @Test
         @DisplayName("version command returns storage version")
@@ -52,15 +55,14 @@ class StorageClientTest {
                     "no handler registered for the command");
         }
 
-        static {
-            final var factory = CommandHelpers.factory(RegistryHelpers.factory(ReflectHelpers.defaultInstance()));
-            final var options = CommandHelpers.optionsForType(
-                            Generics.typed(MemoryStorageCommandHandler.class),
-                            MemoryStorage.class)
-                    .build();
-            final var registry = Registries.usingClassHierarchy(factory.create(options), Command.class);
+        @BeforeAll
+        static void beforeAll(final Toolkit toolkit) {
             storage = MemoryStorage.builder()
-                    .resolver(CommandHelpers.resolver(registry))
+                    .resolver(CommandHelpers.resolver(RegistryCreators.createHandlerRegistry(
+                            toolkit.handlerFactory(),
+                            Generics.typed(MemoryStorageCommandHandler.class),
+                            MemoryStorage.class,
+                            null)))
                     .configuration(configuration)
                     .build();
         }
@@ -69,7 +71,7 @@ class StorageClientTest {
     @Nested
     class MemoryStorageUnsupportedHandlersTest {
 
-        private static final StorageClient storage;
+        private static StorageClient storage;
 
         @Test
         @DisplayName("missing command handler")
@@ -86,15 +88,14 @@ class StorageClientTest {
                     "no handler registered for the command");
         }
 
-        static {
-            final var factory = CommandHelpers.factory(RegistryHelpers.factory(ReflectHelpers.defaultInstance()));
-            final var options = CommandHelpers.optionsForType(
-                            Generics.typed(StorageCommandHandler.class),
-                            MemoryStorage.class)
-                    .build();
-            final var registry = Registries.usingClassHierarchy(factory.create(options), Command.class);
+        @BeforeAll
+        static void beforeAll(final Toolkit toolkit) {
             storage = MemoryStorage.builder()
-                    .resolver(CommandHelpers.resolver(registry))
+                    .resolver(CommandHelpers.resolver(RegistryCreators.createHandlerRegistry(
+                            toolkit.handlerFactory(),
+                            Generics.typed(StorageCommandHandler.class),
+                            MemoryStorage.class,
+                            null)))
                     .configuration(configuration)
                     .build();
         }

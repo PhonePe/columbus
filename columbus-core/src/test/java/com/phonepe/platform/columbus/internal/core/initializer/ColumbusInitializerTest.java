@@ -6,6 +6,7 @@ import com.phonepe.platform.columbus.core.settings.ColumbusSettings;
 import com.phonepe.platform.columbus.storage.StorageConfiguration;
 import com.phonepe.platform.columbus.storage.memory.MemoryStorage;
 import com.phonepe.platform.columbus.storage.memory.MemoryStorageConfiguration;
+import com.phonepe.platform.columbus.test.extensions.mapper.WithMapper;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
@@ -21,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@WithMapper
 class ColumbusInitializerTest {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static final ColumbusSettings settings = ColumbusSettings.defaults();
     private static final MemoryStorageConfiguration storageConfiguration = MemoryStorageConfiguration.builder()
             .enabled(true)
@@ -32,7 +33,7 @@ class ColumbusInitializerTest {
 
     @Test
     @DisplayName("initialize")
-    void testInitialize() {
+    void testInitialize(final ObjectMapper mapper) {
         final var configuration = ColumbusTestConfiguration.builder()
                 .storage(storageConfiguration)
                 .build();
@@ -55,7 +56,7 @@ class ColumbusInitializerTest {
 
     @Test
     @DisplayName("initialize disabled")
-    void testInitializeDisabled() {
+    void testInitializeDisabled(final ObjectMapper mapper) {
         final var configuration = ColumbusTestConfiguration.builder()
                 .enabled(false)
                 .storage(storageConfiguration)
@@ -77,7 +78,7 @@ class ColumbusInitializerTest {
 
     @Test
     @DisplayName("validate initialization step by step")
-    void testInitializeInSteps() {
+    void testInitializeInSteps(final ObjectMapper mapper) {
         final var configuration = ColumbusTestConfiguration.builder()
                 .storage(storageConfiguration)
                 .build();

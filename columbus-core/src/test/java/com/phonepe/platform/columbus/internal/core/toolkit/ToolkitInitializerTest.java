@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phonepe.platform.columbus.core.toolkit.ToolkitHelpers;
 import com.phonepe.platform.columbus.core.toolkit.ToolkitSettings;
 import com.phonepe.platform.columbus.registry.Registries;
+import com.phonepe.platform.columbus.test.extensions.mapper.WithMapper;
 import com.phonepe.platform.columbus.type.TypeRegistry;
 import com.phonepe.platform.columbus.type.Types;
 import org.junit.jupiter.api.DisplayName;
@@ -12,15 +13,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@WithMapper
 class ToolkitInitializerTest {
 
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static final TypeRegistry typeRegistry = Types.typeRegistry(Registries.empty());
     private static final ToolkitSettings settings = ToolkitSettings.defaults();
 
     @Test
     @DisplayName("initialize")
-    void testInitialize() {
+    void testInitialize(final ObjectMapper mapper) {
         final var initializer = ToolkitHelpers.initializer();
         initializer.use(typeRegistry);
         initializer.use(mapper);
@@ -40,7 +41,7 @@ class ToolkitInitializerTest {
 
     @Test
     @DisplayName("initialize without type registry")
-    void testInitializeWithoutTypeRegistry() {
+    void testInitializeWithoutTypeRegistry(final ObjectMapper mapper) {
         final var initializer = ToolkitHelpers.initializer();
         initializer.use(mapper);
         initializer.use(settings);

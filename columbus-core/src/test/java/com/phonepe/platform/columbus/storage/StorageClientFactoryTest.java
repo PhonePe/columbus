@@ -1,7 +1,8 @@
 package com.phonepe.platform.columbus.storage;
 
 import com.phonepe.platform.columbus.core.settings.RegistrySettings;
-import com.phonepe.platform.columbus.core.toolkit.ToolkitHelpers;
+import com.phonepe.platform.columbus.core.toolkit.Toolkit;
+import com.phonepe.platform.columbus.extensions.toolkit.WithToolkit;
 import com.phonepe.platform.columbus.storage.DummyClientFactory.DummyStorageProvider;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
 import com.phonepe.platform.columbus.storage.memory.MemoryStorage;
@@ -16,8 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@WithToolkit.All
 class StorageClientFactoryTest {
 
+    private static final VersionCommand COMMAND = VersionCommand.builder().build();
     private static final MemoryStorageConfiguration configuration = MemoryStorageConfiguration.builder()
             .enabled(true)
             .name("memory-test")
@@ -25,13 +28,10 @@ class StorageClientFactoryTest {
 
     @Test
     @DisplayName("create memory client using factory")
-    void testCreateClient() {
-        final var toolkit = ToolkitHelpers.defaultInstance();
+    void testCreateClient(final Toolkit toolkit) {
         final var settings = StorageSettings.defaults();
 
         final var factory = Storages.storageClientFactory(settings, toolkit);
-
-        final var command = VersionCommand.builder().build();
 
         final var storage = factory.create(configuration);
 
@@ -41,13 +41,12 @@ class StorageClientFactoryTest {
                         "created instance must match the type of configuration"),
                 () -> assertEquals(configuration.getName(), storage.name(), "name should match the configuration"),
                 () -> assertEquals(configuration.getType(), storage.type(), "type should match the configuration"),
-                () -> assertEquals(MemoryStorage.VERSION, command.execute(storage), "version should match"));
+                () -> assertEquals(MemoryStorage.VERSION, COMMAND.execute(storage), "version should match"));
     }
 
     @Test
     @DisplayName("create client without registered visitors")
-    void testCreateClientUnregistered() {
-        final var toolkit = ToolkitHelpers.defaultInstance();
+    void testCreateClientUnregistered(final Toolkit toolkit) {
         final var settings = StorageSettings.builder()
                 .visitorOverrides(RegistrySettings.builder()
                         .defaultTypeFilter(type -> !MemoryStorageProvider.class.equals(type))
@@ -64,8 +63,7 @@ class StorageClientFactoryTest {
 
     @Test
     @DisplayName("create memory client by name")
-    void testCreateClientByName() {
-        final var toolkit = ToolkitHelpers.defaultInstance();
+    void testCreateClientByName(final Toolkit toolkit) {
         final var settings = StorageSettings.builder()
                 .visitorOverrides(RegistrySettings.builder()
                         .defaultTypeFilter(type -> !MemoryStorageProvider.class.equals(type))
@@ -77,8 +75,6 @@ class StorageClientFactoryTest {
 
         final var factory = Storages.storageClientFactory(settings, toolkit);
 
-        final var command = VersionCommand.builder().build();
-
         final var storage = factory.create(configuration);
 
         assertAll(
@@ -87,6 +83,6 @@ class StorageClientFactoryTest {
                         "created instance must match the type of configuration"),
                 () -> assertEquals(configuration.getName(), storage.name(), "name should match the configuration"),
                 () -> assertEquals(configuration.getType(), storage.type(), "type should match the configuration"),
-                () -> assertEquals(MemoryStorage.VERSION, command.execute(storage), "version should match"));
+                () -> assertEquals(MemoryStorage.VERSION, COMMAND.execute(storage), "version should match"));
     }
 }
