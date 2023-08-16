@@ -1,6 +1,9 @@
 package com.phonepe.platform.columbus.elastic.storage.handlers;
 
+import com.phonepe.platform.columbus.elastic.extensions.TestConstants;
+import com.phonepe.platform.columbus.elastic.extensions.client.WithElasticClient;
 import com.phonepe.platform.columbus.elastic.internal.storage.ColumbusElasticClient;
+import com.phonepe.platform.columbus.storage.StorageClient;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
 import com.phonepe.platform.columbus.test.extensions.WithMockito;
 import org.junit.jupiter.api.Nested;
@@ -10,14 +13,25 @@ import org.mockito.Mock;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WithMockito
+@WithElasticClient.All
 class VersionHandlerTest {
 
     private static final VersionCommand VERSION = VersionCommand.builder().build();
+
+    @Nested
+    class SuccessTest {
+
+        @Test
+        void testCommand(final StorageClient storage) {
+            assertEquals(TestConstants.ELASTIC_SEARCH_VERSION, VERSION.execute(storage), "version must match");
+        }
+    }
 
     @Nested
     class FailureTest {

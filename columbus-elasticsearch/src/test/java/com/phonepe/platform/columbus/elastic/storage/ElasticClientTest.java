@@ -6,6 +6,7 @@ import com.phonepe.platform.columbus.common.http.Header;
 import com.phonepe.platform.columbus.core.toolkit.Toolkit;
 import com.phonepe.platform.columbus.core.utils.RegistryCreators;
 import com.phonepe.platform.columbus.elastic.extensions.TestConstants;
+import com.phonepe.platform.columbus.elastic.extensions.container.WithElasticContainer;
 import com.phonepe.platform.columbus.elastic.extensions.toolkit.WithToolkit;
 import com.phonepe.platform.columbus.elastic.internal.storage.ColumbusElasticClient;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
@@ -16,30 +17,25 @@ import com.phonepe.platform.columbus.elastic.storage.utils.ElasticRestClientUtil
 import com.phonepe.platform.columbus.reflect.Generics;
 import com.phonepe.platform.columbus.storage.StorageCommandHandler;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
+import com.phonepe.platform.columbus.test.extensions.ValueProps;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WithToolkit.All
-@Testcontainers
+@WithElasticContainer(value = @ValueProps(key = @ValueProps.Key(keyClass = ElasticClientTest.class)))
 class ElasticClientTest {
 
     private static final VersionCommand VERSION = VersionCommand.builder().build();
 
-    @Container
-    private static final ElasticsearchContainer elastic = new ElasticsearchContainer(
-            DockerImageName.parse(TestConstants.ELASTIC_SEARCH_IMAGE)
-                    .withTag(TestConstants.ELASTIC_SEARCH_VERSION))
-            .withPassword(TestConstants.ELASTIC_SEARCH_CREDENTIALS.getPassword());
-
     @Test
     @DisplayName("create client with auth")
-    void testCreateElasticClientWithAuth(final Toolkit toolkit) {
+    void testCreateElasticClientWithAuth(
+            final Toolkit toolkit,
+            @ValueProps.Key(keyClass = ElasticClientTest.class) final ElasticsearchContainer elastic
+    ) {
         final var configuration = ElasticConfiguration.builder()
                 .enabled(true)
                 .name("elastic-test")

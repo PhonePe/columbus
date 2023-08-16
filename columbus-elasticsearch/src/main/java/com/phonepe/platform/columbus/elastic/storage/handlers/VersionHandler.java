@@ -1,8 +1,10 @@
 package com.phonepe.platform.columbus.elastic.storage.handlers;
 
+import com.phonepe.platform.columbus.elastic.common.Constants.Operations;
 import com.phonepe.platform.columbus.elastic.storage.ElasticClient;
 import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
+import io.appform.functionmetrics.MonitoredFunction;
 import lombok.SneakyThrows;
 import org.elasticsearch.client.RequestOptions;
 
@@ -23,6 +25,7 @@ public class VersionHandler<E extends ElasticClient<E>>
         return version(storage);
     }
 
+    @MonitoredFunction(className = Operations.CLIENT_NAME, method = Operations.VERSION)
     private String version(final E storage) throws IOException {
         return storage.client().info(RequestOptions.DEFAULT).getVersion().getNumber();
     }

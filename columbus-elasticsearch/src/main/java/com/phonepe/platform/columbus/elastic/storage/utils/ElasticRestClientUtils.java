@@ -128,6 +128,10 @@ public class ElasticRestClientUtils {
         }
     }
 
+    public String createHealthCheckName(final String name) {
+        return name.replaceAll("[^-a-zA-Z0-9_]+", "-") + "-elastic-health-check";
+    }
+
     @AllArgsConstructor
     public static class HttpClientConfigCallback implements RestClientBuilder.HttpClientConfigCallback {
 
