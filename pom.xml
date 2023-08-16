@@ -23,6 +23,7 @@
         <module>columbus-core</module>
         <module>columbus-bundle</module>
         <module>columbus-dropwizard</module>
+        <module>columbus-elasticsearch</module>
 
         <module>columbus-test-suite</module>
     </modules>

@@ -5,13 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.function.Predicate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class PredicatesTest {
 
     @Nested
-    class ConsumerTest {
+    class NonNullConsumerTest {
 
         @Test
         @DisplayName("non null value is consumed")
@@ -29,6 +31,75 @@ class PredicatesTest {
             final var holder = new LateInit<Integer>();
 
             Predicates.applyIfNotNull(null, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+    }
+
+    @Nested
+    class ConditionalConsumerTest {
+        private static final Predicate<Integer> CONDITION = integer -> integer > 5;
+
+        @Test
+        @DisplayName("value is consumed when condition is satisfied")
+        void testApplyWhenConditionSatisfied() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIf(10, CONDITION, holder::set);
+
+            assertEquals(10, holder.get(), "consumer must be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when condition is not satisfied")
+        void testDoesNotApplyWhenConditionNotSatisfied() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIf(1, CONDITION, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+    }
+
+    @Nested
+    class PositiveIntegerConsumerTest {
+
+        @Test
+        @DisplayName("value is consumed when positive")
+        void testApplyWhenPositive() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfPositive(10, holder::set);
+
+            assertEquals(10, holder.get(), "consumer must be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when negative")
+        void testDoesNotApplyWhenNegative() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfPositive(-10, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when zero")
+        void testDoesNotApplyWhenZero() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfPositive(0, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when null")
+        void testDoesNotApplyWhenNull() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfPositive(null, holder::set);
 
             assertFalse(holder.isPresent(), "consumer must not be called");
         }
