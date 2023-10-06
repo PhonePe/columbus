@@ -18,6 +18,8 @@ Add the following dependency to `pom.xml`:
 </dependency>
 ```
 
+Either add the version, or include the bom in `dependencyManagement` as specified [here](../README.md#dependency).
+
 ## Usage
 
 ```java

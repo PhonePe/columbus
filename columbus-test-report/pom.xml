@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.phonepe.platform.columbus</groupId>
+        <artifactId>columbus-bom</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../columbus-bom</relativePath>
+    </parent>
+
+    <artifactId>columbus-test-report</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Columbus Test Report</name>
+    <description>A module to aggregate test reports across all Columbus modules.</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-core-test-suite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-dropwizard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-bundle</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-elasticsearch-test-suite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.platform.columbus</groupId>
+            <artifactId>columbus-unit-tests</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

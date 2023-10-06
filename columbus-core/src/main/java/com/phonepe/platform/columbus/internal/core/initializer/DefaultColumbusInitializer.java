@@ -53,7 +53,7 @@ public class DefaultColumbusInitializer extends LazyColumbusInitializer {
 
     @Override
     protected boolean canInitializeStorageClientFactory() {
-        return getToolkit().isPresent() && getSettings().isPresent();
+        return getSettings().isPresent() && getToolkit().isPresent();
     }
 
     @Override

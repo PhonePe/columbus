@@ -158,11 +158,8 @@ public class ElasticRestClientUtils {
             applyIfNotNull(requestConfiguration, request -> {
                 applyIfPositive(request.getMaxTotalConnections(), builder::setMaxConnTotal);
                 applyIfPositive(request.getMaxConnectionsPerRoute(), builder::setMaxConnPerRoute);
-
-                if (request.isSystemPropertiesEnabled()) {
-                    builder.useSystemProperties();
-                }
-
+                applyIf(request, RequestConfiguration::isSystemPropertiesEnabled,
+                        ignored -> builder.useSystemProperties());
                 applyIfNotNull(request.getProxy(), ElasticRestClientUtils::toHttpHost, builder::setProxy);
                 applyIfNotNull(request.getUserAgent(), builder::setUserAgent);
             });

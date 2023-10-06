@@ -312,7 +312,7 @@ empty.initializeWith(             // create and set a value if not already initi
 #### Lazy Initializer
 
 An object to create a value lazily. A precondition can be provided to check if the value can be initialized. The value
-will be initialized when it is asked for, if the precondition is satisfied.
+will be initialized when it is asked for if the precondition is satisfied.
 
 ##### Examples
 

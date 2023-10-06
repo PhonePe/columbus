@@ -39,7 +39,7 @@ public abstract class ColumbusBundle<T> implements ConfiguredBundle<T> {
     @NonNull
     private final ColumbusInitializer initializer;
 
-    @SuppressWarnings("java:S1452")
+    @SuppressWarnings({"java:S1452", "java:S3252"})
     public static ColumbusBundleSettings.ColumbusBundleSettingsBuilder<?, ?> configure() {
         return ColumbusBundleSettings.builder();
     }

@@ -32,7 +32,7 @@ Add the following dependency in `dependencyManagement` (of root pom):
 <dependency>
     <groupId>com.phonepe.platform.columbus</groupId>
     <artifactId>columbus-bom</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>${columbus.version}</version>
     <type>pom</type>
     <scope>import</scope>
 </dependency>
@@ -48,7 +48,7 @@ For example, to use Columbus bundle, add the following dependency to `pom.xml`:
 </dependency>
 ```
 
-The features provided by each module are specified in their README, linked in [Features](#features) section above.
+The features provided by each module are specified in their README, linked in the [Features](#features) section above.
 
 ## Usage
 

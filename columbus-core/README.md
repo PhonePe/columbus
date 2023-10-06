@@ -78,7 +78,7 @@ corresponding configuration.
 New storages can be registered by creating a configuration extending `StorageConfiguration`, a client implementing
 `StorageClient` and a provider extending `StorageClientProvider`.
 
-See [MemoryStorageProvider](src/test/java/com/phonepe/platform/columbus/storage/memory/factory/MemoryStorageProvider.java)
+See [MemoryStorageProvider](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/platform/columbus/test/storage/memory/factory/MemoryStorageProvider.java)
 for an example.
 
 ### Usage
@@ -104,7 +104,7 @@ StorageClient storage = factory.create(configuration);
 
 New commands can be created by simply extending `Command` class, and creating a `CommandHandler` by extending
 the `StorageCommandHandler` or its subtype corresponding to the `StorageClient` being used, and implement the `handle()`
-method. See [VersionHandler](src/test/java/com/phonepe/platform/columbus/storage/memory/handlers/VersionHandler.java)
+method. See [VersionHandler](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/platform/columbus/test/storage/memory/handlers/VersionHandler.java)
 for an example.
 
 #### Factory

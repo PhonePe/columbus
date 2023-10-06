@@ -1,5 +1,6 @@
 package com.phonepe.platform.columbus;
 
+import com.phonepe.platform.columbus.internal.core.initializer.DefaultColumbusInitializer;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -70,6 +71,31 @@ class ColumbusBundleTest {
         bundle.run(testConfig, environment);
 
         assertThrows(IllegalStateException.class, bundle::columbus, "Columbus must not be initialized");
+    }
+
+    @Test
+    @DisplayName("create bundle with custom initializer")
+    void testBundleCustom() {
+        final var configuration = ColumbusBundleConfiguration.builder().build();
+        final var testConfig = TestConfig.builder()
+                .columbusBundleConfiguration(configuration)
+                .build();
+
+        final var bundle = ColumbusBundle.configure()
+                .columbusInitializer(new DefaultColumbusInitializer())
+                .build()
+                .toBundle(TestConfig::getColumbusBundleConfiguration);
+
+        bundle.initialize(bootstrap);
+        bundle.run(testConfig, environment);
+
+        final var columbus = bundle.columbus();
+
+        assertAll(
+                "Columbus",
+                () -> assertNotNull(columbus, "Columbus should be initialized"),
+                () -> assertNotNull(columbus.toolkit(), "must have a valid toolkit"),
+                () -> assertTrue(columbus.storages().isEmpty(), "no storages provided"));
     }
 
     @Data

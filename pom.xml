@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -26,13 +26,18 @@
         <module>columbus-elasticsearch</module>
 
         <module>columbus-test-suite</module>
+        <module>columbus-test-report</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <columbus.test.report.path>
+            columbus-test-report/target/site/jacoco-aggregate/jacoco.xml
+        </columbus.test.report.path>
 
         <!-- Maven Plugins -->
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.jacoco.plugin.version>0.8.9</maven.jacoco.plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
@@ -42,10 +47,36 @@
         <sonar.exclusions>
             **src/main/resources/**
         </sonar.exclusions>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/../${columbus.test.report.path}
+        </sonar.coverage.jacoco.xmlReportPaths>
     </properties>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${maven.jacoco.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

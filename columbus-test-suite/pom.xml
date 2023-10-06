@@ -11,24 +11,22 @@
     </parent>
 
     <artifactId>columbus-test-suite</artifactId>
+    <packaging>pom</packaging>
     <name>Columbus Test Suite</name>
     <description>
         A collection of utilities to write tests with Columbus.
     </description>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.phonepe.platform.columbus</groupId>
-            <artifactId>columbus-framework</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>columbus-core-test-suite</module>
+        <module>columbus-elasticsearch-test-suite</module>
+        <module>columbus-unit-tests</module>
+    </modules>
+
+    <properties>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.basedir}/../../${columbus.test.report.path}
+        </sonar.coverage.jacoco.xmlReportPaths>
+    </properties>
 
 </project>
