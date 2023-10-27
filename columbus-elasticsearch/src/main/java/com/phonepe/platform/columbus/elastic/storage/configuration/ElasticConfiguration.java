@@ -33,6 +33,9 @@ public class ElasticConfiguration extends StorageConfiguration {
     @Valid
     private final RequestConfiguration requestConfig;
 
+    @Valid
+    private final IndexConfiguration indices;
+
     @Override
     public @NonNull String getType() {
         return TYPE;

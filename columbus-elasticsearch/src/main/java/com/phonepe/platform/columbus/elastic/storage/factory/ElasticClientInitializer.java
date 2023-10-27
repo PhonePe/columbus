@@ -3,6 +3,7 @@ package com.phonepe.platform.columbus.elastic.storage.factory;
 import com.phonepe.platform.columbus.core.toolkit.Toolkit;
 import com.phonepe.platform.columbus.elastic.storage.ElasticClient;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.platform.columbus.storage.settings.StorageSettings;
 import io.dropwizard.setup.Environment;
 
@@ -22,6 +23,8 @@ public interface ElasticClientInitializer {
     void use(StorageSettings settings);
 
     void use(Environment environment);
+
+    void use(ElasticToolkitInitializer toolkitInitializer);
 
     @SuppressWarnings("java:S1452")
     ElasticClient<?> get();

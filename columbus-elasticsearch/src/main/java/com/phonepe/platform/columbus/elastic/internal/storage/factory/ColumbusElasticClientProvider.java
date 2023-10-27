@@ -2,9 +2,11 @@ package com.phonepe.platform.columbus.elastic.internal.storage.factory;
 
 import com.phonepe.platform.columbus.dropwizard.storage.factory.DropwizardStorageFactoryContext;
 import com.phonepe.platform.columbus.elastic.internal.storage.factory.initializer.DefaultElasticClientInitializer;
+import com.phonepe.platform.columbus.elastic.internal.storage.toolkit.DefaultElasticToolkitInitializer;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.platform.columbus.elastic.storage.factory.ElasticClientInitializer;
 import com.phonepe.platform.columbus.elastic.storage.factory.ElasticClientProvider;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 
 /**
@@ -21,5 +23,10 @@ public final class ColumbusElasticClientProvider<C extends DropwizardStorageFact
     @Override
     protected ElasticClientInitializer getInitializer() {
         return new DefaultElasticClientInitializer();
+    }
+
+    @Override
+    protected ElasticToolkitInitializer getElasticToolkitInitializer() {
+        return new DefaultElasticToolkitInitializer();
     }
 }

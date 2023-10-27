@@ -7,6 +7,8 @@ import com.phonepe.platform.columbus.core.toolkit.Toolkit;
 import com.phonepe.platform.columbus.elastic.storage.ElasticClient;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.platform.columbus.elastic.storage.factory.ElasticClientInitializer;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkit;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.platform.columbus.storage.settings.StorageSettings;
 import io.dropwizard.setup.Environment;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -24,9 +26,13 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
     private final LateInit<Toolkit> toolkit = new LateInit<>("toolkit");
     private final LateInit<StorageSettings> settings = new LateInit<>("settings");
     private final LateInit<Environment> environment = new LateInit<>("environment");
+    private final LateInit<ElasticToolkitInitializer> elasticToolkitInitializer =
+            new LateInit<>("elasticToolkitInitializer");
 
     private final LazyInit<RestHighLevelClient> restClient =
             new LazyInit<>("restClient", this::canInitializeRestClient, this::initializeRestClient);
+    private final LazyInit<ElasticToolkit> elasticToolkit =
+            new LazyInit<>("elasticToolkit", this::canInitializeElasticToolkit, this::initializeElasticToolkit);
 
     private final LazyInit<ElasticClient<?>> elasticClient =
             new LazyInit<>("elasticClient", this::canInitializeElasticClient, this::initializeElasticClient);
@@ -52,6 +58,11 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
     }
 
     @Override
+    public void use(final ElasticToolkitInitializer toolkitInitializer) {
+        elasticToolkitInitializer.set(toolkitInitializer);
+    }
+
+    @Override
     public ElasticClient<?> get() {
         return getElasticClient().get();
     }
@@ -72,8 +83,16 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
         return environment;
     }
 
+    public Initializer<ElasticToolkitInitializer> getElasticToolkitInitializer() {
+        return elasticToolkitInitializer;
+    }
+
     public Initializer<RestHighLevelClient> getRestClient() {
         return restClient;
+    }
+
+    public Initializer<ElasticToolkit> getElasticToolkit() {
+        return elasticToolkit;
     }
 
     @SuppressWarnings("java:S1452")
@@ -84,6 +103,10 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
     protected abstract boolean canInitializeRestClient();
 
     protected abstract RestHighLevelClient initializeRestClient();
+
+    protected abstract boolean canInitializeElasticToolkit();
+
+    protected abstract ElasticToolkit initializeElasticToolkit();
 
     protected abstract boolean canInitializeElasticClient();
 

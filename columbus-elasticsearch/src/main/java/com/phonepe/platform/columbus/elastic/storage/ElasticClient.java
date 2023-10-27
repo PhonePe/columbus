@@ -1,6 +1,7 @@
 package com.phonepe.platform.columbus.elastic.storage;
 
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.platform.columbus.storage.BaseStorageClient;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,4 +22,7 @@ public abstract class ElasticClient<E extends ElasticClient<E>> extends BaseStor
 
     @NonNull
     private final RestHighLevelClient client;
+
+    @NonNull
+    private final ElasticToolkit toolkit;
 }

@@ -6,6 +6,7 @@ import com.phonepe.platform.columbus.elastic.internal.storage.ColumbusElasticCli
 import com.phonepe.platform.columbus.elastic.internal.storage.lifecycle.ElasticClientHealthCheck;
 import com.phonepe.platform.columbus.elastic.internal.storage.lifecycle.ElasticClientManaged;
 import com.phonepe.platform.columbus.elastic.storage.ElasticClient;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.platform.columbus.elastic.storage.utils.ElasticRestClientUtils;
 import com.phonepe.platform.columbus.reflect.Generics;
 import com.phonepe.platform.columbus.storage.StorageCommandHandler;
@@ -28,12 +29,30 @@ public class DefaultElasticClientInitializer extends LazyElasticClientInitialize
     }
 
     @Override
+    protected boolean canInitializeElasticToolkit() {
+        return getSettings().isPresent()
+                && getToolkit().isPresent()
+                && getConfiguration().isPresent()
+                && getElasticToolkitInitializer().isPresent();
+    }
+
+    @Override
+    protected ElasticToolkit initializeElasticToolkit() {
+        final var initializer = getElasticToolkitInitializer().get();
+        initializer.use(getToolkit().get());
+        initializer.use(getSettings().get());
+        initializer.use(getConfiguration().get());
+        return initializer.get();
+    }
+
+    @Override
     protected boolean canInitializeElasticClient() {
         return getSettings().isPresent()
                 && getToolkit().isPresent()
                 && getConfiguration().isPresent()
                 && getRestClient().isPresent()
-                && getEnvironment().isPresent();
+                && getEnvironment().isPresent()
+                && getElasticToolkit().isPresent();
     }
 
     @Override
@@ -46,6 +65,7 @@ public class DefaultElasticClientInitializer extends LazyElasticClientInitialize
                         getSettings().get().getCommandHandlerOverrides())))
                 .configuration(getConfiguration().get())
                 .client(getRestClient().get())
+                .toolkit(getElasticToolkit().get())
                 .build();
 
         bindLifecycle(getEnvironment().get(), client);

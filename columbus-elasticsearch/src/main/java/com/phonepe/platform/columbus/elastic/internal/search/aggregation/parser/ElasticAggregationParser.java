@@ -1,0 +1,10 @@
+package com.phonepe.platform.columbus.elastic.internal.search.aggregation.parser;
+
+import com.phonepe.platform.columbus.search.aggregation.AggregationParser;
+import org.elasticsearch.search.aggregations.Aggregation;
+
+/**
+ * An {@link AggregationParser} to parse ElasticSearch's {@link Aggregation}s.
+ */
+public interface ElasticAggregationParser extends AggregationParser<Aggregation> {
+}

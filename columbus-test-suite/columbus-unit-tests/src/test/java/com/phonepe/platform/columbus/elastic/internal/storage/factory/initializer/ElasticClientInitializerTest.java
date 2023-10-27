@@ -2,6 +2,7 @@ package com.phonepe.platform.columbus.elastic.internal.storage.factory.initializ
 
 import com.phonepe.platform.columbus.common.http.Endpoint;
 import com.phonepe.platform.columbus.core.toolkit.Toolkit;
+import com.phonepe.platform.columbus.elastic.internal.storage.toolkit.DefaultElasticToolkitInitializer;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.platform.columbus.elastic.storage.configuration.HostConfiguration;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
@@ -47,14 +48,20 @@ class ElasticClientInitializerTest {
         final var initializer = new DefaultElasticClientInitializer();
 
         assertFalse(initializer.getRestClient().isPresent(), "rest client cannot be initialized");
+        assertFalse(initializer.getElasticToolkit().isPresent(), "toolkit cannot be initialized");
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(StorageSettings.defaults());
+        assertFalse(initializer.getElasticToolkit().isPresent(), "toolkit cannot be initialized");
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(toolkit);
+        assertFalse(initializer.getElasticToolkit().isPresent(), "toolkit cannot be initialized");
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(configuration);
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(environment);
+        assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
+        initializer.use(new DefaultElasticToolkitInitializer());
+        assertTrue(initializer.getElasticToolkit().isPresent(), "toolkit can be initialized");
         assertTrue(initializer.getElasticClient().isPresent(), "client can be initialized");
 
         final var storage = initializer.get();

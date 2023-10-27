@@ -6,7 +6,7 @@ import com.phonepe.platform.columbus.visitor.impl.VisitorContext;
 import lombok.experimental.SuperBuilder;
 
 /**
- * An {@link NodeIdResolver} that uses visitor to convert {@link NodeId} to the corresponding type.
+ * A {@link NodeIdResolver} that uses visitor to convert {@link NodeId} to the corresponding type.
  *
  * @param <R> represents the type used by storage.
  * @param <C> self reference, the context used by the resolvers.

@@ -1,0 +1,29 @@
+package com.phonepe.platform.columbus.elastic.internal.search.aggregation.bucket;
+
+import com.phonepe.platform.columbus.elastic.search.aggregation.AggregationParserForElastic;
+import com.phonepe.platform.columbus.elastic.search.aggregation.ElasticAggregationParserResolutionContext;
+import com.phonepe.platform.columbus.search.aggregation.AggregationParser;
+import com.phonepe.platform.columbus.search.aggregator.Aggregator;
+import com.phonepe.platform.columbus.search.aggregator.bucket.BucketAggregator;
+import org.elasticsearch.search.aggregations.Aggregation;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public abstract class BucketAggregationParserForElastic<T extends BucketAggregator,
+        C extends ElasticAggregationParserResolutionContext<C>>
+        implements AggregationParserForElastic<T, C> {
+
+    @Override
+    public AggregationParser<Aggregation> visit(final T aggregator, final C context) {
+        final var subAggregationParsers = aggregator.getSubAggregations().stream()
+                .collect(Collectors.toMap(Aggregator::getName, context::resolve));
+        return createParser(aggregator, subAggregationParsers, context);
+    }
+
+    protected abstract AggregationParser<Aggregation> createParser(
+            final T aggregator,
+            final Map<String, AggregationParser<Aggregation>> subAggregationParsers,
+            final C context
+    );
+}

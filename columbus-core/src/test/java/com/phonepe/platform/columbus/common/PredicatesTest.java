@@ -106,6 +106,50 @@ class PredicatesTest {
     }
 
     @Nested
+    class NonNegativeIntegerConsumerTest {
+
+        @Test
+        @DisplayName("value is consumed when positive")
+        void testApplyWhenPositive() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfNonNegative(10, holder::set);
+
+            assertEquals(10, holder.get(), "consumer must be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when negative")
+        void testDoesNotApplyWhenNegative() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfNonNegative(-10, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+
+        @Test
+        @DisplayName("value is consumed when zero")
+        void testDoesNotApplyWhenZero() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfNonNegative(0, holder::set);
+
+            assertEquals(0, holder.get(), "consumer must be called");
+        }
+
+        @Test
+        @DisplayName("value is ignored when null")
+        void testDoesNotApplyWhenNull() {
+            final var holder = new LateInit<Integer>();
+
+            Predicates.applyIfPositive(null, holder::set);
+
+            assertFalse(holder.isPresent(), "consumer must not be called");
+        }
+    }
+
+    @Nested
     class TransformedConsumerTest {
 
         @Test

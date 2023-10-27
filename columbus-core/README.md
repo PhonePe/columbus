@@ -9,6 +9,7 @@ All the main features provided by Columbus.
     1. [Toolkit](#toolkit)
     2. [Storage](#storage)
 3. [Initialization and Usage](#initialization-and-usage)
+4. [Extensions](#extensions)
 
 ## Dependency
 
@@ -142,3 +143,57 @@ columbus.toolkit()                  // returns the initialized, underlying toolk
 columbus.storages()                 // returns all the storages
 columbus.storage("<storage-name>")  // returns the storage with the given name
 ```
+
+---
+
+## Extensions
+
+This section contains additional details for extending Columbus with new entities to enrich the behaviour. Please read
+thoroughly.
+
+### Visitor extensions
+
+Columbus' visitors are extensively used to ensure easy addition of new entities to the hierarchy. Each such collection
+of entities has a subclass of `VisitorContext` to visit them for a specific use-case, and a collection
+of `EntityVisitor`s with the logic for each entity being visited. Some of these are storage specific, while some others
+can work across all storages.
+
+As a convention, this module contains a base class for context, and an interface for visitor, for each use-case that
+needs visitors. If the use-case requires storage specific handling, there are subclasses / sub-interfaces in the
+storage module.
+
+To extend any of these entity collections, the following steps can be followed:
+1. Create a new implementation of the base class / interface of the entity collection.
+2. Identify the `VisitorContext`s that visit this collection of entities. Each direct subclass likely represents a
+   different use-case. For each use-case, follow the below steps.
+3. Determine the topmost subclass of `VisitorContext` needed to perform the operation. Identify the sub-interface
+   of `EntityVisitor` which uses this context.
+4. Create a new implementation of `EntityVisitor` (or its sub-interface) with the required subclass of `VisitorContext`.
+5. Annotate this class with `@RegistryKey(...)` to ensure it gets picked up during creation. Note that the package or
+   classes might have to be added in `ReflectSettings`.
+
+All the entities and the different use-cases for which they use visitors are listed below.
+
+#### Storage Factory
+
+|        Entity        | Use case                |           Context           |        Visitor        |
+|:--------------------:|-------------------------|:---------------------------:|:---------------------:|
+| StorageConfiguration | Create a storage client | StorageClientFactoryContext | StorageClientProvider |
+
+#### Data Access
+
+| Entity | Use case                            |         Context         |         Visitor         |
+|:------:|-------------------------------------|:-----------------------:|:-----------------------:|
+|   Id   | Convert to storage's representation |   IdResolutionContext   |   IdResolutionVisitor   |
+| Index  | Convert to storage's representation | IndexResolutionContext  | IndexResolutionVisitor  |
+| NodeId | Convert to storage's representation | NodeIdResolutionContext | NodeIdResolutionVisitor |
+
+#### Search
+
+|      Entity      | Use case                            |              Context               |                          Visitor                           |
+|:----------------:|-------------------------------------|:----------------------------------:|:----------------------------------------------------------:|
+| Query (& Filter) | Convert to storage's representation |     QueryTransformationContext     | QueryTransformationVisitor (& FilterTransformationVisitor) |
+|       Sort       | Convert to storage's representation |     SortTransformationContext      |                 SortTransformationVisitor                  |
+|  ScoreFunction   | Convert to storage's representation | ScoreFunctionTransformationContext |             ScoreFunctionTransformationVisitor             |
+|    Aggregator    | Convert to storage's representation |  AggregatorTransformationContext   |              AggregatorTransformationVisitor               |
+|    Aggregator    | Parse `Aggregation` from storage    | AggregationParserResolutionContext |             AggregationParserResolutionVisitor             |

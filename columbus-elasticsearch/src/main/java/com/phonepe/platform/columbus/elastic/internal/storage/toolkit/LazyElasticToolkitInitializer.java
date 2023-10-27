@@ -1,0 +1,180 @@
+package com.phonepe.platform.columbus.elastic.internal.storage.toolkit;
+
+import com.phonepe.platform.columbus.common.initializer.Initializer;
+import com.phonepe.platform.columbus.common.initializer.LateInit;
+import com.phonepe.platform.columbus.common.initializer.LazyInit;
+import com.phonepe.platform.columbus.core.toolkit.Toolkit;
+import com.phonepe.platform.columbus.dao.id.IdResolver;
+import com.phonepe.platform.columbus.dao.index.IndexResolver;
+import com.phonepe.platform.columbus.dao.node.NodeIdResolver;
+import com.phonepe.platform.columbus.elastic.dao.id.ElasticId;
+import com.phonepe.platform.columbus.elastic.dao.index.ElasticIndex;
+import com.phonepe.platform.columbus.elastic.dao.node.ElasticNode;
+import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkit;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
+import com.phonepe.platform.columbus.search.aggregation.AggregationParserResolver;
+import com.phonepe.platform.columbus.search.aggregator.AggregatorTransformer;
+import com.phonepe.platform.columbus.search.query.QueryTransformer;
+import com.phonepe.platform.columbus.search.score.ScoreFunctionTransformer;
+import com.phonepe.platform.columbus.search.sort.SortTransformer;
+import com.phonepe.platform.columbus.storage.settings.StorageSettings;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.FilterFunctionBuilder;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+
+/**
+ * An object that uses the different {@link Initializer}s to create a dependency graph between the fields of
+ * {@link ElasticToolkit}. The preconditions and initializers are exposed to allow the children to define the
+ * behaviour for each of the fields independently.
+ *
+ * @see DefaultElasticToolkitInitializer
+ */
+public abstract class LazyElasticToolkitInitializer implements ElasticToolkitInitializer {
+
+    private final LateInit<Toolkit> toolkit = new LateInit<>("toolkit");
+    private final LateInit<StorageSettings> storageSettings = new LateInit<>("storageSettings");
+    private final LateInit<ElasticConfiguration> configuration = new LateInit<>("configuration");
+
+    private final LazyInit<IdResolver<ElasticId>> idResolver =
+            new LazyInit<>("idResolver", this::canInitializeIdResolver, this::initializeIdResolver);
+    private final LazyInit<IndexResolver<ElasticIndex>> indexResolver =
+            new LazyInit<>("indexResolver", this::canInitializeIndexResolver, this::initializeIndexResolver);
+    private final LazyInit<NodeIdResolver<ElasticNode>> nodeIdResolver =
+            new LazyInit<>("nodeIdResolver", this::canInitializeNodeIdResolver, this::initializeNodeIdResolver);
+
+    private final LazyInit<ElasticToolkitData> toolkitData =
+            new LazyInit<>("toolkitData", this::canInitializeToolkitData, this::initializeToolkitData);
+
+    private final LazyInit<QueryTransformer<QueryBuilder>> queryTransformer =
+            new LazyInit<>("queryTransformer", this::canInitializeQueryTransformer, this::initializeQueryTransformer);
+    private final LazyInit<SortTransformer<SortBuilder<?>>> sortTransformer =
+            new LazyInit<>("sortTransformer", this::canInitializeSortTransformer, this::initializeSortTransformer);
+    private final LazyInit<ScoreFunctionTransformer<FilterFunctionBuilder>> scoreFunctionTransformer =
+            new LazyInit<>("scoreFunctionTransformer", this::canInitializeScoreFunctionTransformer,
+                    this::initializeScoreFunctionTransformer);
+    private final LazyInit<AggregatorTransformer<AggregationBuilder>> aggregatorTransformer =
+            new LazyInit<>("aggregatorTransformer", this::canInitializeAggregatorTransformer,
+                    this::initializeAggregatorTransformer);
+    private final LazyInit<AggregationParserResolver<Aggregation>> aggregationParserResolver =
+            new LazyInit<>("aggregationParserResolver", this::canInitializeAggregationParserResolver,
+                    this::initializeAggregationParserResolver);
+    private final LazyInit<ElasticToolkit> elasticToolkit =
+            new LazyInit<>("elasticToolkit", this::canInitializeElasticToolkit, this::initializeElasticToolkit);
+
+    @Override
+    public void use(final Toolkit toolkit) {
+        this.toolkit.set(toolkit);
+    }
+
+    @Override
+    public void use(final StorageSettings storageSettings) {
+        this.storageSettings.set(storageSettings);
+    }
+
+    @Override
+    public void use(final ElasticConfiguration configuration) {
+        this.configuration.set(configuration);
+    }
+
+    @Override
+    public ElasticToolkit get() {
+        return getElasticToolkit().get();
+    }
+
+    public Initializer<Toolkit> getToolkit() {
+        return toolkit;
+    }
+
+    public Initializer<StorageSettings> getStorageSettings() {
+        return storageSettings;
+    }
+
+    public Initializer<ElasticConfiguration> getConfiguration() {
+        return configuration;
+    }
+
+    public Initializer<IdResolver<ElasticId>> getIdResolver() {
+        return idResolver;
+    }
+
+    public Initializer<IndexResolver<ElasticIndex>> getIndexResolver() {
+        return indexResolver;
+    }
+
+    public Initializer<NodeIdResolver<ElasticNode>> getNodeIdResolver() {
+        return nodeIdResolver;
+    }
+
+    public Initializer<ElasticToolkitData> getToolkitData() {
+        return toolkitData;
+    }
+
+    public Initializer<QueryTransformer<QueryBuilder>> getQueryTransformer() {
+        return queryTransformer;
+    }
+
+    @SuppressWarnings("java:S1452")
+    public Initializer<SortTransformer<SortBuilder<?>>> getSortTransformer() {
+        return sortTransformer;
+    }
+
+    public Initializer<ScoreFunctionTransformer<FilterFunctionBuilder>> getScoreFunctionTransformer() {
+        return scoreFunctionTransformer;
+    }
+
+    public Initializer<AggregatorTransformer<AggregationBuilder>> getAggregatorTransformer() {
+        return aggregatorTransformer;
+    }
+
+    public Initializer<AggregationParserResolver<Aggregation>> getAggregationParserResolver() {
+        return aggregationParserResolver;
+    }
+
+    public Initializer<ElasticToolkit> getElasticToolkit() {
+        return elasticToolkit;
+    }
+
+    protected abstract boolean canInitializeIdResolver();
+
+    protected abstract IdResolver<ElasticId> initializeIdResolver();
+
+    protected abstract boolean canInitializeIndexResolver();
+
+    protected abstract IndexResolver<ElasticIndex> initializeIndexResolver();
+
+    protected abstract boolean canInitializeNodeIdResolver();
+
+    protected abstract NodeIdResolver<ElasticNode> initializeNodeIdResolver();
+
+    protected abstract boolean canInitializeToolkitData();
+
+    protected abstract ElasticToolkitData initializeToolkitData();
+
+    protected abstract boolean canInitializeQueryTransformer();
+
+    protected abstract QueryTransformer<QueryBuilder> initializeQueryTransformer();
+
+    protected abstract boolean canInitializeSortTransformer();
+
+    @SuppressWarnings("java:S1452")
+    protected abstract SortTransformer<SortBuilder<?>> initializeSortTransformer();
+
+    protected abstract boolean canInitializeScoreFunctionTransformer();
+
+    protected abstract ScoreFunctionTransformer<FilterFunctionBuilder> initializeScoreFunctionTransformer();
+
+    protected abstract boolean canInitializeAggregatorTransformer();
+
+    protected abstract AggregatorTransformer<AggregationBuilder> initializeAggregatorTransformer();
+
+    protected abstract boolean canInitializeAggregationParserResolver();
+
+    protected abstract AggregationParserResolver<Aggregation> initializeAggregationParserResolver();
+
+    protected abstract boolean canInitializeElasticToolkit();
+
+    protected abstract ElasticToolkit initializeElasticToolkit();
+}

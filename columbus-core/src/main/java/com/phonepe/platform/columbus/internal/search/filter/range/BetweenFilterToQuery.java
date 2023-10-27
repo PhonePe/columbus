@@ -1,0 +1,22 @@
+package com.phonepe.platform.columbus.internal.search.filter.range;
+
+import com.phonepe.platform.columbus.internal.search.filter.FieldFilterToQuery;
+import com.phonepe.platform.columbus.registry.factory.RegistryKey;
+import com.phonepe.platform.columbus.search.filter.range.BetweenFilter;
+import com.phonepe.platform.columbus.search.query.FieldQuery.FieldQueryBuilder;
+import com.phonepe.platform.columbus.search.query.term.RangeQuery;
+import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationContext;
+
+@RegistryKey(name = BetweenFilter.TYPE, type = BetweenFilter.class)
+public class BetweenFilterToQuery<R, C extends QueryTransformationContext<R, C>>
+        extends FieldFilterToQuery<R, BetweenFilter, C> {
+
+    @Override
+    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final BetweenFilter filter) {
+        return RangeQuery.builder()
+                .from(filter.getFrom())
+                .to(filter.getTo())
+                .includeLower(filter.includeLower())
+                .includeUpper(filter.includeUpper());
+    }
+}

@@ -32,6 +32,12 @@ public class Predicates {
         }
     }
 
+    public static void applyIfNonNegative(@Nullable final Integer value, final IntConsumer consumer) {
+        if (value != null && value >= 0) {
+            consumer.accept(value);
+        }
+    }
+
     public static <T, R> void applyIfNotNull(
             @Nullable final T value,
             final Function<T, R> transformer,

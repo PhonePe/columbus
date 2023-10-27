@@ -2,6 +2,7 @@ package com.phonepe.platform.columbus.elastic.storage.factory;
 
 import com.phonepe.platform.columbus.dropwizard.storage.factory.DropwizardStorageFactoryContext;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.platform.columbus.storage.StorageClient;
 import com.phonepe.platform.columbus.storage.factory.visitor.StorageClientProvider;
 
@@ -20,8 +21,11 @@ public abstract class ElasticClientProvider<C extends DropwizardStorageFactoryCo
         initializer.use(context.settings());
         initializer.use(context.dropwizardEnvironment());
         initializer.use(configuration);
+        initializer.use(getElasticToolkitInitializer());
         return initializer.get();
     }
 
     protected abstract ElasticClientInitializer getInitializer();
+
+    protected abstract ElasticToolkitInitializer getElasticToolkitInitializer();
 }
