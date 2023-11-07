@@ -14,12 +14,20 @@ A one stop solution for all search and discovery problems.
 
 ## Features
 
-1. Easily integrate with Dropwizard application using [Bundle](columbus-bundle/README.md)
+1. A collection of building blocks and design patterns creating the [Framework](columbus-framework/README.md).
+2. A skeleton for storages that support CRUD and search, and their contracts, defined
+   in [Core](columbus-core/README.md), and the data models defined in [Models](columbus-models/README.md).
+    1. Support for single and bulk CRUD requests.
+    2. Support for filters, sorters, aggregations, scoring, pagination, etc.
+3. Easily integrate with Dropwizard application using [Bundle](columbus-bundle/README.md).
+4. An implementation of storage over [ElasticSearch](columbus-elasticsearch/README.md).
+5. Support for extending various components by simply implementing some interfaces and registering them.
+6. A [Test Suite](columbus-test-suite) to easily write tests while using Columbus.
 
 ## Requirements
 
 1. Java 17
-2. (Optional) Dropwizard 2.x
+2. Dropwizard 2.x
 
 ## Dependency
 
@@ -52,7 +60,10 @@ The features provided by each module are specified in their README, linked in th
 
 ## Usage
 
-TODO
+With Dropwizard, the recommended way is to use the [bundle](columbus-bundle/README.md#usage).
+
+To directly setup Columbus without Dropwizard (some features might not work), refer
+[here](columbus-core/README.md#initialization-and-usage).
 
 ## Documentation
 

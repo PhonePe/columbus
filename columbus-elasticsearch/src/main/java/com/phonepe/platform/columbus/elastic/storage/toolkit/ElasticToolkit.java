@@ -6,8 +6,10 @@ import com.phonepe.platform.columbus.dao.node.NodeIdResolver;
 import com.phonepe.platform.columbus.elastic.dao.id.ElasticId;
 import com.phonepe.platform.columbus.elastic.dao.index.ElasticIndex;
 import com.phonepe.platform.columbus.elastic.dao.node.ElasticNode;
+import com.phonepe.platform.columbus.elastic.search.page.ElasticPage;
 import com.phonepe.platform.columbus.search.aggregation.AggregationParserResolver;
 import com.phonepe.platform.columbus.search.aggregator.AggregatorTransformer;
+import com.phonepe.platform.columbus.search.page.PageResolver;
 import com.phonepe.platform.columbus.search.query.QueryTransformer;
 import com.phonepe.platform.columbus.search.score.ScoreFunctionTransformer;
 import com.phonepe.platform.columbus.search.sort.SortTransformer;
@@ -41,4 +43,6 @@ public interface ElasticToolkit {
     AggregatorTransformer<AggregationBuilder> aggregatorTransformer();
 
     AggregationParserResolver<Aggregation> aggregationParserResolver();
+
+    PageResolver<ElasticPage> pageResolver();
 }

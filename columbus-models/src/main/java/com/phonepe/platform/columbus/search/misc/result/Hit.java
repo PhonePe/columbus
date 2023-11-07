@@ -7,6 +7,7 @@ import lombok.NonNull;
 import lombok.Singular;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -24,4 +25,7 @@ public class Hit<T> {
 
     @Singular(ignoreNullCollections = true)
     private final List<@NonNull String> matchedQueries;
+
+    @Singular(ignoreNullCollections = true)
+    private final Map<@NonNull String, @NonNull Result<?>> innerResults;
 }

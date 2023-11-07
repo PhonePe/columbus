@@ -1,10 +1,15 @@
 package com.phonepe.platform.columbus.elastic.internal.search.utils;
 
 import com.phonepe.platform.columbus.common.Elements;
+import com.phonepe.platform.columbus.common.pair.Pair;
+import com.phonepe.platform.columbus.common.pair.PairFunctions;
 import com.phonepe.platform.columbus.dao.id.Ids;
+import com.phonepe.platform.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.platform.columbus.search.misc.bucket.BucketSortOrder;
 import com.phonepe.platform.columbus.search.misc.bucket.NamedRange;
 import com.phonepe.platform.columbus.search.misc.geo.Location;
+import com.phonepe.platform.columbus.search.misc.query.Collapse;
+import com.phonepe.platform.columbus.search.misc.query.InnerQuery;
 import com.phonepe.platform.columbus.search.misc.query.Projection;
 import com.phonepe.platform.columbus.search.misc.result.Hit;
 import com.phonepe.platform.columbus.search.misc.result.Result;
@@ -14,10 +19,13 @@ import com.phonepe.platform.columbus.serde.SerDe;
 import com.phonepe.platform.columbus.type.EntityType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.lucene.search.TotalHits;
+import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.InnerHitBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 import org.elasticsearch.search.SearchHit;
@@ -25,10 +33,15 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.range.RangeAggregator.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
+import org.elasticsearch.search.collapse.CollapseBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import static com.phonepe.platform.columbus.common.Predicates.applyIfNotNull;
 
 /**
  * A collection of utilities to transform misc models to and from ElasticSearch models.
@@ -74,6 +87,30 @@ public class MiscTransforms {
                 projection.getExcludeFields().toArray(String[]::new));
     }
 
+    public CollapseBuilder toElastic(final Collapse collapse, final ElasticToolkit toolkit) {
+        final var builder = new CollapseBuilder(collapse.getField())
+                .setInnerHits(collapse.getInnerQueries().stream()
+                        .map(innerQuery -> toElastic(innerQuery, toolkit))
+                        .toList());
+        applyIfNotNull(collapse.getParallelism(), builder::setMaxConcurrentGroupRequests);
+        return builder;
+    }
+
+    public <T> InnerHitBuilder toElastic(final InnerQuery<T> query, final ElasticToolkit toolkit) {
+        final var builder = new InnerHitBuilder()
+                .setName(query.getName())
+                .setFrom(query.getFrom())
+                .setSize(query.getSize())
+                .setSorts(query.getSorts().stream()
+                        .<SortBuilder<?>>map(toolkit.sortTransformer()::transform)
+                        .toList());
+
+        applyIfNotNull(query.getIgnoreInvalid(), builder::setIgnoreUnmapped);
+        applyIfNotNull(query.getProjection(), MiscTransforms::toElastic, builder::setFetchSourceContext);
+        applyIfNotNull(query.getInnerCollapse(), collapse -> toElastic(collapse, toolkit), builder::setInnerCollapse);
+        return builder;
+    }
+
     public Script toElastic(final com.phonepe.platform.columbus.search.misc.script.Script script) {
         if (script.getId() != null) {
             return new Script(ScriptType.STORED, null, script.getId(), script.getParameters());
@@ -91,22 +128,54 @@ public class MiscTransforms {
     }
 
     public <T> Result<T> fromElastic(final SearchHits hits, final EntityType<T> type, final SerDe serDe) {
+        return fromElastic(hits, type, List.of(), serDe);
+    }
+
+    public <T> Result<T> fromElastic(
+            final SearchHits hits,
+            final EntityType<T> type,
+            final List<InnerQuery<?>> innerQueries,
+            final SerDe serDe
+    ) {
         final var builder = Result.<T>builder()
                 .totalCount(fromElastic(hits.getTotalHits()))
                 .maxScore(hits.getMaxScore());
-        Arrays.stream(hits.getHits()).map(hit -> fromElastic(hit, type, serDe))
+        Arrays.stream(hits.getHits()).map(hit -> fromElastic(hit, type, innerQueries, serDe))
                 .forEachOrdered(builder::hit);
         return builder.build();
     }
 
-    public <T> Hit<T> fromElastic(final SearchHit hit, final EntityType<T> type, final SerDe serDe) {
-        return Hit.<T>builder()
+    public <T> Result<T> fromElastic(
+            final SearchHits hits,
+            final EntityType<T> type,
+            final SerDe serDe,
+            @Nullable final Collapse collapse
+    ) {
+        return fromElastic(hits, type, collapse == null ? List.of() : collapse.getInnerQueries(), serDe);
+    }
+
+    public <T> Hit<T> fromElastic(
+            final SearchHit hit,
+            final EntityType<T> type,
+            final List<InnerQuery<?>> innerQueries,
+            final SerDe serDe
+    ) {
+        final var builder = Hit.<T>builder()
                 .id(Ids.value(hit.getId()))
                 .entity(serDe.fromString(hit.getSourceAsString(), type))
                 .score(hit.getScore())
                 .matchedQueries(List.of(hit.getMatchedQueries()))
-                .sortValues(List.of(hit.getSortValues()))
-                .build();
+                .sortValues(List.of(hit.getSortValues()));
+
+        final var innerHits = MapUtils.emptyIfNull(hit.getInnerHits());
+        innerQueries.stream()
+                .map(innerQuery -> Pair.of(innerQuery, innerHits.get(innerQuery.getName())))
+                .filter(PairFunctions.filteringSecond(Objects::nonNull))
+                .forEach(PairFunctions.consume((innerQuery, innerHit) -> builder.innerResult(
+                        innerQuery.getName(),
+                        fromElastic(innerHit, innerQuery.getEntityType(), serDe, innerQuery.getInnerCollapse()))));
+
+        return builder.build();
     }
 
     public TotalCount fromElastic(final TotalHits totalHits) {

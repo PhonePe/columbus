@@ -10,7 +10,6 @@ import org.elasticsearch.search.aggregations.Aggregation;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 @Getter(AccessLevel.PROTECTED)
@@ -24,7 +23,6 @@ public abstract class BucketAggregationParser implements ElasticAggregationParse
             final List<Aggregation> aggregations
     ) {
         return aggregations.stream()
-                .map(aggregation -> subAggregationParsers.get(aggregation.getName()).parse(aggregation))
-                .filter(Objects::nonNull);
+                .map(aggregation -> subAggregationParsers.get(aggregation.getName()).parse(aggregation));
     }
 }

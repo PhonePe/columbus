@@ -22,9 +22,23 @@ Either add the version, or include the bom in `dependencyManagement` as specifie
 
 ## Usage
 
+Add `ColumbusBundleConfiguration` to your configuration class and yml. Then add the bundle to bootstrap as shown below:
+
 ```java
 ColumbusBundle bundle = ColumbusBundle.configure()
         // set the required parameters
         .build()
         .toBundle(config -> /* extract ColumbusBundleConfiguration from config */);
+
+bootstrap.addBundle(bundle);
+```
+The different settings supported are defined [here](../columbus-core/README.md#settings).
+
+The storage and other Columbus objects can be accessed from the bundle:
+```java
+Columbus columbus = bundle.columbus()
+
+StorageClient storage = columbus.storage("<storage-name>");
+SerDe serDe = columbus.toolkit().serDe();
+...
 ```

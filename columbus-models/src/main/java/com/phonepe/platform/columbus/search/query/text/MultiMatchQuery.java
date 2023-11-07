@@ -27,7 +27,7 @@ public class MultiMatchQuery extends BaseQuery {
     private Object value;
 
     @Singular(ignoreNullCollections = true)
-    private Map<String, Float> fieldBoosts;
+    private Map<@NonNull String, @NonNull Float> fieldBoosts;
     private Float tieBreaker;
 
     private Analysis analysis;

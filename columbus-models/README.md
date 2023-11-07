@@ -15,6 +15,7 @@ A collection of models used by Columbus APIs.
       2. [Sort](#sort)
       3. [Score Function](#score-function)
       4. [Aggregation](#aggregation)
+      5. [Pagination](#pagination)
    3. [Advanced Usage](#advanced-usage)
 
 ## Dependency
@@ -109,6 +110,11 @@ An `Aggregator` represents a way to summarize the documents by grouping them int
 calculations, etc. The grouping aggregators can support additional aggregators within the groups.
 
 Each `Aggregator` can produce a different `Aggregation` as its result.
+
+### Pagination
+
+Represents a certain subset of a typically larger dataset, usually a continuous set of documents as defined by the sort
+order.
 
 ---
 

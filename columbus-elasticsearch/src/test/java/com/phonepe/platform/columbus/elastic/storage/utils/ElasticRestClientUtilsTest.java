@@ -1,6 +1,7 @@
 package com.phonepe.platform.columbus.elastic.storage.utils;
 
 import com.phonepe.platform.columbus.common.http.Endpoint;
+import com.phonepe.platform.columbus.elastic.internal.storage.utils.ElasticRestClientUtils;
 import com.phonepe.platform.columbus.elastic.storage.configuration.auth.Security;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.jupiter.api.DisplayName;

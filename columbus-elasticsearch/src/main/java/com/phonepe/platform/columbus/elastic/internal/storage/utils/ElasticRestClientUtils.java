@@ -1,4 +1,4 @@
-package com.phonepe.platform.columbus.elastic.storage.utils;
+package com.phonepe.platform.columbus.elastic.internal.storage.utils;
 
 import com.phonepe.platform.columbus.common.http.Endpoint;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;

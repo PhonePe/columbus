@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class VersionHandlerTest {
 
     @Test
-    void testCommand(MemoryStorage storage) {
+    void testCommand(final MemoryStorage storage) {
         final var command = VersionCommand.builder().build();
 
         assertEquals(MemoryStorage.VERSION, command.execute(storage), "version should match");

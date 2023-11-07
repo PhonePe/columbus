@@ -17,16 +17,20 @@ import com.phonepe.platform.columbus.elastic.internal.dao.impl.ElasticIndexResol
 import com.phonepe.platform.columbus.elastic.internal.dao.impl.ElasticNodeIdResolver;
 import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticAggregationParserResolver;
 import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticAggregatorTransformer;
+import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticPageResolver;
 import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticQueryTransformer;
 import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticScoreFunctionTransformer;
 import com.phonepe.platform.columbus.elastic.internal.search.impl.ElasticSortTransformer;
 import com.phonepe.platform.columbus.elastic.internal.storage.toolkit.DefaultElasticToolkitInitializer;
+import com.phonepe.platform.columbus.elastic.search.page.ElasticPage;
 import com.phonepe.platform.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.platform.columbus.reflect.Generics;
 import com.phonepe.platform.columbus.registry.Registries;
 import com.phonepe.platform.columbus.search.aggregation.visitor.AggregationParserResolutionVisitor;
 import com.phonepe.platform.columbus.search.aggregator.Aggregator;
 import com.phonepe.platform.columbus.search.aggregator.visitor.AggregatorTransformationVisitor;
+import com.phonepe.platform.columbus.search.page.PageBounds;
+import com.phonepe.platform.columbus.search.page.visitor.PageResolutionVisitor;
 import com.phonepe.platform.columbus.search.query.Query;
 import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationVisitor;
 import com.phonepe.platform.columbus.search.score.ScoreFunction;
@@ -198,6 +202,22 @@ public class ElasticToolkitHelpers {
                         Aggregator::getType,
                         overrides)))
                 .toolkit(toolkit)
+                .build();
+    }
+
+    public ElasticPageResolver elasticPageResolver(
+            final VisitorRegistryFactory visitorFactory,
+            @Nullable final RegistrySettings overrides
+    ) {
+        return ElasticPageResolver.builder()
+                .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
+                        visitorFactory,
+                        Generics.<PageResolutionVisitor<ElasticPage, PageBounds, ElasticPageResolver>>typed(
+                                PageResolutionVisitor.class),
+                        ElasticPageResolver.class,
+                        PageBounds.class,
+                        PageBounds::getType,
+                        overrides)))
                 .build();
     }
 }

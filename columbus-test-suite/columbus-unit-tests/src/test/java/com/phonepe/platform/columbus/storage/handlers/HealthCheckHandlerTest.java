@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class HealthCheckHandlerTest {
 
     @Test
-    void testCommand(MemoryStorage storage) {
+    void testCommand(final MemoryStorage storage) {
         final var command = HealthCheckCommand.builder().build();
 
         assertEquals(HealthStatus.HEALTHY, command.execute(storage), "health status should match");

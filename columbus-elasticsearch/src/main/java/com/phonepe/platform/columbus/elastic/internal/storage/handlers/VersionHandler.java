@@ -1,7 +1,8 @@
-package com.phonepe.platform.columbus.elastic.storage.handlers;
+package com.phonepe.platform.columbus.elastic.internal.storage.handlers;
 
 import com.phonepe.platform.columbus.elastic.common.Constants.Operations;
 import com.phonepe.platform.columbus.elastic.storage.ElasticClient;
+import com.phonepe.platform.columbus.elastic.storage.handlers.ElasticStorageCommandHandler;
 import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 import com.phonepe.platform.columbus.storage.commands.VersionCommand;
 import io.appform.functionmetrics.MonitoredFunction;
