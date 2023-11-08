@@ -65,6 +65,118 @@ With Dropwizard, the recommended way is to use the [bundle](columbus-bundle/READ
 To directly setup Columbus without Dropwizard (some features might not work), refer
 [here](columbus-core/README.md#initialization-and-usage).
 
+### Quickstart
+
+Add a field in Dropwizard configuration to store a `ColumbusBundleConfiguration`.
+
+```java
+@Getter
+public class AppConfiguration extends Configuration {
+    @Valid
+    @NotNull
+    private final ColumbusBundleConfiguration columbus;
+}
+```
+
+Provide the values in YAML config.
+
+```yaml
+columbus:
+  enabled: true  # defaults to true
+  storages:
+    - type: ELASTIC
+      enabled: true  # defaults to false
+      name: es-cluster
+      hosts:
+        endpoints:
+          - host: node-01.es-cluster.com
+            port: 9200
+          - host: node-02.es-cluster.com
+            port: 9200
+
+```
+
+Create and add Columbus Bundle to bootstrap.
+
+```java
+final var columbusBundle = ColumbusBundle.configure()
+        .build()
+        .toBundle(AppConfiguration::columbus);
+
+bootstrap.addBundle(columbusBundle);
+```
+
+Either store the bundle for later usage, or provide it to a Guice module for dependency injection.
+
+Get the storage from bundle.
+
+```java
+final StorageClient storage = columbusBundle.storage("es-cluster");
+```
+
+Run commands as needed.
+
+Create index
+
+```java
+final var index = Indices.name("scope.name.version.index");
+
+CreateIndexCommand.builder()
+        .index(index)
+        .properties(IndexProperties.builder()
+                // set properties
+                .build())
+        .build()
+        .execute(storage);
+```
+
+Insert entities
+
+```java
+final var data = ...; // create object
+
+InsertCommand.withValue(data)
+        .index(index)
+        .id(Ids.value(data.getId()))  // or any other way to get the id
+        .build()
+        .execute(storage);
+```
+
+Get entities
+
+```java
+final var id = Ids.value(...);
+
+final var entity = GetCommand.forType(Types.forClass(/* data type */))
+        .index(index)
+        .id(id)
+        .build()
+        .execute(storage);
+
+if (entity.isPresent()) {
+    // do something
+}
+```
+
+Search
+
+```java
+final var searchResult = SearchCommand.forType(Types.forClass(/* data type */))
+        .index(index)
+        .query(EqualsFilter.builder()
+                .field("field-name")
+                .value("value")
+                .build())
+        .sort(FieldSort.builder()
+                .order(SortOrder.ASC)
+                .field("sort-field")
+                .build())
+        .page(Pages.offset(10, 0))
+        .build()
+```
+
+And more...
+
 ## Documentation
 
 TODO
