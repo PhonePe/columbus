@@ -16,6 +16,10 @@
     <name>Columbus Test Report</name>
     <description>A module to aggregate test reports across all Columbus modules.</description>
 
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.phonepe.platform.columbus</groupId>
