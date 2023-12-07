@@ -5,7 +5,7 @@
     <groupId>com.phonepe.platform</groupId>
     <artifactId>columbus</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
 
     <modules>
         <module>columbus-resources</module>
@@ -16,7 +16,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <columbus.models.version>1.0.5</columbus.models.version>
+        <columbus.models.version>1.0.6</columbus.models.version>
 
         <!-- Maven Plugins -->
         <lombok.maven.version>1.18.20.0</lombok.maven.version>

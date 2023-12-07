@@ -4,6 +4,12 @@
 
 Version 1.x features apply to the original implementation, replaced in v2.
 
+## [1.0.11] - 2023-12-07
+
+### Changed
+
+- Update parent/model dependencies and static-analysis configuration.
+
 ## [1.0.10] - 2023-08-09
 
 ### Added
