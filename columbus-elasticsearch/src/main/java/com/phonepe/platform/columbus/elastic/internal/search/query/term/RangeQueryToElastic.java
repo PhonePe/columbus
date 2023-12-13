@@ -14,7 +14,7 @@ public class RangeQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<RangeQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final RangeQuery query, final C context) {
+    protected QueryBuilder buildQuery(final RangeQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.rangeQuery(query.getField())
                 .includeLower(query.includeLower())
                 .includeUpper(query.includeUpper());

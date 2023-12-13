@@ -15,10 +15,14 @@ import static com.phonepe.platform.columbus.common.Predicates.applyIfNotNull;
 public class FiltersAggregatorToElastic<C extends ElasticAggregatorTransformationContext<C>>
         extends BucketAggregatorToElastic<FiltersAggregator, C> {
 
-    protected AggregationBuilder buildBucketAggregation(final FiltersAggregator aggregation, final C context) {
+    protected AggregationBuilder buildBucketAggregation(
+            final FiltersAggregator aggregation,
+            final Object props,
+            final C context
+    ) {
         final var queryTransformer = context.toolkit().queryTransformer();
         final var filters = aggregation.getFilters().entrySet().stream()
-                .map(entry -> new KeyedFilter(entry.getKey(), queryTransformer.transform(entry.getValue())))
+                .map(entry -> new KeyedFilter(entry.getKey(), queryTransformer.transform(entry.getValue(), props)))
                 .toArray(KeyedFilter[]::new);
 
         final var builder = AggregationBuilders.filters(aggregation.getName(), filters);

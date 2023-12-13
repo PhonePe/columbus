@@ -5,7 +5,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +30,13 @@ class GenericsTest {
         @DisplayName("check invalid super type")
         void testIsNotSuperType() {
             assertFalse(Generics.isSuperType(Collection.class, Map.class), "collection is not a super type for map");
+        }
+
+        @Test
+        @DisplayName("get super type towards")
+        void testGetSuperType() {
+            assertEquals(AbstractList.class, Generics.getSuperTypeTowards(ArrayList.class, List.class),
+                    "array list extends abstract list which is also a subtype of list");
         }
     }
 

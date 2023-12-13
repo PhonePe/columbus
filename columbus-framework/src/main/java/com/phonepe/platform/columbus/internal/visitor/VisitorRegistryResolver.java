@@ -13,14 +13,16 @@ import lombok.experimental.SuperBuilder;
  */
 @Getter
 @SuperBuilder
-public class VisitorRegistryResolver<R, B, C extends VisitorContext<R, B, C>> implements VisitorResolver<R, B, C> {
+public class VisitorRegistryResolver<R, B, P, C extends VisitorContext<R, B, P, C>>
+        implements VisitorResolver<R, B, P, C> {
 
     @NonNull
-    private final Registry<? super B, ? extends EntityVisitor<? extends R, ? extends B, B, ? super C>> registry;
+    private final Registry<? super B, ? extends EntityVisitor<? extends R, ? extends B, B, ? super P, ? super C>>
+            registry;
 
     @Override
-    public @NonNull <T extends B> EntityVisitor<? extends R, T, ? super B, ? super C> visitorFor(final T value) {
-        return (EntityVisitor<? extends R, T, ? super B, ? super C>) registry.get(value)
+    public @NonNull <T extends B> EntityVisitor<? extends R, T, ? super B, ? super P, ? super C> visitorFor(final T value) {
+        return (EntityVisitor<? extends R, T, ? super B, ? super P, ? super C>) registry.get(value)
                 .orElseThrow(() -> new IllegalArgumentException("No visitor registered for value: " + value));
     }
 }

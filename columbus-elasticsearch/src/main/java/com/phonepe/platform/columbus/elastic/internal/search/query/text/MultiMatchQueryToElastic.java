@@ -20,7 +20,7 @@ public class MultiMatchQueryToElastic<C extends ElasticQueryTransformationContex
         extends BaseQueryToElastic<MultiMatchQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MultiMatchQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MultiMatchQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.multiMatchQuery(query.getValue());
         applyIfNotNull(query.getMatchType(), SearchEnums::toMultiMatchType, builder::type);
         query.getFieldBoosts().forEach(builder::field);

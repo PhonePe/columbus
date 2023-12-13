@@ -10,12 +10,13 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> the type used by storage for aggregation results.
  * @param <T> the type of the {@link Aggregator} whose result is to be parsed.
+ * @param <P> represents the additional context required for resolution.
  * @param <C> the type of the context required for resolution.
  */
-public interface AggregationParserResolutionVisitor<R, T extends Aggregator,
-        C extends AggregationParserResolutionContext<R, C>>
-        extends EntityVisitor<AggregationParser<R>, T, Aggregator, C> {
+public interface AggregationParserResolutionVisitor<R, T extends Aggregator, P,
+        C extends AggregationParserResolutionContext<R, P, C>>
+        extends EntityVisitor<AggregationParser<R>, T, Aggregator, P, C> {
 
     @Override
-    AggregationParser<R> visit(T aggregator, C context);
+    AggregationParser<R> visit(T aggregator, P props, C context);
 }

@@ -18,7 +18,7 @@ import org.elasticsearch.search.sort.SortBuilder;
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticSortTransformationContext<C extends ElasticSortTransformationContext<C>>
-        extends SortTransformationContext<SortBuilder<?>, C> {
+        extends SortTransformationContext<SortBuilder<?>, Object, C> {
 
     @NonNull
     private final ElasticToolkit toolkit;

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithElasticToolkit.All
 class ElasticScoreFunctionTransformerTest {
 
-    private static ScoreFunctionTransformer<FilterFunctionBuilder> scoreFunctionTransformer;
+    private static ScoreFunctionTransformer<FilterFunctionBuilder, Object> scoreFunctionTransformer;
 
     @Test
     @DisplayName("Weight")

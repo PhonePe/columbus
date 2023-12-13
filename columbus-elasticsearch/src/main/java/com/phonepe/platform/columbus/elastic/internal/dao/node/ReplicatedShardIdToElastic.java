@@ -11,7 +11,7 @@ public class ReplicatedShardIdToElastic<C extends ElasticNodeIdResolutionContext
         implements NodeIdToElastic<ReplicatedShardId, C> {
 
     @Override
-    public ElasticNode visit(final ReplicatedShardId node, final C context) {
+    public ElasticNode visit(final ReplicatedShardId node, final Object props, final C context) {
         return ElasticNode.builder()
                 .preference(node.getReplica())
                 .shard(node.getShard())

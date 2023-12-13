@@ -11,10 +11,11 @@ import lombok.NonNull;
  *
  * @param <R> the return type of the visitor.
  * @param <B> the base type the visitor can visit.
+ * @param <P> the type of props the visitor supports.
  * @param <C> the type of the context the visitors can work with.
  * @see EntityVisitor
  */
-public interface VisitorResolver<R, B, C extends VisitorContext<R, B, C>> {
+public interface VisitorResolver<R, B, P, C extends VisitorContext<R, B, P, C>> {
 
     /**
      * Get the visitor for the given value.
@@ -26,5 +27,5 @@ public interface VisitorResolver<R, B, C extends VisitorContext<R, B, C>> {
      * @throws NullPointerException     if value is null and the visitor does not support null values.
      */
     @SuppressWarnings("java:S1452")
-    @NonNull <T extends B> EntityVisitor<? extends R, T, ? super B, ? super C> visitorFor(T value);
+    @NonNull <T extends B> EntityVisitor<? extends R, T, ? super B, ? super P, ? super C> visitorFor(T value);
 }

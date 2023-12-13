@@ -72,7 +72,7 @@ class ElasticQueryTransformerTest {
             .boost(2f)
             .queryName("none");
 
-    private static QueryTransformer<QueryBuilder> queryTransformer;
+    private static QueryTransformer<QueryBuilder, Object> queryTransformer;
 
     @BeforeAll
     static void beforeAll(final ElasticToolkit toolkit) {

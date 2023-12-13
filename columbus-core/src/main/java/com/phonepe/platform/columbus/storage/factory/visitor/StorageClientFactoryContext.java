@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
  */
 @SuperBuilder(toBuilder = true)
 public abstract class StorageClientFactoryContext<C extends StorageClientFactoryContext<C>>
-        extends VisitorContext<StorageClient, StorageConfiguration, C> implements StorageClientFactory {
+        extends VisitorContext<StorageClient, StorageConfiguration, Void, C> implements StorageClientFactory {
 
     @Override
     public StorageClient create(final StorageConfiguration configuration) {

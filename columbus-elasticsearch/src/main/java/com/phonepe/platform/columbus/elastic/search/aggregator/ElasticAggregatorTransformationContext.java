@@ -18,7 +18,7 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticAggregatorTransformationContext<C extends ElasticAggregatorTransformationContext<C>>
-        extends AggregatorTransformationContext<AggregationBuilder, C> {
+        extends AggregatorTransformationContext<AggregationBuilder, Object, C> {
 
     @NonNull
     private final ElasticToolkit toolkit;

@@ -8,11 +8,12 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link Sort} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public interface SortTransformationVisitor<R, T extends Sort, C extends SortTransformationContext<R, C>>
-        extends EntityVisitor<R, T, Sort, C> {
+public interface SortTransformationVisitor<R, T extends Sort, P, C extends SortTransformationContext<R, P, C>>
+        extends EntityVisitor<R, T, Sort, P, C> {
 
     @Override
-    R visit(T sort, C context);
+    R visit(T sort, P props, C context);
 }

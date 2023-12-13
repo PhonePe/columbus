@@ -10,5 +10,5 @@ import com.phonepe.platform.columbus.search.page.visitor.PageResolutionVisitor;
  * @param <C> the type of the context required for resolution.
  */
 public interface PageToElastic<T extends PageBounds, C extends ElasticPageResolutionContext<C>>
-        extends PageResolutionVisitor<ElasticPage, T, C> {
+        extends PageResolutionVisitor<ElasticPage, T, Object, C> {
 }

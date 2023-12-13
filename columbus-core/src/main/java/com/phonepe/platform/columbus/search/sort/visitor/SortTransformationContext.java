@@ -10,11 +10,17 @@ import lombok.experimental.SuperBuilder;
  * used by storage.
  *
  * @param <R> represents the type used by storage.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> self reference, the context used by the transformers.
  */
 @SuperBuilder(toBuilder = true)
-public abstract class SortTransformationContext<R, C extends SortTransformationContext<R, C>>
-        extends VisitorContext<R, Sort, C> implements SortTransformer<R> {
+public abstract class SortTransformationContext<R, P, C extends SortTransformationContext<R, P, C>>
+        extends VisitorContext<R, Sort, P, C> implements SortTransformer<R, P> {
+
+    @Override
+    public R transform(final Sort sort, final P context) {
+        return visit(sort, context);
+    }
 
     @Override
     public R transform(final Sort sort) {

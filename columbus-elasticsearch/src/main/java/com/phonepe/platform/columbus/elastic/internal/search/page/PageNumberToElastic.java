@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.search.page.PageNumber;
 public class PageNumberToElastic<C extends ElasticPageResolutionContext<C>> implements PageToElastic<PageNumber, C> {
 
     @Override
-    public ElasticPage visit(final PageNumber page, final C context) {
+    public ElasticPage visit(final PageNumber page, final Object props, final C context) {
         final var size = validatePageSize(page.getSize());
         return ElasticPage.builder()
                 .size(size)

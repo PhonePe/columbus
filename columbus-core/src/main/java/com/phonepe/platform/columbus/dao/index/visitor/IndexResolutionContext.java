@@ -9,11 +9,17 @@ import lombok.experimental.SuperBuilder;
  * An {@link IndexResolver} that uses visitor to convert {@link Index} to the corresponding type.
  *
  * @param <R> represents the type used by storage.
+ * @param <P> represents the additional context required for resolution.
  * @param <C> self reference, the context used by the resolvers.
  */
 @SuperBuilder(toBuilder = true)
-public abstract class IndexResolutionContext<R, C extends IndexResolutionContext<R, C>>
-        extends VisitorContext<R, Index, C> implements IndexResolver<R> {
+public abstract class IndexResolutionContext<R, P, C extends IndexResolutionContext<R, P, C>>
+        extends VisitorContext<R, Index, P, C> implements IndexResolver<R, P> {
+
+    @Override
+    public R resolve(final Index index, final P context) {
+        return visit(index, context);
+    }
 
     @Override
     public R resolve(final Index index) {

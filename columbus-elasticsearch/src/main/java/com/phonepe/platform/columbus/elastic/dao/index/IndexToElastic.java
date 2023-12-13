@@ -10,5 +10,5 @@ import com.phonepe.platform.columbus.dao.index.visitor.IndexResolutionVisitor;
  * @param <C> the type of the context required for resolution.
  */
 public interface IndexToElastic<T extends Index, C extends ElasticIndexResolutionContext<C>>
-        extends IndexResolutionVisitor<ElasticIndex, T, C> {
+        extends IndexResolutionVisitor<ElasticIndex, T, Object, C> {
 }

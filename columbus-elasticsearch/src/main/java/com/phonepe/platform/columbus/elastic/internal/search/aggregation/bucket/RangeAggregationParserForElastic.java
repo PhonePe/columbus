@@ -16,6 +16,7 @@ public class RangeAggregationParserForElastic<C extends ElasticAggregationParser
     protected AggregationParser<Aggregation> createParser(
             final RangeAggregator aggregator,
             final Map<String, AggregationParser<Aggregation>> subAggregationParsers,
+            final Object props,
             final C context
     ) {
         return RangeAggregationParser.builder()

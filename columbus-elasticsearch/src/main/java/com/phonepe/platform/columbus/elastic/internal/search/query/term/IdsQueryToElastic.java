@@ -13,10 +13,11 @@ public class IdsQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<IdsQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final IdsQuery query, final C context) {
+    protected QueryBuilder buildQuery(final IdsQuery query, final Object props, final C context) {
+        final var idResolver = context.toolkit().idResolver();
         return QueryBuilders.idsQuery()
                 .addIds(query.getIds().stream()
-                        .map(context.toolkit().idResolver()::resolve)
+                        .map(id -> idResolver.resolve(id, props))
                         .map(ElasticId::getId)
                         .toArray(String[]::new));
     }

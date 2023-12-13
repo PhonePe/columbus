@@ -10,5 +10,5 @@ import com.phonepe.platform.columbus.dao.node.visitor.NodeIdResolutionVisitor;
  * @param <C> the type of the context required for resolution.
  */
 public interface NodeIdToElastic<T extends NodeId, C extends ElasticNodeIdResolutionContext<C>>
-        extends NodeIdResolutionVisitor<ElasticNode, T, C> {
+        extends NodeIdResolutionVisitor<ElasticNode, T, Object, C> {
 }

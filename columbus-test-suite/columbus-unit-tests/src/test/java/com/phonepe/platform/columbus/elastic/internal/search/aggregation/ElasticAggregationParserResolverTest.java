@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 @WithElasticToolkit.All
 class ElasticAggregationParserResolverTest {
 
-    private static AggregationParserResolver<Aggregation> aggregationParserResolver;
+    private static AggregationParserResolver<Aggregation, Object> aggregationParserResolver;
 
     @Test
     @DisplayName("Terms")
@@ -58,7 +58,7 @@ class ElasticAggregationParserResolverTest {
         final var aggregator = TermsAggregator.builder()
                 .name("count")
                 .field("field")
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .build())
@@ -171,7 +171,7 @@ class ElasticAggregationParserResolverTest {
                         .name("high")
                         .from(100d)
                         .build())
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .build())
@@ -247,7 +247,7 @@ class ElasticAggregationParserResolverTest {
         final var aggregator = FilterAggregator.builder()
                 .name("filter")
                 .filter(MatchAllQuery.builder().build())
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .build())
@@ -289,7 +289,7 @@ class ElasticAggregationParserResolverTest {
         final var aggregator = FiltersAggregator.builder()
                 .name("filters")
                 .filter("all", MatchAllQuery.builder().build())
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .build())

@@ -14,7 +14,7 @@ public class StatsAggregatorToElastic<C extends ElasticAggregatorTransformationC
         implements AggregatorToElastic<StatsAggregator, C> {
 
     @Override
-    public AggregationBuilder visit(final StatsAggregator aggregator, final C context) {
+    public AggregationBuilder visit(final StatsAggregator aggregator, final Object props, final C context) {
         final var builder = AggregationBuilders.stats(aggregator.getName())
                 .field(aggregator.getField());
         applyIfNotNull(aggregator.getMissingValue(), builder::missing);

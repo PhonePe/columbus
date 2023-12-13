@@ -8,12 +8,13 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link ScoreFunction} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public interface ScoreFunctionTransformationVisitor<R, T extends ScoreFunction,
-        C extends ScoreFunctionTransformationContext<R, C>>
-        extends EntityVisitor<R, T, ScoreFunction, C> {
+public interface ScoreFunctionTransformationVisitor<R, T extends ScoreFunction, P,
+        C extends ScoreFunctionTransformationContext<R, P, C>>
+        extends EntityVisitor<R, T, ScoreFunction, P, C> {
 
     @Override
-    R visit(T scoreFunction, C context);
+    R visit(T scoreFunction, P props, C context);
 }

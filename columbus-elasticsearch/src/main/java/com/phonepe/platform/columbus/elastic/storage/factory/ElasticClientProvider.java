@@ -15,7 +15,7 @@ public abstract class ElasticClientProvider<C extends DropwizardStorageFactoryCo
         implements StorageClientProvider<ElasticConfiguration, C> {
 
     @Override
-    public StorageClient visit(final ElasticConfiguration configuration, final C context) {
+    public StorageClient visit(final ElasticConfiguration configuration, final Void props, final C context) {
         final var initializer = getInitializer();
         initializer.use(context.toolkit());
         initializer.use(context.settings());

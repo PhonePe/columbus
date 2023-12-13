@@ -1,12 +1,13 @@
 package com.phonepe.platform.columbus.internal.visitor;
 
-import com.phonepe.platform.columbus.internal.visitor.Model.TypeA;
-import com.phonepe.platform.columbus.internal.visitor.Model.TypeB;
-import com.phonepe.platform.columbus.internal.visitor.Model.TypeC;
-import com.phonepe.platform.columbus.internal.visitor.Visitors.NameVisitor;
-import com.phonepe.platform.columbus.internal.visitor.Visitors.NameVisitorContext;
-import com.phonepe.platform.columbus.internal.visitor.Visitors.TypeANameVisitor;
-import com.phonepe.platform.columbus.internal.visitor.Visitors.TypeBNameVisitor;
+import com.phonepe.platform.columbus.internal.visitor.example.models.Model;
+import com.phonepe.platform.columbus.internal.visitor.example.models.ModelA;
+import com.phonepe.platform.columbus.internal.visitor.example.models.ModelB;
+import com.phonepe.platform.columbus.internal.visitor.example.models.ModelC;
+import com.phonepe.platform.columbus.internal.visitor.example.visitors.ModelVisitor;
+import com.phonepe.platform.columbus.internal.visitor.example.visitors.string.ModelAStringVisitor;
+import com.phonepe.platform.columbus.internal.visitor.example.visitors.string.ModelBStringVisitor;
+import com.phonepe.platform.columbus.internal.visitor.example.visitors.string.StringVisitor;
 import com.phonepe.platform.columbus.registry.Registries;
 import com.phonepe.platform.columbus.registry.Registry;
 import com.phonepe.platform.columbus.visitor.Visitor;
@@ -23,47 +24,73 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class VisitorTest {
 
-    private static final Registry<Model, NameVisitor<?>> registry = Registries.transformingKey(
+    private static final Registry<Model, ModelVisitor<?, String, StringVisitor>> registry = Registries.transformingKey(
             Model::type,
             Registries.stored(new HashMap<>(Map.of(
-                    "A", new TypeANameVisitor(),
-                    "B", new TypeBNameVisitor()))));
+                    "A", new ModelAStringVisitor<>(),
+                    "B", new ModelBStringVisitor<>()))));
 
-    private static final VisitorResolver<String, Model, NameVisitorContext> resolver =
+    private static final VisitorResolver<String, Model, String, StringVisitor> resolver =
             VisitorHelpers.resolver(registry);
 
-    private static final Visitor<String, Model> visitor = NameVisitorContext.builder()
+    private static final Visitor<String, Model, String> visitor = StringVisitor.builder()
             .resolver(resolver)
+            .defaultProps("DF")
+            .prefix("PF")
             .build();
 
     @Test
-    @DisplayName("visit TypeA")
-    void testVisitTypeA() {
-        final var model = TypeA.builder()
+    @DisplayName("visit ModelA without props")
+    void testVisitModelA() {
+        final var model = ModelA.builder()
                 .value(10)
                 .build();
 
-        final var name = visitor.visit(model);
+        final var value = visitor.visit(model);
 
-        assertEquals("A(value=10)", name, "visitor visits type A");
+        assertEquals("AS:A:PF:10:DF", value, "visitor visits model A");
     }
 
     @Test
-    @DisplayName("visit TypeB")
-    void testVisitTypeB() {
-        final var model = TypeB.builder()
+    @DisplayName("visit ModelB without props")
+    void testVisitModelB() {
+        final var model = ModelB.builder()
                 .value("hello")
                 .build();
 
         final var name = visitor.visit(model);
 
-        assertEquals("B(value='hello')", name, "visitor visits type B");
+        assertEquals("BS:B:PF:hello:DF", name, "visitor visits model B");
+    }
+
+    @Test
+    @DisplayName("visit ModelA with props")
+    void testVisitModelAWithProps() {
+        final var model = ModelA.builder()
+                .value(10)
+                .build();
+
+        final var value = visitor.visit(model, "prop");
+
+        assertEquals("AS:A:PF:10:prop", value, "visitor visits model A");
+    }
+
+    @Test
+    @DisplayName("visit ModelB with props")
+    void testVisitModelBWithProps() {
+        final var model = ModelB.builder()
+                .value("hello")
+                .build();
+
+        final var name = visitor.visit(model, "prop");
+
+        assertEquals("BS:B:PF:hello:prop", name, "visitor visits model B");
     }
 
     @Test
     @DisplayName("visitor not found")
     void testVisitorMissing() {
-        final var model = TypeC.of();
+        final var model = ModelC.of();
 
         assertThrows(IllegalArgumentException.class, () -> visitor.visit(model), "no visitor registered");
     }

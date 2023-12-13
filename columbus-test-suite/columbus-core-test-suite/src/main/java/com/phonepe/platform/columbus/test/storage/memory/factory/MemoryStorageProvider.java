@@ -16,7 +16,7 @@ public class MemoryStorageProvider<C extends ColumbusStorageFactoryContext<C>>
         implements StorageClientProvider<MemoryStorageConfiguration, C> {
 
     @Override
-    public StorageClient visit(final MemoryStorageConfiguration configuration, final C context) {
+    public StorageClient visit(final MemoryStorageConfiguration configuration, final Void props, final C context) {
         final var handlerRegistry = RegistryCreators.createHandlerRegistry(
                 context.toolkit().handlerFactory(),
                 Generics.typed(StorageCommandHandler.class),

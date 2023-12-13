@@ -11,7 +11,7 @@ public class IndexReferenceToElastic<C extends ElasticIndexResolutionContext<C>>
         implements IndexToElastic<IndexReference, C> {
 
     @Override
-    public ElasticIndex visit(final IndexReference index, final C context) {
+    public ElasticIndex visit(final IndexReference index, final Object props, final C context) {
         final var key = index.getKey();
         return context.indexRegistry().get(key)
                 .map(name -> ElasticIndex.builder()

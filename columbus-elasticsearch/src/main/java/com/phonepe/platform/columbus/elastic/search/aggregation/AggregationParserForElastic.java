@@ -14,5 +14,5 @@ import org.elasticsearch.search.aggregations.Aggregation;
  */
 public interface AggregationParserForElastic<T extends Aggregator,
         C extends ElasticAggregationParserResolutionContext<C>>
-        extends AggregationParserResolutionVisitor<Aggregation, T, C> {
+        extends AggregationParserResolutionVisitor<Aggregation, T, Object, C> {
 }

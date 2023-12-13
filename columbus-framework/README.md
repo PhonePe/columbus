@@ -155,14 +155,25 @@ A dynamic way to create and bind visitors with classes, without having to worry 
 being visited need not be aware of the visitors, allowing new classes to be introduced into the two hierarchies
 seamlessly, across modules.
 
+A visitor has three components:
+* A method for each type of value being visited, with the corresponding logic.
+* A context containing all the data from different scopes that are available within the visit methods.
+* A dispatcher which identifies the appropriate method to be invoked.
+
+The data in the context could either remain the same for all invocations, or change for each invocation. The same
+instance of a visitor could be used if all the data remain the same across invocations. But it usually requires creation
+of a new visitor to capture these changing parameters. The Columbus visitor allows passing such data as parameters or
+props, thereby avoiding duplication of instances.
+
 ### Usage
 
 1. Define a context object extending `VisitorContext`, with fields for necessary data.
-2. Define the visitor classes implementing `EntityVisitor` for each value that needs to be visited using the context.
+2. If needed, define an interface and / or implementation, with additional props being provided during visiting.
+3. Define the visitor classes implementing `EntityVisitor` for each value that needs to be visited using the context.
    Create a common base class to help group the visitors for a context.
-3. Determine a strategy to differentiate between classes being visited. Create a registry to resolve to the
+4. Determine a strategy to differentiate between classes being visited. Create a registry to resolve to the
    corresponding visitors.
-4. Create resolver and context instances and use it.
+5. Create resolver and context instances and use it.
 
 See [Visitors](src/test/java/com/phonepe/platform/columbus/internal/visitor/Visitors.java) for an example.
 
@@ -312,7 +323,7 @@ empty.initializeWith(             // create and set a value if not already initi
 #### Lazy Initializer
 
 An object to create a value lazily. A precondition can be provided to check if the value can be initialized. The value
-will be initialized when it is asked for if the precondition is satisfied.
+will be initialized when it is asked for, if the precondition is satisfied.
 
 ##### Examples
 

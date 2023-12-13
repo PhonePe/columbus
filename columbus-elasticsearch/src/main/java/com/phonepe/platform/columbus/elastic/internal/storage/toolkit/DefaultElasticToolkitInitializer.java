@@ -38,7 +38,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected IdResolver<ElasticId> initializeIdResolver() {
+    protected IdResolver<ElasticId, Object> initializeIdResolver() {
         return ElasticToolkitHelpers.elasticIdResolver(getVisitorFactory(), getVisitorOverrides());
     }
 
@@ -50,7 +50,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected IndexResolver<ElasticIndex> initializeIndexResolver() {
+    protected IndexResolver<ElasticIndex, Object> initializeIndexResolver() {
         final var indices = Optional.ofNullable(getConfiguration().get())
                 .map(ElasticConfiguration::getIndices)
                 .map(IndexConfiguration::getRegistry)
@@ -64,7 +64,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected NodeIdResolver<ElasticNode> initializeNodeIdResolver() {
+    protected NodeIdResolver<ElasticNode, Object> initializeNodeIdResolver() {
         return ElasticToolkitHelpers.elasticNodeIdResolver(getVisitorFactory(), getVisitorOverrides());
     }
 
@@ -74,7 +74,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected PageResolver<ElasticPage> initializePageResolver() {
+    protected PageResolver<ElasticPage, Object> initializePageResolver() {
         return ElasticToolkitHelpers.elasticPageResolver(getVisitorFactory(), getVisitorOverrides());
     }
 
@@ -104,7 +104,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected QueryTransformer<QueryBuilder> initializeQueryTransformer() {
+    protected QueryTransformer<QueryBuilder, Object> initializeQueryTransformer() {
         return ElasticToolkitHelpers.elasticQueryTransformer(
                 getVisitorFactory(),
                 getToolkitData().get(),
@@ -117,7 +117,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected SortTransformer<SortBuilder<?>> initializeSortTransformer() {
+    protected SortTransformer<SortBuilder<?>, Object> initializeSortTransformer() {
         return ElasticToolkitHelpers.elasticSortTransformer(
                 getVisitorFactory(),
                 getToolkitData().get(),
@@ -130,7 +130,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected ScoreFunctionTransformer<FilterFunctionBuilder> initializeScoreFunctionTransformer() {
+    protected ScoreFunctionTransformer<FilterFunctionBuilder, Object> initializeScoreFunctionTransformer() {
         return ElasticToolkitHelpers.elasticScoreFunctionTransformer(
                 getVisitorFactory(),
                 getToolkitData().get(),
@@ -143,7 +143,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected AggregatorTransformer<AggregationBuilder> initializeAggregatorTransformer() {
+    protected AggregatorTransformer<AggregationBuilder, Object> initializeAggregatorTransformer() {
         return ElasticToolkitHelpers.elasticAggregatorTransformer(
                 getVisitorFactory(),
                 getToolkitData().get(),
@@ -156,7 +156,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
-    protected AggregationParserResolver<Aggregation> initializeAggregationParserResolver() {
+    protected AggregationParserResolver<Aggregation, Object> initializeAggregationParserResolver() {
         return ElasticToolkitHelpers.elasticAggregationParserResolver(
                 getVisitorFactory(),
                 getToolkitData().get(),

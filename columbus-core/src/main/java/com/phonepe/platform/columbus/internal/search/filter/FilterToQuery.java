@@ -13,16 +13,17 @@ import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationCon
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link Filter} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public abstract class FilterToQuery<R, T extends Filter, C extends QueryTransformationContext<R, C>>
-        implements FilterTransformationVisitor<R, T, C> {
+public abstract class FilterToQuery<R, T extends Filter, P, C extends QueryTransformationContext<R, P, C>>
+        implements FilterTransformationVisitor<R, T, P, C> {
 
     @Override
-    public R visit(final T filter, final C context) {
-        return context.transform(toQueryBuilder(filter).build());
+    public R visit(final T filter, final P props, final C context) {
+        return context.transform(toQueryBuilder(filter, props).build(), props);
     }
 
     @SuppressWarnings("java:S1452")
-    protected abstract BaseQueryBuilder<?, ?> toQueryBuilder(T filter);
+    protected abstract BaseQueryBuilder<?, ?> toQueryBuilder(T filter, final P props);
 }

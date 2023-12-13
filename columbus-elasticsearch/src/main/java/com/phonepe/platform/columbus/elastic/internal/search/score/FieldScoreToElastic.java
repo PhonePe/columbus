@@ -14,7 +14,11 @@ public class FieldScoreToElastic<C extends ElasticScoreFunctionTransformationCon
         extends BaseScoreFunctionToElastic<FieldScore, C> {
 
     @Override
-    protected ScoreFunctionBuilder<?> buildScoreFunction(final FieldScore scoreFunction, final C context) {
+    protected ScoreFunctionBuilder<?> buildScoreFunction(
+            final FieldScore scoreFunction,
+            final Object props,
+            final C context
+    ) {
         final var function = ScoreFunctionBuilders.fieldValueFactorFunction(scoreFunction.getField());
         applyIfNotNull(scoreFunction.getFactor(), function::factor);
         applyIfNotNull(scoreFunction.getMissing(), function::missing);

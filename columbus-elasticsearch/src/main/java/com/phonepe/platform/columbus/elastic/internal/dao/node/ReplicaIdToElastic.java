@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 public class ReplicaIdToElastic<C extends ElasticNodeIdResolutionContext<C>> implements NodeIdToElastic<ReplicaId, C> {
 
     @Override
-    public ElasticNode visit(final ReplicaId node, final C context) {
+    public ElasticNode visit(final ReplicaId node, final Object props, final C context) {
         return ElasticNode.builder()
                 .preference(node.getReplica())
                 .build();

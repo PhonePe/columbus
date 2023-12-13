@@ -8,10 +8,11 @@ import com.phonepe.platform.columbus.search.query.compound.BoolQuery;
 import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationContext;
 
 @RegistryKey(name = OrFilter.TYPE, type = OrFilter.class)
-public class OrFilterToQuery<R, C extends QueryTransformationContext<R, C>> extends FilterToQuery<R, OrFilter, C> {
+public class OrFilterToQuery<R, P, C extends QueryTransformationContext<R, P, C>>
+        extends FilterToQuery<R, OrFilter, P, C> {
 
     @Override
-    protected BaseQueryBuilder<?, ?> toQueryBuilder(final OrFilter filter) {
+    protected BaseQueryBuilder<?, ?> toQueryBuilder(final OrFilter filter, final P props) {
         return BoolQuery.builder()
                 .shouldClauses(filter.getFilters());
     }

@@ -18,7 +18,7 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.Fil
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticScoreFunctionTransformationContext<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends ScoreFunctionTransformationContext<FilterFunctionBuilder, C> {
+        extends ScoreFunctionTransformationContext<FilterFunctionBuilder, Object, C> {
 
     @NonNull
     private final ElasticToolkit toolkit;

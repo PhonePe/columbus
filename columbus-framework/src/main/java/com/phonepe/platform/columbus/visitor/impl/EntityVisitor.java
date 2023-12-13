@@ -1,16 +1,17 @@
 package com.phonepe.platform.columbus.visitor.impl;
 
 /**
- * A visitor is responsible for performing an operation on a specific type of data, with the given context.
+ * A visitor is responsible for performing an operation on a specific type of data, with the given context and props.
  * <p>
  * Each {@link EntityVisitor} instance represents a visit method in the well-known Visitor pattern.
  *
  * @param <R> the return type of the visitor.
  * @param <T> the type of the value this visitor visits.
  * @param <B> the base type the visitors in this group can visit.
+ * @param <P> the type of props the visitor supports.
  * @param <C> the type of context this visitor needs, to function.
  */
-public interface EntityVisitor<R, T extends B, B, C extends VisitorContext<R, B, C>> {
+public interface EntityVisitor<R, T extends B, B, P, C extends VisitorContext<R, B, P, C>> {
 
-    R visit(T value, C context);
+    R visit(T value, P props, C context);
 }

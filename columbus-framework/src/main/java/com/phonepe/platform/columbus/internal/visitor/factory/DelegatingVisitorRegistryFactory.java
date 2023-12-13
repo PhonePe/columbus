@@ -22,8 +22,8 @@ public class DelegatingVisitorRegistryFactory implements VisitorRegistryFactory 
     private final RegistryFactory registryFactory;
 
     @Override
-    public <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
-    Registry<K, V> create(final VisitorRegistryOptions<K, R, B, C, V> options) {
+    public <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
+    Registry<K, V> create(final VisitorRegistryOptions<K, R, B, P, C, V> options) {
         final var contextType = options.contextType();
 
         final var registryOptions = RegistryOptions.builder(options.valueType(), options.keyExtractor())

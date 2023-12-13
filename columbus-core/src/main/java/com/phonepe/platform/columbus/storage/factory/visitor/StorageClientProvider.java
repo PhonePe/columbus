@@ -16,8 +16,8 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  * provided will be used by the visitor.
  */
 public interface StorageClientProvider<T extends StorageConfiguration, C extends StorageClientFactoryContext<C>>
-        extends EntityVisitor<StorageClient, T, StorageConfiguration, C> {
+        extends EntityVisitor<StorageClient, T, StorageConfiguration, Void, C> {
 
     @Override
-    StorageClient visit(T configuration, C context);
+    StorageClient visit(T configuration, Void props, C context);
 }

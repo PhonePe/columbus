@@ -13,7 +13,11 @@ public class RandomScoreToElastic<C extends ElasticScoreFunctionTransformationCo
         extends BaseScoreFunctionToElastic<RandomScore, C> {
 
     @Override
-    protected ScoreFunctionBuilder<?> buildScoreFunction(final RandomScore scoreFunction, final C context) {
+    protected ScoreFunctionBuilder<?> buildScoreFunction(
+            final RandomScore scoreFunction,
+            final Object props,
+            final C context
+    ) {
         final var function = ScoreFunctionBuilders.randomFunction();
         applyIfNotNull(scoreFunction.getField(), function::setField);
         applyIfNotNull(scoreFunction.getSeed(), function::seed);

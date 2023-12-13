@@ -11,11 +11,17 @@ import lombok.experimental.SuperBuilder;
  * {@link Aggregator}.
  *
  * @param <R> the type used by storage for aggregation results.
+ * @param <P> represents the additional context required for resolution.
  * @param <C> self reference, the context used by the resolvers.
  */
 @SuperBuilder(toBuilder = true)
-public abstract class AggregationParserResolutionContext<R, C extends AggregationParserResolutionContext<R, C>>
-        extends VisitorContext<AggregationParser<R>, Aggregator, C> implements AggregationParserResolver<R> {
+public abstract class AggregationParserResolutionContext<R, P, C extends AggregationParserResolutionContext<R, P, C>>
+        extends VisitorContext<AggregationParser<R>, Aggregator, P, C> implements AggregationParserResolver<R, P> {
+
+    @Override
+    public AggregationParser<R> resolve(final Aggregator aggregator, final P context) {
+        return visit(aggregator, context);
+    }
 
     @Override
     public AggregationParser<R> resolve(final Aggregator aggregator) {

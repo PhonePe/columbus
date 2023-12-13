@@ -14,7 +14,7 @@ public class PrefixQueryToElastic<C extends ElasticQueryTransformationContext<C>
         extends BaseQueryToElastic<PrefixQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final PrefixQuery query, final C context) {
+    protected QueryBuilder buildQuery(final PrefixQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.prefixQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getCaseInsensitive(), builder::caseInsensitive);
         applyIfNotNull(query.getRewrite(), builder::rewrite);

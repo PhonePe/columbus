@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WithElasticToolkit.All
 class FilterToQueryTest {
 
-    private static QueryTransformer<QueryBuilder> queryTransformer;
+    private static QueryTransformer<QueryBuilder, Object> queryTransformer;
 
     @Test
     @DisplayName("Equals")

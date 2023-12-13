@@ -18,7 +18,11 @@ import static com.phonepe.platform.columbus.common.Predicates.applyIfPositive;
 public class TermsAggregatorToElastic<C extends ElasticAggregatorTransformationContext<C>>
         extends BucketAggregatorToElastic<TermsAggregator, C> {
 
-    protected AggregationBuilder buildBucketAggregation(final TermsAggregator aggregation, final C context) {
+    protected AggregationBuilder buildBucketAggregation(
+            final TermsAggregator aggregation,
+            final Object props,
+            final C context
+    ) {
         final var builder = AggregationBuilders.terms(aggregation.getName())
                 .field(aggregation.getField());
 

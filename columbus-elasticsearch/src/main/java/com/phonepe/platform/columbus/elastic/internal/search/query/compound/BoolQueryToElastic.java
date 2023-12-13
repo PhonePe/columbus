@@ -16,20 +16,25 @@ public class BoolQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<BoolQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final BoolQuery query, final C context) {
+    protected QueryBuilder buildQuery(final BoolQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.boolQuery();
 
-        convertAll(context, query.getMustClauses(), builder::must);
-        convertAll(context, query.getShouldClauses(), builder::should);
-        convertAll(context, query.getFilterClauses(), builder::filter);
-        convertAll(context, query.getMustNotClauses(), builder::mustNot);
+        convertAll(context, props, query.getMustClauses(), builder::must);
+        convertAll(context, props, query.getShouldClauses(), builder::should);
+        convertAll(context, props, query.getFilterClauses(), builder::filter);
+        convertAll(context, props, query.getMustNotClauses(), builder::mustNot);
 
         return builder.minimumShouldMatch(query.getMinimumMatch());
     }
 
-    private void convertAll(final C context, final List<Query> queries, final Consumer<QueryBuilder> collector) {
+    private void convertAll(
+            final C context,
+            final Object props,
+            final List<Query> queries,
+            final Consumer<QueryBuilder> collector
+    ) {
         queries.stream()
-                .map(context::transform)
+                .map(query -> context.transform(query, props))
                 .forEachOrdered(collector);
     }
 }

@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithToolkit.All
 class ElasticIndexResolverTest {
 
-    static IndexResolver<ElasticIndex> indexResolver;
+    static IndexResolver<ElasticIndex, Object> indexResolver;
     private static final String KEY = "key";
     private static final String INDEX = "index.1";
 
@@ -47,7 +47,7 @@ class ElasticIndexResolverTest {
     void testIndexReference() {
         final var index = Indices.reference(KEY);
 
-        final var elasticIndex = indexResolver.resolve(index);
+        final var elasticIndex = indexResolver.resolve(index, null);
 
         assertAll(
                 "index reference",

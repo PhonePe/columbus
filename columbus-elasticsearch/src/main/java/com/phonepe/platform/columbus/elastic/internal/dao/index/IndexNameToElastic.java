@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 public class IndexNameToElastic<C extends ElasticIndexResolutionContext<C>> implements IndexToElastic<IndexName, C> {
 
     @Override
-    public ElasticIndex visit(final IndexName index, final C context) {
+    public ElasticIndex visit(final IndexName index, final Object props, final C context) {
         return ElasticIndex.builder()
                 .name(index.getName())
                 .build();

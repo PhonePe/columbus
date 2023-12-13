@@ -13,7 +13,11 @@ public class TopHitsAggregationParserForElastic<T, C extends ElasticAggregationP
         implements AggregationParserForElastic<TopHitsAggregator<T>, C> {
 
     @Override
-    public AggregationParser<Aggregation> visit(final TopHitsAggregator<T> aggregator, final C context) {
+    public AggregationParser<Aggregation> visit(
+            final TopHitsAggregator<T> aggregator,
+            final Object props,
+            final C context
+    ) {
         return TopHitsAggregationParser.<T>builder()
                 .entityType(aggregator.getEntityType())
                 .serDe(context.toolkit().serDe())

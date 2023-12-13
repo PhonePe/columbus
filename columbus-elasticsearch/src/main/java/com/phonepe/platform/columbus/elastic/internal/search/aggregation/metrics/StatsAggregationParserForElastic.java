@@ -15,7 +15,7 @@ public class StatsAggregationParserForElastic<C extends ElasticAggregationParser
     private static final StatsAggregationParser PARSER = new StatsAggregationParser();
 
     @Override
-    public AggregationParser<Aggregation> visit(final StatsAggregator aggregator, final C context) {
+    public AggregationParser<Aggregation> visit(final StatsAggregator aggregator, final Object props, final C context) {
         return PARSER;
     }
 }

@@ -17,7 +17,7 @@ public class FuzzyQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<FuzzyQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final FuzzyQuery query, final C context) {
+    protected QueryBuilder buildQuery(final FuzzyQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.fuzzyQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getFuzziness(), fuzziness -> populateFuzziness(builder, fuzziness));
         applyIfNotNull(query.getMaximumExpansions(), builder::maxExpansions);

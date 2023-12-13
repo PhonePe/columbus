@@ -11,5 +11,5 @@ import org.elasticsearch.index.query.QueryBuilder;
  * @param <C> the type of the context required for transformation.
  */
 public interface QueryToElastic<T extends Query, C extends ElasticQueryTransformationContext<C>>
-        extends QueryTransformationVisitor<QueryBuilder, T, C> {
+        extends QueryTransformationVisitor<QueryBuilder, T, Object, C> {
 }

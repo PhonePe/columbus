@@ -13,7 +13,7 @@ import static com.phonepe.platform.columbus.common.Predicates.applyIfNotNull;
 public class FieldSortToElastic<C extends ElasticSortTransformationContext<C>> extends BaseSortToElastic<FieldSort, C> {
 
     @Override
-    protected SortBuilder<?> buildSort(final FieldSort sort, final C context) {
+    protected SortBuilder<?> buildSort(final FieldSort sort, final Object props, final C context) {
         final var builder = SortBuilders.fieldSort(sort.getField());
         applyIfNotNull(sort.getSortMode(), SearchEnums::toSortMode, builder::sortMode);
         applyIfNotNull(sort.getNumericType(), builder::setNumericType);

@@ -16,7 +16,7 @@ public class GeoDistanceSortToElastic<C extends ElasticSortTransformationContext
         extends BaseSortToElastic<GeoDistanceSort, C> {
 
     @Override
-    protected SortBuilder<?> buildSort(final GeoDistanceSort sort, final C context) {
+    protected SortBuilder<?> buildSort(final GeoDistanceSort sort, final Object props, final C context) {
         final var points = sort.getPoints().stream()
                 .map(MiscTransforms::toElasticGeoPoint)
                 .toArray(GeoPoint[]::new);

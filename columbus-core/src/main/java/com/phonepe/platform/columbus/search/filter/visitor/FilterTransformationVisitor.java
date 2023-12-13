@@ -9,11 +9,12 @@ import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationVis
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link Filter} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public interface FilterTransformationVisitor<R, T extends Filter, C extends QueryTransformationContext<R, C>>
-        extends QueryTransformationVisitor<R, T, C> {
+public interface FilterTransformationVisitor<R, T extends Filter, P, C extends QueryTransformationContext<R, P, C>>
+        extends QueryTransformationVisitor<R, T, P, C> {
 
     @Override
-    R visit(final T filter, final C context);
+    R visit(final T filter, P props, final C context);
 }

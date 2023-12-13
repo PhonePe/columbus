@@ -15,7 +15,11 @@ public class DecayScoreToElastic<C extends ElasticScoreFunctionTransformationCon
         extends BaseScoreFunctionToElastic<DecayScore, C> {
 
     @Override
-    protected ScoreFunctionBuilder<?> buildScoreFunction(final DecayScore scoreFunction, final C context) {
+    protected ScoreFunctionBuilder<?> buildScoreFunction(
+            final DecayScore scoreFunction,
+            final Object props,
+            final C context
+    ) {
         return getBuilder(scoreFunction.getMode()).build(
                 scoreFunction.getField(),
                 scoreFunction.getOrigin(),

@@ -8,11 +8,11 @@ import com.phonepe.platform.columbus.search.query.term.RangeQuery;
 import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationContext;
 
 @RegistryKey(name = LessThanEqualsFilter.TYPE, type = LessThanEqualsFilter.class)
-public class LessThanEqualsFilterToQuery<R, C extends QueryTransformationContext<R, C>>
-        extends FieldFilterToQuery<R, LessThanEqualsFilter, C> {
+public class LessThanEqualsFilterToQuery<R,P, C extends QueryTransformationContext<R, P, C>>
+        extends FieldFilterToQuery<R, LessThanEqualsFilter, P, C> {
 
     @Override
-    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final LessThanEqualsFilter filter) {
+    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final LessThanEqualsFilter filter, final P props) {
         return RangeQuery.builder()
                 .to(filter.getValue());
     }

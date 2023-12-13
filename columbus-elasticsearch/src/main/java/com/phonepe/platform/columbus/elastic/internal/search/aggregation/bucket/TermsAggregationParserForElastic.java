@@ -16,6 +16,7 @@ public class TermsAggregationParserForElastic<C extends ElasticAggregationParser
     protected AggregationParser<Aggregation> createParser(
             final TermsAggregator aggregator,
             final Map<String, AggregationParser<Aggregation>> subAggregationParsers,
+            final Object props,
             final C context
     ) {
         return TermsAggregationParser.builder()

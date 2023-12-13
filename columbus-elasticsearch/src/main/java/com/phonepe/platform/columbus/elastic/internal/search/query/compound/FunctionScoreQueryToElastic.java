@@ -18,13 +18,14 @@ public class FunctionScoreQueryToElastic<C extends ElasticQueryTransformationCon
         extends BaseQueryToElastic<FunctionScoreQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final FunctionScoreQuery query, final C context) {
+    protected QueryBuilder buildQuery(final FunctionScoreQuery query, final Object props, final C context) {
+        final var scoreFunctionTransformer = context.toolkit().scoreFunctionTransformer();
         final var functions = query.getFunctions().stream()
-                .map(context.toolkit().scoreFunctionTransformer()::transform)
+                .map(scoreFunction -> scoreFunctionTransformer.transform(scoreFunction, props))
                 .toArray(FilterFunctionBuilder[]::new);
 
         final var builder = Optional.ofNullable(query.getQuery())
-                .map(context::transform)
+                .map(innerQuery -> context.transform(innerQuery, props))
                 .map(innerQuery -> QueryBuilders.functionScoreQuery(innerQuery, functions))
                 .orElseGet(() -> QueryBuilders.functionScoreQuery(functions));
 

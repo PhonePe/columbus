@@ -9,11 +9,12 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link NodeId} being resolved.
+ * @param <P> represents the additional context required for resolution.
  * @param <C> the type of the context required for resolution.
  */
-public interface NodeIdResolutionVisitor<R, T extends NodeId, C extends NodeIdResolutionContext<R, C>>
-        extends EntityVisitor<R, T, NodeId, C> {
+public interface NodeIdResolutionVisitor<R, T extends NodeId, P, C extends NodeIdResolutionContext<R, P, C>>
+        extends EntityVisitor<R, T, NodeId, P, C> {
 
     @Override
-    R visit(T node, C context);
+    R visit(T node, P props, C context);
 }

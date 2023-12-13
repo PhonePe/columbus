@@ -18,7 +18,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticQueryTransformationContext<C extends ElasticQueryTransformationContext<C>>
-        extends QueryTransformationContext<QueryBuilder, C> {
+        extends QueryTransformationContext<QueryBuilder, Object, C> {
 
     @NonNull
     private final ElasticToolkit toolkit;

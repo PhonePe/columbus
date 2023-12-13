@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 public class ShardIdToElastic<C extends ElasticNodeIdResolutionContext<C>> implements NodeIdToElastic<ShardId, C> {
 
     @Override
-    public ElasticNode visit(final ShardId node, final C context) {
+    public ElasticNode visit(final ShardId node, final Object props, final C context) {
         return ElasticNode.builder()
                 .shard(node.getShard())
                 .routing(node.getShard())

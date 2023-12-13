@@ -16,6 +16,7 @@ public class FiltersAggregationParserForElastic<C extends ElasticAggregationPars
     protected AggregationParser<Aggregation> createParser(
             final FiltersAggregator aggregator,
             final Map<String, AggregationParser<Aggregation>> subAggregationParsers,
+            final Object props,
             final C context
     ) {
         return FiltersAggregationParser.builder()

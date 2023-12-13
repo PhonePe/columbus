@@ -18,7 +18,7 @@ import org.elasticsearch.search.aggregations.Aggregation;
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticAggregationParserResolutionContext<C extends ElasticAggregationParserResolutionContext<C>>
-        extends AggregationParserResolutionContext<Aggregation, C> {
+        extends AggregationParserResolutionContext<Aggregation, Object, C> {
 
     @NonNull
     private final ElasticToolkit toolkit;

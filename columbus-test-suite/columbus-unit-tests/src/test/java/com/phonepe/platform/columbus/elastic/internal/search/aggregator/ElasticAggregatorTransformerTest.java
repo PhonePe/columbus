@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WithElasticToolkit.All
 class ElasticAggregatorTransformerTest {
 
-    private static AggregatorTransformer<AggregationBuilder> aggregatorTransformer;
+    private static AggregatorTransformer<AggregationBuilder, Object> aggregatorTransformer;
 
     @Test
     @DisplayName("Terms")
@@ -53,7 +53,7 @@ class ElasticAggregatorTransformerTest {
                 .missingValue("missing")
                 .collectMode("depth_first")
                 .showCountError(false)
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .order(BucketSortOrder.key().build())
@@ -100,7 +100,7 @@ class ElasticAggregatorTransformerTest {
                         .name("high")
                         .from(100d)
                         .build())
-                .subAggregation(TermsAggregator.builder()
+                .subAggregator(TermsAggregator.builder()
                         .name("keys")
                         .field("other_field")
                         .order(BucketSortOrder.key().build())
@@ -183,7 +183,7 @@ class ElasticAggregatorTransformerTest {
                             .field("field")
                             .value(10)
                             .build())
-                    .subAggregation(TermsAggregator.builder()
+                    .subAggregator(TermsAggregator.builder()
                             .name("keys")
                             .field("other_field")
                             .order(BucketSortOrder.key().build())
@@ -205,7 +205,7 @@ class ElasticAggregatorTransformerTest {
         void testWithoutFilter() {
             final var aggregator = FilterAggregator.builder()
                     .name("filter")
-                    .subAggregation(TermsAggregator.builder()
+                    .subAggregator(TermsAggregator.builder()
                             .name("keys")
                             .field("other_field")
                             .order(BucketSortOrder.key().build())
@@ -240,7 +240,7 @@ class ElasticAggregatorTransformerTest {
                             .value(20)
                             .build())
                     .otherBucketKey("other_bucket")
-                    .subAggregation(TermsAggregator.builder()
+                    .subAggregator(TermsAggregator.builder()
                             .name("keys")
                             .field("other_field")
                             .order(BucketSortOrder.key().build())
@@ -275,7 +275,7 @@ class ElasticAggregatorTransformerTest {
                             .field("field")
                             .value(20)
                             .build())
-                    .subAggregation(TermsAggregator.builder()
+                    .subAggregator(TermsAggregator.builder()
                             .name("keys")
                             .field("other_field")
                             .order(BucketSortOrder.key().build())

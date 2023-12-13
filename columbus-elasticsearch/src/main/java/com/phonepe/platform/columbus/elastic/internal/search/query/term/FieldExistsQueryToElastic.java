@@ -12,7 +12,7 @@ public class FieldExistsQueryToElastic<C extends ElasticQueryTransformationConte
         extends BaseQueryToElastic<FieldExistsQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final FieldExistsQuery query, final C context) {
+    protected QueryBuilder buildQuery(final FieldExistsQuery query, final Object props, final C context) {
         return QueryBuilders.existsQuery(query.getField());
     }
 }

@@ -27,22 +27,22 @@ public interface ElasticToolkit {
 
     SerDe serDe();
 
-    IdResolver<ElasticId> idResolver();
+    IdResolver<ElasticId, Object> idResolver();
 
-    IndexResolver<ElasticIndex> indexResolver();
+    IndexResolver<ElasticIndex, Object> indexResolver();
 
-    NodeIdResolver<ElasticNode> nodeIdResolver();
+    NodeIdResolver<ElasticNode, Object> nodeIdResolver();
 
-    QueryTransformer<QueryBuilder> queryTransformer();
+    QueryTransformer<QueryBuilder, Object> queryTransformer();
 
     @SuppressWarnings("java:S1452")
-    SortTransformer<SortBuilder<?>> sortTransformer();
+    SortTransformer<SortBuilder<?>, Object> sortTransformer();
 
-    ScoreFunctionTransformer<FilterFunctionBuilder> scoreFunctionTransformer();
+    ScoreFunctionTransformer<FilterFunctionBuilder, Object> scoreFunctionTransformer();
 
-    AggregatorTransformer<AggregationBuilder> aggregatorTransformer();
+    AggregatorTransformer<AggregationBuilder, Object> aggregatorTransformer();
 
-    AggregationParserResolver<Aggregation> aggregationParserResolver();
+    AggregationParserResolver<Aggregation, Object> aggregationParserResolver();
 
-    PageResolver<ElasticPage> pageResolver();
+    PageResolver<ElasticPage, Object> pageResolver();
 }

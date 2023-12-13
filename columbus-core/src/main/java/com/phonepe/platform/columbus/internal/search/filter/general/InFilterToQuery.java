@@ -8,10 +8,11 @@ import com.phonepe.platform.columbus.search.query.term.TermsQuery;
 import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationContext;
 
 @RegistryKey(name = InFilter.TYPE, type = InFilter.class)
-public class InFilterToQuery<R, C extends QueryTransformationContext<R, C>> extends FieldFilterToQuery<R, InFilter, C> {
+public class InFilterToQuery<R, P, C extends QueryTransformationContext<R, P, C>>
+        extends FieldFilterToQuery<R, InFilter, P, C> {
 
     @Override
-    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final InFilter filter) {
+    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final InFilter filter, final P props) {
         return TermsQuery.builder()
                 .values(filter.getValues());
     }

@@ -18,7 +18,7 @@ interface DummyClientFactory {
             implements StorageClientProvider<MemoryStorageConfiguration, C> {
 
         @Override
-        public StorageClient visit(final MemoryStorageConfiguration configuration, final C context) {
+        public StorageClient visit(final MemoryStorageConfiguration configuration, final Void props, final C context) {
             return MemoryStorage.builder()
                     .resolver(CommandHelpers.resolver(Registries.empty()))
                     .configuration(configuration)

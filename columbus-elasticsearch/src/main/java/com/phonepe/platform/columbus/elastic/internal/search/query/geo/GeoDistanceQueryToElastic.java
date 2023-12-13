@@ -18,7 +18,7 @@ public class GeoDistanceQueryToElastic<C extends ElasticQueryTransformationConte
         extends BaseQueryToElastic<GeoDistanceQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final GeoDistanceQuery query, final C context) {
+    protected QueryBuilder buildQuery(final GeoDistanceQuery query, final Object props, final C context) {
         final var center = Objects.requireNonNull(query.getCenter(), "center must not be null");
         final var builder = QueryBuilders.geoDistanceQuery(query.getField())
                 .point(MiscTransforms.toElasticGeoPoint(center));

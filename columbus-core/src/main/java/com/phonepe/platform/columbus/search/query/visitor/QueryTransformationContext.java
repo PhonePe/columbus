@@ -10,11 +10,17 @@ import lombok.experimental.SuperBuilder;
  * used by storage.
  *
  * @param <R> represents the type used by storage.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> self reference, the context used by the transformers.
  */
 @SuperBuilder(toBuilder = true)
-public abstract class QueryTransformationContext<R, C extends QueryTransformationContext<R, C>>
-        extends VisitorContext<R, Query, C> implements QueryTransformer<R> {
+public abstract class QueryTransformationContext<R, P, C extends QueryTransformationContext<R, P, C>>
+        extends VisitorContext<R, Query, P, C> implements QueryTransformer<R, P> {
+
+    @Override
+    public R transform(final Query query, final P context) {
+        return visit(query, context);
+    }
 
     @Override
     public R transform(final Query query) {

@@ -11,7 +11,11 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 public class RangeAggregatorToElastic<C extends ElasticAggregatorTransformationContext<C>>
         extends BucketAggregatorToElastic<RangeAggregator, C> {
 
-    protected AggregationBuilder buildBucketAggregation(final RangeAggregator aggregation, final C context) {
+    protected AggregationBuilder buildBucketAggregation(
+            final RangeAggregator aggregation,
+            final Object props,
+            final C context
+    ) {
         final var builder = AggregationBuilders.range(aggregation.getName())
                 .field(aggregation.getField());
 

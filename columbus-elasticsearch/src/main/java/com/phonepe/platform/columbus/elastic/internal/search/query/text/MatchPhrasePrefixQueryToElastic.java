@@ -17,7 +17,7 @@ public class MatchPhrasePrefixQueryToElastic<C extends ElasticQueryTransformatio
         extends BaseQueryToElastic<MatchPhrasePrefixQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchPhrasePrefixQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchPhrasePrefixQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.matchPhrasePrefixQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getAnalysis(), analysis -> populateAnalysis(builder, analysis));
         applyIfNotNull(query.getSlop(), builder::slop);

@@ -9,6 +9,6 @@ import com.phonepe.platform.columbus.visitor.impl.VisitorContext;
  */
 public interface VisitorRegistryFactory {
 
-    <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
-    Registry<K, V> create(VisitorRegistryOptions<K, R, B, C, V> options);
+    <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
+    Registry<K, V> create(VisitorRegistryOptions<K, R, B, P, C, V> options);
 }

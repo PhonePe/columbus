@@ -28,18 +28,25 @@ import com.phonepe.platform.columbus.visitor.impl.VisitorResolver;
  * <p>
  * These components are implemented and managed separately in {@link VisitorResolver}, {@link EntityVisitor}, and
  * {@link VisitorContext}, respectively.
+ * <p>
+ * The context available to a visitor can be further split into 2 types - the data that remains same across all
+ * invocations, and the data that could be different for each invocation. This interface supports providing this
+ * changing data via {@code props} to avoid having to create a new instance of visitor for each invocation.
  *
  * <p>
  * With the {@link VisitorResolver} being created at runtime, it makes it possible to add more {@link EntityVisitor}s
- * to it, making it possible to extend the visitors across modules, without introducing circular dependency.
+ * to it, allowing extension across modules, without introducing circular dependency.
  *
  * @param <R> the return type of the visitor.
  * @param <B> the base type the visitor can visit.
+ * @param <P> the type of additional context the visitor supports.
  * @see VisitorContext
  * @see VisitorResolver
  * @see EntityVisitor
  */
-public interface Visitor<R, B> {
+public interface Visitor<R, B, P> {
+
+    <T extends B> R visit(T value, P props);
 
     <T extends B> R visit(T value);
 }

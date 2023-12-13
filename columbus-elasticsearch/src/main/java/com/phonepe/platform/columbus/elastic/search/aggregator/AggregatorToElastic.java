@@ -11,5 +11,5 @@ import org.elasticsearch.search.aggregations.AggregationBuilder;
  * @param <C> the type of the context required for transformation.
  */
 public interface AggregatorToElastic<T extends Aggregator, C extends ElasticAggregatorTransformationContext<C>>
-        extends AggregatorTransformationVisitor<AggregationBuilder, T, C> {
+        extends AggregatorTransformationVisitor<AggregationBuilder, T, Object, C> {
 }

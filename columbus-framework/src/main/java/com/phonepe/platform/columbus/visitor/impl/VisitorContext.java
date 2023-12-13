@@ -14,20 +14,28 @@ import lombok.experimental.SuperBuilder;
  *
  * @param <R> the return type of the visitor.
  * @param <B> the base type the visitor can visit.
+ * @param <P> the type of props the visitor supports.
  * @param <C> self reference, the context used by the visitor.
  * @see VisitorResolver
  * @see EntityVisitor
  */
 @Getter
 @SuperBuilder(toBuilder = true)
-public abstract class VisitorContext<R, B, C extends VisitorContext<R, B, C>> implements Visitor<R, B> {
+public abstract class VisitorContext<R, B, P, C extends VisitorContext<R, B, P, C>> implements Visitor<R, B, P> {
+
+    private final P defaultProps;
 
     @NonNull
-    private final VisitorResolver<? extends R, ? super B, ? super C> resolver;
+    private final VisitorResolver<? extends R, ? super B, ? super P, ? super C> resolver;
+
+    @Override
+    public <T extends B> R visit(final T value, final P props) {
+        return resolver.visitorFor(value).visit(value, props, self());
+    }
 
     @Override
     public <T extends B> R visit(final T value) {
-        return resolver.visitorFor(value).visit(value, self());
+        return visit(value, defaultProps);
     }
 
     @NonNull

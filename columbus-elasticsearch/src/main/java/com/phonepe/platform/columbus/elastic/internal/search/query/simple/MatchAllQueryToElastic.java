@@ -12,7 +12,7 @@ public class MatchAllQueryToElastic<C extends ElasticQueryTransformationContext<
         extends BaseQueryToElastic<MatchAllQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchAllQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchAllQuery query, final Object props, final C context) {
         return QueryBuilders.matchAllQuery();
     }
 }

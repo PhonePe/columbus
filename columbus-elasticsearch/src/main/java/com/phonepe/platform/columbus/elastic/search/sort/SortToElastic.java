@@ -11,5 +11,5 @@ import org.elasticsearch.search.sort.SortBuilder;
  * @param <C> the type of the context required for transformation.
  */
 public interface SortToElastic<T extends Sort, C extends ElasticSortTransformationContext<C>>
-        extends SortTransformationVisitor<SortBuilder<?>, T, C> {
+        extends SortTransformationVisitor<SortBuilder<?>, T, Object, C> {
 }

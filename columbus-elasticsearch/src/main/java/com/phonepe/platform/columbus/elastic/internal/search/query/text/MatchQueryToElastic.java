@@ -20,7 +20,7 @@ public class MatchQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<MatchQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.matchQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getAnalysis(), analysis -> populateAnalysis(builder, analysis));
         applyIfNotNull(query.getTerms(), terms -> populateTerms(builder, terms));

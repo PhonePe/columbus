@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @WithToolkit.All
 class ElasticIdResolverTest {
 
-    static IdResolver<ElasticId> idResolver;
+    static IdResolver<ElasticId, Object> idResolver;
 
     @Test
     @DisplayName("auto id")

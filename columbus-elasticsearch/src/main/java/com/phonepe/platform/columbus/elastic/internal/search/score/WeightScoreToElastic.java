@@ -11,7 +11,11 @@ public class WeightScoreToElastic<C extends ElasticScoreFunctionTransformationCo
         extends BaseScoreFunctionToElastic<WeightScore, C> {
 
     @Override
-    protected ScoreFunctionBuilder<?> buildScoreFunction(final WeightScore scoreFunction, final C context) {
+    protected ScoreFunctionBuilder<?> buildScoreFunction(
+            final WeightScore scoreFunction,
+            final Object props,
+            final C context
+    ) {
         return new WeightBuilder();
     }
 }

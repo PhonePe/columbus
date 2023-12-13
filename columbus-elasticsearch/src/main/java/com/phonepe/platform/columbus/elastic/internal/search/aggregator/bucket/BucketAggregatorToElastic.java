@@ -10,13 +10,17 @@ public abstract class BucketAggregatorToElastic<T extends BucketAggregator,
         implements AggregatorToElastic<T, C> {
 
     @Override
-    public AggregationBuilder visit(final T aggregator, final C context) {
-        final var builder = buildBucketAggregation(aggregator, context);
-        aggregator.getSubAggregations().stream()
-                .map(context::transform)
+    public AggregationBuilder visit(final T aggregator, final Object props, final C context) {
+        final var builder = buildBucketAggregation(aggregator, props, context);
+        aggregator.getSubAggregators().stream()
+                .map(subAggregator -> context.transform(subAggregator, props))
                 .forEachOrdered(builder::subAggregation);
         return builder;
     }
 
-    protected abstract AggregationBuilder buildBucketAggregation(final T aggregator, final C context);
+    protected abstract AggregationBuilder buildBucketAggregation(
+            final T aggregator,
+            final Object props,
+            final C context
+    );
 }

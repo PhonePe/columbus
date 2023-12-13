@@ -10,5 +10,5 @@ import com.phonepe.platform.columbus.dao.id.visitor.IdResolutionVisitor;
  * @param <C> the type of the context required for resolution.
  */
 public interface IdToElastic<T extends Id, C extends ElasticIdResolutionContext<C>>
-        extends IdResolutionVisitor<ElasticId, T, C> {
+        extends IdResolutionVisitor<ElasticId, T, Object, C> {
 }

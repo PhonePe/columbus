@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WithElasticToolkit.All
 class ElasticSortTransformerTest {
 
-    private static SortTransformer<SortBuilder<?>> sortTransformer;
+    private static SortTransformer<SortBuilder<?>, Object> sortTransformer;
 
     @Test
     @DisplayName("Field")

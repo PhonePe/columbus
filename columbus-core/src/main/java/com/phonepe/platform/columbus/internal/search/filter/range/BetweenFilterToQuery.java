@@ -8,11 +8,11 @@ import com.phonepe.platform.columbus.search.query.term.RangeQuery;
 import com.phonepe.platform.columbus.search.query.visitor.QueryTransformationContext;
 
 @RegistryKey(name = BetweenFilter.TYPE, type = BetweenFilter.class)
-public class BetweenFilterToQuery<R, C extends QueryTransformationContext<R, C>>
-        extends FieldFilterToQuery<R, BetweenFilter, C> {
+public class BetweenFilterToQuery<R, P, C extends QueryTransformationContext<R, P, C>>
+        extends FieldFilterToQuery<R, BetweenFilter, P, C> {
 
     @Override
-    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final BetweenFilter filter) {
+    protected FieldQueryBuilder<?, ?> toFieldQueryBuilder(final BetweenFilter filter, final P props) {
         return RangeQuery.builder()
                 .from(filter.getFrom())
                 .to(filter.getTo())

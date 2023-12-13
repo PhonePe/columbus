@@ -11,12 +11,12 @@ public abstract class BaseQueryToElastic<T extends BaseQuery, C extends ElasticQ
         implements QueryToElastic<T, C> {
 
     @Override
-    public QueryBuilder visit(final T query, final C context) {
-        final var builder = buildQuery(query, context);
+    public QueryBuilder visit(final T query, final Object props, final C context) {
+        final var builder = buildQuery(query, props, context);
         applyIfNotNull(query.getName(), builder::queryName);
         applyIfNotNull(query.getBoost(), builder::boost);
         return builder;
     }
 
-    protected abstract QueryBuilder buildQuery(final T query, final C context);
+    protected abstract QueryBuilder buildQuery(final T query, final Object props, final C context);
 }

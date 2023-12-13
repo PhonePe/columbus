@@ -8,12 +8,13 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link Aggregator} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public interface AggregatorTransformationVisitor<R, T extends Aggregator,
-        C extends AggregatorTransformationContext<R, C>>
-        extends EntityVisitor<R, T, Aggregator, C> {
+public interface AggregatorTransformationVisitor<R, T extends Aggregator, P,
+        C extends AggregatorTransformationContext<R, P, C>>
+        extends EntityVisitor<R, T, Aggregator, P, C> {
 
     @Override
-    R visit(T aggregator, C context);
+    R visit(T aggregator, P props, C context);
 }

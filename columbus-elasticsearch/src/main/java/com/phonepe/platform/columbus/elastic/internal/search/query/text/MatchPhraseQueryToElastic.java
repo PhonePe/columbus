@@ -17,7 +17,7 @@ public class MatchPhraseQueryToElastic<C extends ElasticQueryTransformationConte
         extends BaseQueryToElastic<MatchPhraseQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchPhraseQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchPhraseQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.matchPhraseQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getAnalysis(), analysis -> populateAnalysis(builder, analysis));
         applyIfNotNull(query.getSlop(), builder::slop);

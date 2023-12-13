@@ -40,29 +40,29 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
     private final LateInit<StorageSettings> storageSettings = new LateInit<>("storageSettings");
     private final LateInit<ElasticConfiguration> configuration = new LateInit<>("configuration");
 
-    private final LazyInit<IdResolver<ElasticId>> idResolver =
+    private final LazyInit<IdResolver<ElasticId, Object>> idResolver =
             new LazyInit<>("idResolver", this::canInitializeIdResolver, this::initializeIdResolver);
-    private final LazyInit<IndexResolver<ElasticIndex>> indexResolver =
+    private final LazyInit<IndexResolver<ElasticIndex, Object>> indexResolver =
             new LazyInit<>("indexResolver", this::canInitializeIndexResolver, this::initializeIndexResolver);
-    private final LazyInit<NodeIdResolver<ElasticNode>> nodeIdResolver =
+    private final LazyInit<NodeIdResolver<ElasticNode, Object>> nodeIdResolver =
             new LazyInit<>("nodeIdResolver", this::canInitializeNodeIdResolver, this::initializeNodeIdResolver);
-    private final LazyInit<PageResolver<ElasticPage>> pageResolver =
+    private final LazyInit<PageResolver<ElasticPage, Object>> pageResolver =
             new LazyInit<>("pageResolver", this::canInitializePageResolver, this::initializePageResolver);
 
     private final LazyInit<ElasticToolkitData> toolkitData =
             new LazyInit<>("toolkitData", this::canInitializeToolkitData, this::initializeToolkitData);
 
-    private final LazyInit<QueryTransformer<QueryBuilder>> queryTransformer =
+    private final LazyInit<QueryTransformer<QueryBuilder, Object>> queryTransformer =
             new LazyInit<>("queryTransformer", this::canInitializeQueryTransformer, this::initializeQueryTransformer);
-    private final LazyInit<SortTransformer<SortBuilder<?>>> sortTransformer =
+    private final LazyInit<SortTransformer<SortBuilder<?>, Object>> sortTransformer =
             new LazyInit<>("sortTransformer", this::canInitializeSortTransformer, this::initializeSortTransformer);
-    private final LazyInit<ScoreFunctionTransformer<FilterFunctionBuilder>> scoreFunctionTransformer =
+    private final LazyInit<ScoreFunctionTransformer<FilterFunctionBuilder, Object>> scoreFunctionTransformer =
             new LazyInit<>("scoreFunctionTransformer", this::canInitializeScoreFunctionTransformer,
                     this::initializeScoreFunctionTransformer);
-    private final LazyInit<AggregatorTransformer<AggregationBuilder>> aggregatorTransformer =
+    private final LazyInit<AggregatorTransformer<AggregationBuilder, Object>> aggregatorTransformer =
             new LazyInit<>("aggregatorTransformer", this::canInitializeAggregatorTransformer,
                     this::initializeAggregatorTransformer);
-    private final LazyInit<AggregationParserResolver<Aggregation>> aggregationParserResolver =
+    private final LazyInit<AggregationParserResolver<Aggregation, Object>> aggregationParserResolver =
             new LazyInit<>("aggregationParserResolver", this::canInitializeAggregationParserResolver,
                     this::initializeAggregationParserResolver);
     private final LazyInit<ElasticToolkit> elasticToolkit =
@@ -100,19 +100,19 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
         return configuration;
     }
 
-    public Initializer<IdResolver<ElasticId>> getIdResolver() {
+    public Initializer<IdResolver<ElasticId, Object>> getIdResolver() {
         return idResolver;
     }
 
-    public Initializer<IndexResolver<ElasticIndex>> getIndexResolver() {
+    public Initializer<IndexResolver<ElasticIndex, Object>> getIndexResolver() {
         return indexResolver;
     }
 
-    public Initializer<NodeIdResolver<ElasticNode>> getNodeIdResolver() {
+    public Initializer<NodeIdResolver<ElasticNode, Object>> getNodeIdResolver() {
         return nodeIdResolver;
     }
 
-    public Initializer<PageResolver<ElasticPage>> getPageResolver() {
+    public Initializer<PageResolver<ElasticPage, Object>> getPageResolver() {
         return pageResolver;
     }
 
@@ -120,24 +120,24 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
         return toolkitData;
     }
 
-    public Initializer<QueryTransformer<QueryBuilder>> getQueryTransformer() {
+    public Initializer<QueryTransformer<QueryBuilder, Object>> getQueryTransformer() {
         return queryTransformer;
     }
 
     @SuppressWarnings("java:S1452")
-    public Initializer<SortTransformer<SortBuilder<?>>> getSortTransformer() {
+    public Initializer<SortTransformer<SortBuilder<?>, Object>> getSortTransformer() {
         return sortTransformer;
     }
 
-    public Initializer<ScoreFunctionTransformer<FilterFunctionBuilder>> getScoreFunctionTransformer() {
+    public Initializer<ScoreFunctionTransformer<FilterFunctionBuilder, Object>> getScoreFunctionTransformer() {
         return scoreFunctionTransformer;
     }
 
-    public Initializer<AggregatorTransformer<AggregationBuilder>> getAggregatorTransformer() {
+    public Initializer<AggregatorTransformer<AggregationBuilder, Object>> getAggregatorTransformer() {
         return aggregatorTransformer;
     }
 
-    public Initializer<AggregationParserResolver<Aggregation>> getAggregationParserResolver() {
+    public Initializer<AggregationParserResolver<Aggregation, Object>> getAggregationParserResolver() {
         return aggregationParserResolver;
     }
 
@@ -147,19 +147,19 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
 
     protected abstract boolean canInitializeIdResolver();
 
-    protected abstract IdResolver<ElasticId> initializeIdResolver();
+    protected abstract IdResolver<ElasticId, Object> initializeIdResolver();
 
     protected abstract boolean canInitializeIndexResolver();
 
-    protected abstract IndexResolver<ElasticIndex> initializeIndexResolver();
+    protected abstract IndexResolver<ElasticIndex, Object> initializeIndexResolver();
 
     protected abstract boolean canInitializeNodeIdResolver();
 
-    protected abstract NodeIdResolver<ElasticNode> initializeNodeIdResolver();
+    protected abstract NodeIdResolver<ElasticNode, Object> initializeNodeIdResolver();
 
     protected abstract boolean canInitializePageResolver();
 
-    protected abstract PageResolver<ElasticPage> initializePageResolver();
+    protected abstract PageResolver<ElasticPage, Object> initializePageResolver();
 
     protected abstract boolean canInitializeToolkitData();
 
@@ -167,24 +167,24 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
 
     protected abstract boolean canInitializeQueryTransformer();
 
-    protected abstract QueryTransformer<QueryBuilder> initializeQueryTransformer();
+    protected abstract QueryTransformer<QueryBuilder, Object> initializeQueryTransformer();
 
     protected abstract boolean canInitializeSortTransformer();
 
     @SuppressWarnings("java:S1452")
-    protected abstract SortTransformer<SortBuilder<?>> initializeSortTransformer();
+    protected abstract SortTransformer<SortBuilder<?>, Object> initializeSortTransformer();
 
     protected abstract boolean canInitializeScoreFunctionTransformer();
 
-    protected abstract ScoreFunctionTransformer<FilterFunctionBuilder> initializeScoreFunctionTransformer();
+    protected abstract ScoreFunctionTransformer<FilterFunctionBuilder, Object> initializeScoreFunctionTransformer();
 
     protected abstract boolean canInitializeAggregatorTransformer();
 
-    protected abstract AggregatorTransformer<AggregationBuilder> initializeAggregatorTransformer();
+    protected abstract AggregatorTransformer<AggregationBuilder, Object> initializeAggregatorTransformer();
 
     protected abstract boolean canInitializeAggregationParserResolver();
 
-    protected abstract AggregationParserResolver<Aggregation> initializeAggregationParserResolver();
+    protected abstract AggregationParserResolver<Aggregation, Object> initializeAggregationParserResolver();
 
     protected abstract boolean canInitializeElasticToolkit();
 

@@ -20,7 +20,7 @@ public class MatchBoolPrefixQueryToElastic<C extends ElasticQueryTransformationC
         extends BaseQueryToElastic<MatchBoolPrefixQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchBoolPrefixQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchBoolPrefixQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.matchBoolPrefixQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getAnalysis(), analysis -> populateAnalysis(builder, analysis));
         applyIfNotNull(query.getTerms(), terms -> populateTerms(builder, terms));

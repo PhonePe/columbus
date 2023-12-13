@@ -72,7 +72,7 @@ public class ElasticToolkitHelpers {
         return ElasticIdResolver.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<IdResolutionVisitor<ElasticId, Id, ElasticIdResolver>>typed(
+                        Generics.<IdResolutionVisitor<ElasticId, Id, Object, ElasticIdResolver>>typed(
                                 IdResolutionVisitor.class),
                         ElasticIdResolver.class,
                         Id.class,
@@ -89,7 +89,7 @@ public class ElasticToolkitHelpers {
         return ElasticIndexResolver.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<IndexResolutionVisitor<ElasticIndex, Index, ElasticIndexResolver>>typed(
+                        Generics.<IndexResolutionVisitor<ElasticIndex, Index, Object, ElasticIndexResolver>>typed(
                                 IndexResolutionVisitor.class),
                         ElasticIndexResolver.class,
                         Index.class,
@@ -106,7 +106,7 @@ public class ElasticToolkitHelpers {
         return ElasticNodeIdResolver.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<NodeIdResolutionVisitor<ElasticNode, NodeId, ElasticNodeIdResolver>>typed(
+                        Generics.<NodeIdResolutionVisitor<ElasticNode, NodeId, Object, ElasticNodeIdResolver>>typed(
                                 NodeIdResolutionVisitor.class),
                         ElasticNodeIdResolver.class,
                         NodeId.class,
@@ -123,7 +123,7 @@ public class ElasticToolkitHelpers {
         return ElasticQueryTransformer.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<QueryTransformationVisitor<QueryBuilder, Query, ElasticQueryTransformer>>typed(
+                        Generics.<QueryTransformationVisitor<QueryBuilder, Query, Object, ElasticQueryTransformer>>typed(
                                 QueryTransformationVisitor.class),
                         ElasticQueryTransformer.class,
                         Query.class,
@@ -141,7 +141,7 @@ public class ElasticToolkitHelpers {
         return ElasticSortTransformer.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<SortTransformationVisitor<SortBuilder<?>, Sort, ElasticSortTransformer>>typed(
+                        Generics.<SortTransformationVisitor<SortBuilder<?>, Sort, Object, ElasticSortTransformer>>typed(
                                 SortTransformationVisitor.class),
                         ElasticSortTransformer.class,
                         Sort.class,
@@ -159,7 +159,7 @@ public class ElasticToolkitHelpers {
         return ElasticScoreFunctionTransformer.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<ScoreFunctionTransformationVisitor<FilterFunctionBuilder, ScoreFunction,
+                        Generics.<ScoreFunctionTransformationVisitor<FilterFunctionBuilder, ScoreFunction, Object,
                                 ElasticScoreFunctionTransformer>>typed(ScoreFunctionTransformationVisitor.class),
                         ElasticScoreFunctionTransformer.class,
                         ScoreFunction.class,
@@ -177,7 +177,7 @@ public class ElasticToolkitHelpers {
         return ElasticAggregatorTransformer.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<AggregatorTransformationVisitor<AggregationBuilder, Aggregator,
+                        Generics.<AggregatorTransformationVisitor<AggregationBuilder, Aggregator, Object,
                                 ElasticAggregatorTransformer>>typed(AggregatorTransformationVisitor.class),
                         ElasticAggregatorTransformer.class,
                         Aggregator.class,
@@ -195,7 +195,7 @@ public class ElasticToolkitHelpers {
         return ElasticAggregationParserResolver.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<AggregationParserResolutionVisitor<Aggregation, Aggregator,
+                        Generics.<AggregationParserResolutionVisitor<Aggregation, Aggregator, Object,
                                 ElasticAggregationParserResolver>>typed(AggregationParserResolutionVisitor.class),
                         ElasticAggregationParserResolver.class,
                         Aggregator.class,
@@ -212,7 +212,7 @@ public class ElasticToolkitHelpers {
         return ElasticPageResolver.builder()
                 .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
                         visitorFactory,
-                        Generics.<PageResolutionVisitor<ElasticPage, PageBounds, ElasticPageResolver>>typed(
+                        Generics.<PageResolutionVisitor<ElasticPage, PageBounds, Object, ElasticPageResolver>>typed(
                                 PageResolutionVisitor.class),
                         ElasticPageResolver.class,
                         PageBounds.class,

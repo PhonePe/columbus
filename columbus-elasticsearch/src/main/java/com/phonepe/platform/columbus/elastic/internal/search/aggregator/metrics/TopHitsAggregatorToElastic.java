@@ -5,6 +5,7 @@ import com.phonepe.platform.columbus.elastic.search.aggregator.AggregatorToElast
 import com.phonepe.platform.columbus.elastic.search.aggregator.ElasticAggregatorTransformationContext;
 import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 import com.phonepe.platform.columbus.search.aggregator.metrics.TopHitsAggregator;
+import com.phonepe.platform.columbus.search.sort.Sort;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 
@@ -15,12 +16,13 @@ public class TopHitsAggregatorToElastic<T, C extends ElasticAggregatorTransforma
         implements AggregatorToElastic<TopHitsAggregator<T>, C> {
 
     @Override
-    public AggregationBuilder visit(final TopHitsAggregator<T> aggregation, final C context) {
+    public AggregationBuilder visit(final TopHitsAggregator<T> aggregation, final Object props, final C context) {
         final var builder = AggregationBuilders.topHits(aggregation.getName())
                 .from(aggregation.getFrom())
                 .size(aggregation.getSize());
+        final var sortTransformer = context.toolkit().sortTransformer();
         aggregation.getSorts().stream()
-                .map(context.toolkit().sortTransformer()::transform)
+                .map((Sort sort) -> sortTransformer.transform(sort, props))
                 .forEachOrdered(builder::sort);
         applyIfNotNull(aggregation.getProjection(), MiscTransforms::toElastic, builder::fetchSource);
         return builder;

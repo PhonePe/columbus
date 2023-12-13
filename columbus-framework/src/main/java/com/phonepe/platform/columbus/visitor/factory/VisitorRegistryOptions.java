@@ -19,26 +19,27 @@ import java.util.function.Function;
  * @param <K> the key type of the registry.
  * @param <R> the result type of the visitor.
  * @param <B> the base type the visitor can visit.
+ * @param <P> the type of props the visitor supports.
  * @param <C> the type of the context the visitors can work with.
  * @param <V> the type of the entity visitor.
  */
 @Data
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
-public class VisitorRegistryOptions<K, R, B, C extends VisitorContext<R, B, C>,
-        V extends EntityVisitor<R, ? extends B, B, C>>
+public class VisitorRegistryOptions<K, R, B, P, C extends VisitorContext<R, B, P, C>,
+        V extends EntityVisitor<R, ? extends B, B, P, C>>
         extends RegistryOptions<K, V> {
 
     @NonNull
     private final Class<C> contextType;
 
-    public static <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
-    VisitorRegistryOptionsBuilder<K, R, B, C, V, ?, ?> builder(
+    public static <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
+    VisitorRegistryOptionsBuilder<K, R, B, P, C, V, ?, ?> builder(
             final Class<V> visitorType,
             final Class<C> contextType,
             final Function<RegistryEntry<? extends V>, K> keyExtractor
     ) {
-        return new VisitorRegistryOptionsBuilderImpl<K, R, B, C, V>()
+        return new VisitorRegistryOptionsBuilderImpl<K, R, B, P, C, V>()
                 .valueType(visitorType)
                 .contextType(contextType)
                 .keyExtractor(keyExtractor);

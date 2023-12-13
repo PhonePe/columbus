@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @Accessors(fluent = true)
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticIndexResolutionContext<C extends ElasticIndexResolutionContext<C>>
-        extends IndexResolutionContext<ElasticIndex, C> {
+        extends IndexResolutionContext<ElasticIndex, Object, C> {
 
     @NonNull
     @Builder.Default

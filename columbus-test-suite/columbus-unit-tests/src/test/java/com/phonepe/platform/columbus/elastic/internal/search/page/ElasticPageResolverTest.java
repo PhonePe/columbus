@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @WithElasticToolkit.All
 class ElasticPageResolverTest {
 
-    static PageResolver<ElasticPage> pageResolver;
+    static PageResolver<ElasticPage, Object> pageResolver;
 
     @Test
     @DisplayName("page offset")
@@ -44,7 +44,7 @@ class ElasticPageResolverTest {
     void testPagePointer() {
         final var page = Pages.pointer(10, "pointer");
 
-        final var elasticPage = pageResolver.resolve(page);
+        final var elasticPage = pageResolver.resolve(page, null);
 
         assertAll(
                 "page pointer",

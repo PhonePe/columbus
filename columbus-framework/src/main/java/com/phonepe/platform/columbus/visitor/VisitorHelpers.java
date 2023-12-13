@@ -20,10 +20,10 @@ import java.util.function.Predicate;
 @UtilityClass
 public class VisitorHelpers {
 
-    public <R, B, C extends VisitorContext<R, B, C>> VisitorRegistryResolver<R, B, C> resolver(
-            final Registry<? super B, ? extends EntityVisitor<? extends R, ? extends B, B, ? super C>> registry
+    public <R, B, P, C extends VisitorContext<R, B, P, C>> VisitorRegistryResolver<R, B, P, C> resolver(
+            final Registry<? super B, ? extends EntityVisitor<? extends R, ? extends B, B, ? super P, ? super C>> registry
     ) {
-        return VisitorRegistryResolver.<R, B, C>builder()
+        return VisitorRegistryResolver.<R, B, P, C>builder()
                 .registry(registry)
                 .build();
     }
@@ -33,8 +33,8 @@ public class VisitorHelpers {
     }
 
     @SuppressWarnings("java:S1452")
-    public <R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
-    VisitorRegistryOptions.VisitorRegistryOptionsBuilder<String, R, B, C, V, ?, ?> optionsForName(
+    public <R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
+    VisitorRegistryOptions.VisitorRegistryOptionsBuilder<String, R, B, P, C, V, ?, ?> optionsForName(
             final Class<V> baseVisitorType,
             final Class<C> contextType
     ) {
@@ -43,18 +43,29 @@ public class VisitorHelpers {
     }
 
     @SuppressWarnings("java:S1452")
-    public <R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
-    VisitorRegistryOptions.VisitorRegistryOptionsBuilder<Class<?>, R, B, C, V, ?, ?> optionsForType(
+    public <R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
+    VisitorRegistryOptions.VisitorRegistryOptionsBuilder<Class<?>, R, B, P, C, V, ?, ?> optionsForType(
             final Class<V> baseVisitorType,
             final Class<C> contextType
     ) {
-        return VisitorRegistryOptions.<Class<?>, R, B, C, V>builder(baseVisitorType, contextType, RegistryEntry::type)
+        return VisitorRegistryOptions.<Class<?>, R, B, P, C, V>builder(
+                        baseVisitorType,
+                        contextType,
+                        RegistryEntry::type)
                 .keyValidator(Predicate.not(Void.class::equals));
     }
 
-    public <R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
+    public <R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
     boolean acceptsContext(final Class<? extends V> visitorType, final Class<C> contextType) {
-        final var parameter = Generics.getTypeParameter(visitorType, EntityVisitor.class.getTypeParameters()[3]);
-        return Generics.isSuperType(parameter, contextType);
+        final var contextParameter = Generics.getTypeParameter(visitorType, EntityVisitor.class.getTypeParameters()[4]);
+        if (Generics.isSuperType(contextParameter, contextType)) {
+            return true;
+        }
+        if (!Generics.isSuperType(contextParameter, contextType.getSuperclass())) {
+            return false;
+        }
+        final var propsType = Generics.getTypeParameter(contextType, VisitorContext.class.getTypeParameters()[2]);
+        final var propsParameter = Generics.getTypeParameter(visitorType, EntityVisitor.class.getTypeParameters()[3]);
+        return Generics.isSuperType(propsParameter, propsType);
     }
 }

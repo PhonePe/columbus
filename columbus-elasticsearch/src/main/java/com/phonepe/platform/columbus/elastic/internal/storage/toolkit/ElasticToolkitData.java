@@ -36,79 +36,79 @@ public class ElasticToolkitData implements ElasticToolkit {
 
     @Getter
     @NonNull
-    private final IdResolver<ElasticId> idResolver;
+    private final IdResolver<ElasticId, Object> idResolver;
 
     @Getter
     @NonNull
-    private final IndexResolver<ElasticIndex> indexResolver;
+    private final IndexResolver<ElasticIndex, Object> indexResolver;
 
     @Getter
     @NonNull
-    private final NodeIdResolver<ElasticNode> nodeIdResolver;
+    private final NodeIdResolver<ElasticNode, Object> nodeIdResolver;
 
     @Getter
     @NonNull
-    private final PageResolver<ElasticPage> pageResolver;
+    private final PageResolver<ElasticPage, Object> pageResolver;
 
-    private final LateInit<QueryTransformer<QueryBuilder>> queryTransformer = new LateInit<>("Query");
+    private final LateInit<QueryTransformer<QueryBuilder, Object>> queryTransformer = new LateInit<>("Query");
 
-    private final LateInit<SortTransformer<SortBuilder<?>>> sortTransformer = new LateInit<>("Sort");
+    private final LateInit<SortTransformer<SortBuilder<?>, Object>> sortTransformer = new LateInit<>("Sort");
 
-    private final LateInit<ScoreFunctionTransformer<FilterFunctionBuilder>> scoreFunctionTransformer =
+    private final LateInit<ScoreFunctionTransformer<FilterFunctionBuilder, Object>> scoreFunctionTransformer =
             new LateInit<>("ScoreFunction");
 
-    private final LateInit<AggregatorTransformer<AggregationBuilder>> aggregatorTransformer =
+    private final LateInit<AggregatorTransformer<AggregationBuilder, Object>> aggregatorTransformer =
             new LateInit<>("Aggregator");
 
-    private final LateInit<AggregationParserResolver<Aggregation>> aggregationParserResolver =
+    private final LateInit<AggregationParserResolver<Aggregation, Object>> aggregationParserResolver =
             new LateInit<>("AggregationParser");
 
     @Override
-    public QueryTransformer<QueryBuilder> queryTransformer() {
+    public QueryTransformer<QueryBuilder, Object> queryTransformer() {
         return queryTransformer.get();
     }
 
     @Override
-    public SortTransformer<SortBuilder<?>> sortTransformer() {
+    public SortTransformer<SortBuilder<?>, Object> sortTransformer() {
         return sortTransformer.get();
     }
 
     @Override
-    public ScoreFunctionTransformer<FilterFunctionBuilder> scoreFunctionTransformer() {
+    public ScoreFunctionTransformer<FilterFunctionBuilder, Object> scoreFunctionTransformer() {
         return scoreFunctionTransformer.get();
     }
 
     @Override
-    public AggregatorTransformer<AggregationBuilder> aggregatorTransformer() {
+    public AggregatorTransformer<AggregationBuilder, Object> aggregatorTransformer() {
         return aggregatorTransformer.get();
     }
 
     @Override
-    public AggregationParserResolver<Aggregation> aggregationParserResolver() {
+    public AggregationParserResolver<Aggregation, Object> aggregationParserResolver() {
         return aggregationParserResolver.get();
     }
 
-    public ElasticToolkitData queryTransformer(final QueryTransformer<QueryBuilder> queryTransformer) {
+    public ElasticToolkitData queryTransformer(final QueryTransformer<QueryBuilder, Object> queryTransformer) {
         this.queryTransformer.set(queryTransformer);
         return this;
     }
 
-    public ElasticToolkitData sortTransformer(final SortTransformer<SortBuilder<?>> sortTransformer) {
+    public ElasticToolkitData sortTransformer(final SortTransformer<SortBuilder<?>, Object> sortTransformer) {
         this.sortTransformer.set(sortTransformer);
         return this;
     }
 
-    public ElasticToolkitData scoreFunctionTransformer(final ScoreFunctionTransformer<FilterFunctionBuilder> scoreFunctionTransformer) {
+    public ElasticToolkitData scoreFunctionTransformer(final ScoreFunctionTransformer<FilterFunctionBuilder, Object> scoreFunctionTransformer) {
         this.scoreFunctionTransformer.set(scoreFunctionTransformer);
         return this;
     }
 
-    public ElasticToolkitData aggregatorTransformer(final AggregatorTransformer<AggregationBuilder> aggregatorTransformer) {
+    public ElasticToolkitData aggregatorTransformer(final AggregatorTransformer<AggregationBuilder, Object> aggregatorTransformer) {
         this.aggregatorTransformer.set(aggregatorTransformer);
         return this;
     }
 
-    public ElasticToolkitData aggregationParserResolver(final AggregationParserResolver<Aggregation> aggregationParserResolver) {
+    public ElasticToolkitData aggregationParserResolver(final AggregationParserResolver<Aggregation, Object> aggregationParserResolver) {
         this.aggregationParserResolver.set(aggregationParserResolver);
         return this;
     }

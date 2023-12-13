@@ -14,7 +14,7 @@ public class TermQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<TermQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final TermQuery query, final C context) {
+    protected QueryBuilder buildQuery(final TermQuery query, final Object props, final C context) {
         final var builder = QueryBuilders.termQuery(query.getField(), query.getValue());
         applyIfNotNull(query.getCaseInsensitive(), builder::caseInsensitive);
         return builder;

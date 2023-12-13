@@ -15,7 +15,7 @@ public class ScriptQueryToElastic<C extends ElasticQueryTransformationContext<C>
         extends BaseQueryToElastic<ScriptQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final ScriptQuery query, final C context) {
+    protected QueryBuilder buildQuery(final ScriptQuery query, final Object props, final C context) {
         final var script = Objects.requireNonNull(query.getScript(), "script must not be null");
         return QueryBuilders.scriptQuery(MiscTransforms.toElastic(script));
     }

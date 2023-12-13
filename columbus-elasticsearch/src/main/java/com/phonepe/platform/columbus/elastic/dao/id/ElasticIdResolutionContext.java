@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
  */
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticIdResolutionContext<C extends ElasticIdResolutionContext<C>>
-        extends IdResolutionContext<ElasticId, C> {
+        extends IdResolutionContext<ElasticId, Object, C> {
 }

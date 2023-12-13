@@ -10,7 +10,7 @@ import org.elasticsearch.search.sort.SortBuilders;
 public class ScoreSortToElastic<C extends ElasticSortTransformationContext<C>> extends BaseSortToElastic<ScoreSort, C> {
 
     @Override
-    protected SortBuilder<?> buildSort(final ScoreSort sort, final C context) {
+    protected SortBuilder<?> buildSort(final ScoreSort sort, final Object props, final C context) {
         return SortBuilders.scoreSort();
     }
 }

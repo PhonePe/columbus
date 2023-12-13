@@ -14,8 +14,8 @@ public class ConstantScoreQueryToElastic<C extends ElasticQueryTransformationCon
         extends BaseQueryToElastic<ConstantScoreQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final ConstantScoreQuery query, final C context) {
+    protected QueryBuilder buildQuery(final ConstantScoreQuery query, final Object props, final C context) {
         final var innerQuery = Objects.requireNonNull(query.getQuery(), "query must not be null");
-        return QueryBuilders.constantScoreQuery(context.transform(innerQuery));
+        return QueryBuilders.constantScoreQuery(context.transform(innerQuery, props));
     }
 }

@@ -17,7 +17,7 @@ public class ScriptSortToElastic<C extends ElasticSortTransformationContext<C>>
         extends BaseSortToElastic<ScriptSort, C> {
 
     @Override
-    protected SortBuilder<?> buildSort(final ScriptSort sort, final C context) {
+    protected SortBuilder<?> buildSort(final ScriptSort sort, final Object props, final C context) {
         final var script = Objects.requireNonNull(sort.getScript(), "script must not be null");
         final var valueType = Objects.requireNonNull(sort.getValueType(), "valueType must not be null");
         final var builder = SortBuilders.scriptSort(

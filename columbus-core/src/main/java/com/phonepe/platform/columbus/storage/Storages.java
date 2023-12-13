@@ -33,7 +33,7 @@ public class Storages {
     }
 
     public <C extends StorageClientFactoryContext<C>>
-    VisitorRegistryResolver<StorageClient, StorageConfiguration, C> storageProviderResolver(
+    VisitorRegistryResolver<StorageClient, StorageConfiguration, Void, C> storageProviderResolver(
             final Class<C> factoryType,
             final Toolkit toolkit,
             final StorageSettings settings

@@ -12,7 +12,7 @@ public class MatchNoneQueryToElastic<C extends ElasticQueryTransformationContext
         extends BaseQueryToElastic<MatchNoneQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final MatchNoneQuery query, final C context) {
+    protected QueryBuilder buildQuery(final MatchNoneQuery query, final Object props, final C context) {
         return new MatchNoneQueryBuilder();
     }
 }

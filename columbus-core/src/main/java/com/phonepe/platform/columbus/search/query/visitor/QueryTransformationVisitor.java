@@ -8,11 +8,12 @@ import com.phonepe.platform.columbus.visitor.impl.EntityVisitor;
  *
  * @param <R> represents the type used by storage.
  * @param <T> the type of the {@link Query} being transformed.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> the type of the context required for transformation.
  */
-public interface QueryTransformationVisitor<R, T extends Query, C extends QueryTransformationContext<R, C>>
-        extends EntityVisitor<R, T, Query, C> {
+public interface QueryTransformationVisitor<R, T extends Query, P, C extends QueryTransformationContext<R, P, C>>
+        extends EntityVisitor<R, T, Query, P, C> {
 
     @Override
-    R visit(T query, C context);
+    R visit(T query, P props, C context);
 }

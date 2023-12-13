@@ -29,7 +29,7 @@ import static com.phonepe.platform.columbus.common.Predicates.applyIfNotNull;
 @UtilityClass
 public class RegistryCreators {
 
-    public <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
+    public <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
     Registry<K, V> createVisitorRegistry(
             final VisitorRegistryFactory factory,
             final Class<V> visitorType,
@@ -58,7 +58,7 @@ public class RegistryCreators {
                 .build();
     }
 
-    public <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
+    public <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
     Registry<K, V> createVisitorRegistryByType(
             final VisitorRegistryFactory factory,
             final Class<V> visitorType,
@@ -71,7 +71,7 @@ public class RegistryCreators {
         return Registries.usingClassHierarchy(factory.create(options.build()), baseType);
     }
 
-    public <K, R, B, C extends VisitorContext<R, B, C>, V extends EntityVisitor<R, ? extends B, B, C>>
+    public <K, R, B, P, C extends VisitorContext<R, B, P, C>, V extends EntityVisitor<R, ? extends B, B, P, C>>
     Registry<K, V> createVisitorRegistryByName(
             final VisitorRegistryFactory factory,
             final Class<V> visitorType,

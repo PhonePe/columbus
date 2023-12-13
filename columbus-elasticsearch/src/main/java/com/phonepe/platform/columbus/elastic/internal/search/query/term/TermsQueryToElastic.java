@@ -12,7 +12,7 @@ public class TermsQueryToElastic<C extends ElasticQueryTransformationContext<C>>
         extends BaseQueryToElastic<TermsQuery, C> {
 
     @Override
-    protected QueryBuilder buildQuery(final TermsQuery query, final C context) {
+    protected QueryBuilder buildQuery(final TermsQuery query, final Object props, final C context) {
         return QueryBuilders.termsQuery(query.getField(), query.getValues());
     }
 }

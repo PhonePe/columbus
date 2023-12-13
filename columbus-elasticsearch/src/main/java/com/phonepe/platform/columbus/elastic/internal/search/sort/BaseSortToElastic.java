@@ -12,12 +12,12 @@ public abstract class BaseSortToElastic<T extends BaseSort, C extends ElasticSor
         implements SortToElastic<T, C> {
 
     @Override
-    public SortBuilder<?> visit(final T sort, final C context) {
-        final var builder = buildSort(sort, context);
+    public SortBuilder<?> visit(final T sort, final Object props, final C context) {
+        final var builder = buildSort(sort, props, context);
         applyIfNotNull(sort.getOrder(), SearchEnums::toSortOrder, builder::order);
         return builder;
     }
 
     @SuppressWarnings("java:S1452")
-    protected abstract SortBuilder<?> buildSort(final T sort, final C context);
+    protected abstract SortBuilder<?> buildSort(final T sort, final Object props, final C context);
 }

@@ -24,7 +24,7 @@ class ElasticNodeIdResolverTest {
     private static final String REPLICA = "replica";
     private static final String SHARD = "shard";
     private static final String ROUTING = "routing";
-    static NodeIdResolver<ElasticNode> nodeIdResolver;
+    static NodeIdResolver<ElasticNode, Object> nodeIdResolver;
 
     @Test
     @DisplayName("replica")
@@ -48,7 +48,7 @@ class ElasticNodeIdResolverTest {
                 .routing(SHARD)
                 .build();
 
-        final var elasticNode = nodeIdResolver.resolve(nodeId);
+        final var elasticNode = nodeIdResolver.resolve(nodeId, null);
 
         assertEquals(expected, elasticNode, "node id must match");
     }

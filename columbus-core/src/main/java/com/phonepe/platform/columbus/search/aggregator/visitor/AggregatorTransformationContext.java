@@ -10,11 +10,17 @@ import lombok.experimental.SuperBuilder;
  * representation used by storage.
  *
  * @param <R> represents the type used by storage.
+ * @param <P> represents the additional context required for transformation.
  * @param <C> self reference, the context used by the transformers.
  */
 @SuperBuilder(toBuilder = true)
-public abstract class AggregatorTransformationContext<R, C extends AggregatorTransformationContext<R, C>>
-        extends VisitorContext<R, Aggregator, C> implements AggregatorTransformer<R> {
+public abstract class AggregatorTransformationContext<R, P, C extends AggregatorTransformationContext<R, P, C>>
+        extends VisitorContext<R, Aggregator, P, C> implements AggregatorTransformer<R, P> {
+
+    @Override
+    public R transform(final Aggregator aggregator, final P context) {
+        return visit(aggregator, context);
+    }
 
     @Override
     public R transform(final Aggregator aggregator) {

@@ -11,5 +11,5 @@ import lombok.experimental.SuperBuilder;
  */
 @SuperBuilder(toBuilder = true)
 public abstract class ElasticPageResolutionContext<C extends ElasticPageResolutionContext<C>>
-        extends PageResolutionContext<ElasticPage, C> {
+        extends PageResolutionContext<ElasticPage, Object, C> {
 }

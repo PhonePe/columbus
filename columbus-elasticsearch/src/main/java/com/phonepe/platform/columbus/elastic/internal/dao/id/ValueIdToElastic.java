@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.registry.factory.RegistryKey;
 public class ValueIdToElastic<C extends ElasticIdResolutionContext<C>> implements IdToElastic<ValueId, C> {
 
     @Override
-    public ElasticId visit(final ValueId id, final C context) {
+    public ElasticId visit(final ValueId id, final Object props, final C context) {
         return ElasticId.builder()
                 .id(id.getValue())
                 .build();

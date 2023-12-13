@@ -14,5 +14,5 @@ import java.util.List;
 public abstract class BucketAggregator extends BaseAggregator {
 
     @Singular(ignoreNullCollections = true)
-    private List<@NonNull Aggregator> subAggregations;
+    private List<@NonNull Aggregator> subAggregators;
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class PagePointerToElastic<C extends ElasticPageResolutionContext<C>> implements PageToElastic<PagePointer, C> {
 
     @Override
-    public ElasticPage visit(final PagePointer page, final C context) {
+    public ElasticPage visit(final PagePointer page, final Object props, final C context) {
         return ElasticPage.builder()
                 .size(page.getSize())
                 .afterKeys(getKeys(page.getPointer()))

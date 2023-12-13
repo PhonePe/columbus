@@ -15,15 +15,16 @@ public abstract class BucketAggregationParserForElastic<T extends BucketAggregat
         implements AggregationParserForElastic<T, C> {
 
     @Override
-    public AggregationParser<Aggregation> visit(final T aggregator, final C context) {
-        final var subAggregationParsers = aggregator.getSubAggregations().stream()
-                .collect(Collectors.toMap(Aggregator::getName, context::resolve));
-        return createParser(aggregator, subAggregationParsers, context);
+    public AggregationParser<Aggregation> visit(final T aggregator, final Object props, final C context) {
+        final var subAggregationParsers = aggregator.getSubAggregators().stream()
+                .collect(Collectors.toMap(Aggregator::getName, subAggregator -> context.resolve(subAggregator, props)));
+        return createParser(aggregator, subAggregationParsers, props, context);
     }
 
     protected abstract AggregationParser<Aggregation> createParser(
             final T aggregator,
             final Map<String, AggregationParser<Aggregation>> subAggregationParsers,
+            final Object props,
             final C context
     );
 }

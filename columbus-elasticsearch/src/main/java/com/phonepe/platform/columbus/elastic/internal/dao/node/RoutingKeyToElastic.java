@@ -12,7 +12,7 @@ public class RoutingKeyToElastic<C extends ElasticNodeIdResolutionContext<C>>
         implements NodeIdToElastic<RoutingKey, C> {
 
     @Override
-    public ElasticNode visit(final RoutingKey node, final C context) {
+    public ElasticNode visit(final RoutingKey node, final Object props, final C context) {
         return ElasticNode.builder()
                 .routing(node.getKeys())
                 .shard(Elements.firstOrNull(node.getKeys()))

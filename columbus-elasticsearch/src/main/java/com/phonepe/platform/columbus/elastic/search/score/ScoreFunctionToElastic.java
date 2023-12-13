@@ -11,5 +11,5 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.Fil
  * @param <C> the type of the context required for transformation.
  */
 public interface ScoreFunctionToElastic<T extends ScoreFunction, C extends ElasticScoreFunctionTransformationContext<C>>
-        extends ScoreFunctionTransformationVisitor<FilterFunctionBuilder, T, C> {
+        extends ScoreFunctionTransformationVisitor<FilterFunctionBuilder, T, Object, C> {
 }

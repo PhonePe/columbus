@@ -10,7 +10,7 @@ import com.phonepe.platform.columbus.search.page.PageOffset;
 public class PageOffsetToElastic<C extends ElasticPageResolutionContext<C>> implements PageToElastic<PageOffset, C> {
 
     @Override
-    public ElasticPage visit(final PageOffset page, final C context) {
+    public ElasticPage visit(final PageOffset page, final Object props, final C context) {
         return ElasticPage.builder()
                 .size(page.getSize())
                 .from(page.getOffset())
