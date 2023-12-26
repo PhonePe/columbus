@@ -54,7 +54,7 @@ public abstract class ColumbusBundle<T> implements ConfiguredBundle<T> {
 
     @Override
     public void run(final T configuration, final Environment environment) {
-        log.debug("Running Columbus Bundle");
+        log.info("Running Columbus Bundle");
 
         this.configuration.set(getColumbusConfiguration(configuration));
 
@@ -71,18 +71,18 @@ public abstract class ColumbusBundle<T> implements ConfiguredBundle<T> {
         }
         columbus.set(initializer.get());
 
-        log.debug("Columbus sets sail");
+        log.info("Columbus sets sail");
     }
 
     @Override
     public void initialize(final Bootstrap<?> bootstrap) {
-        log.debug("Initializing Columbus Bundle");
+        log.info("Initializing Columbus Bundle");
 
         final var mapper = bootstrap.getObjectMapper();
         initializer.use(mapper);
         mapper.registerSubtypes(initializer.toolkit().reflect().getAnnotatedTypes(JsonTypeName.class));
 
-        log.debug("Columbus Bundle initialized");
+        log.info("Columbus Bundle initialized");
     }
 
     protected abstract ColumbusBundleConfiguration getColumbusConfiguration(T configuration);

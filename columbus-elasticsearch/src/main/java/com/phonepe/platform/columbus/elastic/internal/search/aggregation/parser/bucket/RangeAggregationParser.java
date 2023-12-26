@@ -15,7 +15,8 @@ public class RangeAggregationParser extends BucketAggregationParser {
         if (result instanceof ParsedRange range) {
             return parseRange(range);
         }
-        throw new IllegalArgumentException("Expected ParsedRange, got '%s'".formatted(result));
+        throw new IllegalArgumentException("Expected ParsedRange, got '%s', with name '%s'".formatted(
+                result.getClass().getSimpleName(), result.getName()));
     }
 
     private RangeAggregation parseRange(final ParsedRange range) {

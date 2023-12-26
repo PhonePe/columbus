@@ -13,7 +13,8 @@ public class FilterAggregationParser extends BucketAggregationParser {
         if (result instanceof ParsedFilter filter) {
             return parseFilter(filter);
         }
-        throw new IllegalArgumentException("Expected ParsedFilter, got '%s'".formatted(result));
+        throw new IllegalArgumentException("Expected ParsedFilter, got '%s', with name '%s'".formatted(
+                result.getClass().getSimpleName(), result.getName()));
     }
 
     private FilterAggregation parseFilter(final ParsedFilter filter) {

@@ -12,7 +12,8 @@ public class StatsAggregationParser implements ElasticAggregationParser {
         if (result instanceof ParsedStats stats) {
             return parseStats(stats);
         }
-        throw new IllegalArgumentException("Expected ParsedStats, got '%s'".formatted(result));
+        throw new IllegalArgumentException("Expected ParsedStats, got '%s', with name '%s'".formatted(
+                result.getClass().getSimpleName(), result.getName()));
     }
 
     private StatsAggregation parseStats(final ParsedStats stats) {

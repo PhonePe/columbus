@@ -23,7 +23,8 @@ public class TopHitsAggregationParser<T> implements ElasticAggregationParser {
         if (result instanceof ParsedTopHits topHits) {
             return parseStats(topHits);
         }
-        throw new IllegalArgumentException("Expected ParsedTopHits, got '%s'".formatted(result));
+        throw new IllegalArgumentException("Expected ParsedTopHits, got '%s', with name '%s'".formatted(
+                result.getClass().getSimpleName(), result.getName()));
     }
 
     private TopHitsAggregation<T> parseStats(final ParsedTopHits topHits) {

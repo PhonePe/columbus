@@ -15,7 +15,8 @@ public class TermsAggregationParser extends BucketAggregationParser {
         if (result instanceof ParsedTerms terms) {
             return parseTerms(terms);
         }
-        throw new IllegalArgumentException("Expected ParsedTerms, got '%s'".formatted(result));
+        throw new IllegalArgumentException("Expected ParsedTerms, got '%s', with name '%s'".formatted(
+                result.getClass().getSimpleName(), result.getName()));
     }
 
     private TermsAggregation parseTerms(final ParsedTerms terms) {
