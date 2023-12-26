@@ -24,6 +24,7 @@ import com.phonepe.platform.columbus.search.query.term.PrefixQuery;
 import com.phonepe.platform.columbus.search.query.term.RangeQuery;
 import com.phonepe.platform.columbus.search.query.term.TermQuery;
 import com.phonepe.platform.columbus.search.query.term.TermsQuery;
+import com.phonepe.platform.columbus.search.query.term.WildcardQuery;
 import com.phonepe.platform.columbus.search.query.text.MatchBoolPrefixQuery;
 import com.phonepe.platform.columbus.search.query.text.MatchPhrasePrefixQuery;
 import com.phonepe.platform.columbus.search.query.text.MatchPhraseQuery;
@@ -252,6 +253,29 @@ class ElasticQueryTransformerTest {
             final var queryBuilder = queryTransformer.transform(query);
 
             assertEquals(expected, queryBuilder, "must return a fuzzy query");
+        }
+
+        @Test
+        @DisplayName("Wildcard")
+        void testWildcardQuery() {
+            final var query = WildcardQuery.builder()
+                    .field("field")
+                    .value("pre*post")
+                    .caseInsensitive(true)
+                    .rewrite("rewrite")
+                    .boost(2f)
+                    .name("wildcard")
+                    .build();
+
+            final var expected = QueryBuilders.wildcardQuery("field", "pre*post")
+                    .caseInsensitive(true)
+                    .rewrite("rewrite")
+                    .boost(2f)
+                    .queryName("wildcard");
+
+            final var queryBuilder = queryTransformer.transform(query);
+
+            assertEquals(expected, queryBuilder, "must return a wildcard query");
         }
     }
 

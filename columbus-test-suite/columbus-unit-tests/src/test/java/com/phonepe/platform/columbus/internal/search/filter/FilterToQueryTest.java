@@ -11,6 +11,8 @@ import com.phonepe.platform.columbus.search.filter.range.GreaterThanEqualsFilter
 import com.phonepe.platform.columbus.search.filter.range.GreaterThanFilter;
 import com.phonepe.platform.columbus.search.filter.range.LessThanEqualsFilter;
 import com.phonepe.platform.columbus.search.filter.range.LessThanFilter;
+import com.phonepe.platform.columbus.search.filter.score.FixedScoreFilter;
+import com.phonepe.platform.columbus.search.filter.string.TextMatchFilter;
 import com.phonepe.platform.columbus.search.query.QueryTransformer;
 import com.phonepe.platform.columbus.test.annotations.WithElasticToolkit;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -74,8 +76,8 @@ class FilterToQueryTest {
                 .build();
 
         final var expected = QueryBuilders.boolQuery()
-                .filter(QueryBuilders.termQuery("field1", 10))
-                .filter(QueryBuilders.termQuery("field2", 20));
+                .must(QueryBuilders.termQuery("field1", 10))
+                .must(QueryBuilders.termQuery("field2", 20));
 
         final var query = queryTransformer.transform(filter);
 
@@ -207,6 +209,40 @@ class FilterToQueryTest {
         final var query = queryTransformer.transform(filter);
 
         assertEquals(expected, query, "must return a range query");
+    }
+
+    @Test
+    @DisplayName("Fixed Score")
+    void testFixedScoreFilter() {
+        final var filter = FixedScoreFilter.builder()
+                .filter(EqualsFilter.builder()
+                        .field("field")
+                        .value(10)
+                        .build())
+                .boost(2f)
+                .build();
+
+        final var expected = QueryBuilders.constantScoreQuery(QueryBuilders.termQuery("field", 10))
+                .boost(2f);
+
+        final var query = queryTransformer.transform(filter);
+
+        assertEquals(expected, query, "must return a fixed score query");
+    }
+
+    @Test
+    @DisplayName("Text Match")
+    void testTextMatchFilter() {
+        final var filter = TextMatchFilter.builder()
+                .field("field")
+                .value("text")
+                .build();
+
+        final var expected = QueryBuilders.matchQuery("field", "text");
+
+        final var query = queryTransformer.transform(filter);
+
+        assertEquals(expected, query, "must return a match query");
     }
 
     @BeforeAll

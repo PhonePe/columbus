@@ -14,6 +14,6 @@ public class AndFilterToQuery<R, P, C extends QueryTransformationContext<R, P, C
     @Override
     protected BaseQueryBuilder<?, ?> toQueryBuilder(final AndFilter filter, final P props) {
         return BoolQuery.builder()
-                .filterClauses(filter.getFilters());
+                .mustClauses(filter.getFilters());
     }
 }
