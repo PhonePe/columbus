@@ -38,7 +38,7 @@ Add the following dependency in `dependencyManagement` (of root pom):
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.platform.columbus</groupId>
+    <groupId>com.phonepe.commons.columbus</groupId>
     <artifactId>columbus-bom</artifactId>
     <version>${columbus.version}</version>
     <type>pom</type>
@@ -51,7 +51,7 @@ For example, to use Columbus bundle, add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.platform.columbus</groupId>
+    <groupId>com.phonepe.commons.columbus</groupId>
     <artifactId>columbus-bundle</artifactId>
 </dependency>
 ```

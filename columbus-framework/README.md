@@ -22,7 +22,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.platform.columbus</groupId>
+    <groupId>com.phonepe.commons.columbus</groupId>
     <artifactId>columbus-framework</artifactId>
 </dependency>
 ```
