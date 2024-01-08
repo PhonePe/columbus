@@ -25,6 +25,8 @@ import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.geometry.Geometry;
+import org.elasticsearch.geometry.Point;
 import org.elasticsearch.index.query.InnerHitBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
@@ -125,6 +127,10 @@ public class MiscTransforms {
 
     public GeoPoint toElasticGeoPoint(final Location center) {
         return new GeoPoint(center.getLat(), center.getLon());
+    }
+
+    public Geometry toElasticGeometry(final Location point) {
+        return new Point(point.getLon(), point.getLat());
     }
 
     public <T> Result<T> fromElastic(final SearchHits hits, final EntityType<T> type, final SerDe serDe) {

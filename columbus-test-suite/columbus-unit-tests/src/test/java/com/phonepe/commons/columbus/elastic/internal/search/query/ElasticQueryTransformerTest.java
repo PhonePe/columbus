@@ -14,6 +14,7 @@ import com.phonepe.commons.columbus.search.query.compound.BoostingQuery;
 import com.phonepe.commons.columbus.search.query.compound.ConstantScoreQuery;
 import com.phonepe.commons.columbus.search.query.compound.FunctionScoreQuery;
 import com.phonepe.commons.columbus.search.query.geo.GeoDistanceQuery;
+import com.phonepe.commons.columbus.search.query.geo.GeoPointQuery;
 import com.phonepe.commons.columbus.search.query.simple.MatchAllQuery;
 import com.phonepe.commons.columbus.search.query.simple.MatchNoneQuery;
 import com.phonepe.commons.columbus.search.query.special.ScriptQuery;
@@ -36,6 +37,7 @@ import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery.ScoreMode;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.geometry.Point;
 import org.elasticsearch.index.query.MatchNoneQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder.Type;
 import org.elasticsearch.index.query.Operator;
@@ -49,6 +51,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -648,6 +651,30 @@ class ElasticQueryTransformerTest {
             final var queryBuilder = queryTransformer.transform(query);
 
             assertEquals(expected, queryBuilder, "must return a geo distance query");
+        }
+
+        @Test
+        @DisplayName("Geo Point")
+        void testGeoPointQuery() throws IOException {
+            final var query = GeoPointQuery.builder()
+                    .field("location")
+                    .point(Location.builder()
+                            .lat(10d)
+                            .lon(20d)
+                            .build())
+                    .ignoreMissingField(true)
+                    .boost(2f)
+                    .name("geo_point")
+                    .build();
+
+            final var expected = QueryBuilders.geoShapeQuery("location", new Point(20, 10))
+                    .ignoreUnmapped(true)
+                    .boost(2f)
+                    .queryName("geo_point");
+
+            final var queryBuilder = queryTransformer.transform(query);
+
+            assertEquals(expected, queryBuilder, "must return a geo shape query");
         }
     }
 
