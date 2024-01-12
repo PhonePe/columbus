@@ -15,6 +15,7 @@ The building blocks and utilities used by Columbus.
    1. [Pair](#pair)
    2. [Initializers](#initializers)
    3. [Entity type](#entity-type)
+   4. [Iterators](#iterators)
 
 ## Dependency
 
@@ -373,4 +374,48 @@ TypeRegistry typeRegistry = Types.typeRegistry(Registries.stored(types));
 TypeResolver resolver = Types.resolver(typeRegistry);
 
 resolver.toJavaType(nameString) // = string: JavaType<String>
+```
+
+### Iterators
+
+A set of helpers to consume the elements of an iterator in batches.
+
+#### Examples
+
+Convert a sequence of elements into sequence of batches of elements. The order of elements is retained. All batches have
+the specified size except the last one which could have fewer elements.
+
+```java
+List<Integer> values = List.of(1, 2, 3, 4, 5, 6);  // could be any object that can provide iterator or stream
+
+Iterator<List<Integer>> batchIterator = Iterators.partitioning(values.iterator(), 3);
+// returns [1, 2, 3] and then [4, 5, 6]
+
+Stream<List<Integer>> batchStream = Iterators.partitioning(values.stream(), 4);
+Stream<List<Integer>> batchStream = Iterators.partitioningStream(values.iterator(), 4);
+// contains [1, 2, 3, 4] and [5, 6]
+```
+
+Convert a sequence of batches to a different and/or uniform size. The order of elements is retained across the lists.
+
+```java
+List<List<Integer>> values = List.of(List.of(1, 2, 3), List.of(4, 5), List.of(6));
+// could be any object that can provide iterator or stream
+
+Iterator<List<Integer>> batchIterator = Iterators.repartitioning(values.iterator(), 3);
+// returns [1, 2, 3] and then [4, 5, 6]
+
+Stream<List<Integer>> batchStream = Iterators.repartitioning(values.stream(), 4); // or
+Stream<List<Integer>> batchStream = Iterators.repartitioningStream(values.iterator(), 4);
+// contains [1, 2, 3, 4] and [5, 6]
+```
+
+Flatten a sequence of batches. The order of elements is retained.
+
+```java
+List<List<Integer>> values = List.of(List.of(1, 2, 3), List.of(4, 5), List.of(6));
+// could be any object that can provide iterator or stream
+
+Iterator<Integer> flatIterator = Iterators.flattening(values.iterator());
+// returns 1, 2, 3, 4, 5, 6
 ```

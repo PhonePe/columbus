@@ -36,6 +36,7 @@ public class Constants {
         public final String BULK_UPSERT_DOC = "bulkUpsertDoc";
         public final String BULK_DELETE_DOC = "bulkDeleteDoc";
         public final String SEARCH_DOCS = "searchDocs";
+        public final String SCROLL_DOCS = "scrollDocs";
     }
 
     /**

@@ -302,7 +302,7 @@ class SearchCommandTest {
                     .execute(storage);
         }
 
-        private static void verifyEntities(final List<Hit<ElasticEntity>> hits, final List<Integer> ids) {
+        private static <T> void verifyEntities(final List<Hit<T>> hits, final List<Integer> ids, final T[] expected) {
             assertAll(
                     "hits",
                     Stream.concat(
@@ -312,23 +312,16 @@ class SearchCommandTest {
                                 final var hit = hits.get(idx);
                                 return Stream.of(
                                         () -> assertEquals(IDS[id], hit.getId(), "must match id"),
-                                        () -> assertEquals(DOCS[id], hit.getEntity(), "must match value"));
+                                        () -> assertEquals(expected[id], hit.getEntity(), "must match value"));
                             })));
         }
 
+        private static void verifyEntities(final List<Hit<ElasticEntity>> hits, final List<Integer> ids) {
+            verifyEntities(hits, ids, DOCS);
+        }
+
         private static void verifyIds(final List<Hit<ElasticEntityId>> hits, final List<Integer> ids) {
-            assertAll(
-                    "hits",
-                    Stream.concat(
-                            Stream.of(() -> assertEquals(ids.size(), hits.size(), "must have exact size")),
-                            IntStream.range(0, ids.size()).boxed().flatMap(idx -> {
-                                final var id = ids.get(idx);
-                                final var hit = hits.get(idx);
-                                return Stream.of(
-                                        () -> assertEquals(IDS[id], hit.getId(), "must match id"),
-                                        () -> assertEquals(ENTITY_IDS[id], hit.getEntity(),
-                                                "must match value"));
-                            })));
+            verifyEntities(hits, ids, ENTITY_IDS);
         }
 
         private static void verifyCollapseHit(final Hit<ElasticEntity> hit, final List<Integer> ids) {
