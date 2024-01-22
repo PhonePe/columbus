@@ -5,7 +5,7 @@ import com.phonepe.commons.columbus.elastic.storage.ElasticClient;
 import com.phonepe.commons.columbus.storage.StorageCommandHandler;
 
 /**
- * A base interface for handlers of all commands supported by the Elastic client.
+ * An abstract interface for handlers of all commands supported by the Elastic client.
  *
  * @param <R> the type of the result.
  * @param <C> the type of the command.

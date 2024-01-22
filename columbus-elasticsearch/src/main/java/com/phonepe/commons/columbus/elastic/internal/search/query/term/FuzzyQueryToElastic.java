@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.term;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.MiscTransforms;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
@@ -14,7 +14,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = FuzzyQuery.TYPE, type = FuzzyQuery.class)
 public class FuzzyQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<FuzzyQuery, C> {
+        extends AbstractQueryToElastic<FuzzyQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final FuzzyQuery query, final Object props, final C context) {

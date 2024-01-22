@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(WeightScore.TYPE)
-public class WeightScore extends BaseScoreFunction {
+public class WeightScore extends AbstractScoreFunction {
 
     public static final String TYPE = "WEIGHT";
 

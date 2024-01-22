@@ -13,7 +13,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = GeoDistanceSort.TYPE, type = GeoDistanceSort.class)
 public class GeoDistanceSortToElastic<C extends ElasticSortTransformationContext<C>>
-        extends BaseSortToElastic<GeoDistanceSort, C> {
+        extends AbstractSortToElastic<GeoDistanceSort, C> {
 
     @Override
     protected SortBuilder<?> buildSort(final GeoDistanceSort sort, final Object props, final C context) {

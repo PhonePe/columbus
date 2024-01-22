@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregator.bucket;
 
+import com.phonepe.commons.columbus.search.aggregator.AbstractAggregator;
 import com.phonepe.commons.columbus.search.aggregator.Aggregator;
-import com.phonepe.commons.columbus.search.aggregator.BaseAggregator;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class BucketAggregator extends BaseAggregator {
+public abstract class BucketAggregator extends AbstractAggregator {
 
     @Singular(ignoreNullCollections = true)
     private List<@NonNull Aggregator> subAggregators;

@@ -2,13 +2,13 @@ package com.phonepe.commons.columbus.elastic.internal.search.score;
 
 import com.phonepe.commons.columbus.elastic.search.score.ElasticScoreFunctionTransformationContext;
 import com.phonepe.commons.columbus.elastic.search.score.ScoreFunctionToElastic;
-import com.phonepe.commons.columbus.search.score.BaseScoreFunction;
+import com.phonepe.commons.columbus.search.score.AbstractScoreFunction;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.FilterFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
 
 import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
-public abstract class BaseScoreFunctionToElastic<T extends BaseScoreFunction,
+public abstract class AbstractScoreFunctionToElastic<T extends AbstractScoreFunction,
         C extends ElasticScoreFunctionTransformationContext<C>>
         implements ScoreFunctionToElastic<T, C> {
 

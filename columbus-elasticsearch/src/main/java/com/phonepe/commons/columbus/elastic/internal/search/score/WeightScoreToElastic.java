@@ -8,7 +8,7 @@ import org.elasticsearch.index.query.functionscore.WeightBuilder;
 
 @RegistryKey(name = WeightScore.TYPE, type = WeightScore.class)
 public class WeightScoreToElastic<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends BaseScoreFunctionToElastic<WeightScore, C> {
+        extends AbstractScoreFunctionToElastic<WeightScore, C> {
 
     @Override
     protected ScoreFunctionBuilder<?> buildScoreFunction(

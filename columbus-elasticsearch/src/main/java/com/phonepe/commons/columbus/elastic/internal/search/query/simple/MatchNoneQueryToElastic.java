@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.simple;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
 import com.phonepe.commons.columbus.search.query.simple.MatchNoneQuery;
@@ -9,7 +9,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 
 @RegistryKey(name = MatchNoneQuery.TYPE, type = MatchNoneQuery.class)
 public class MatchNoneQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<MatchNoneQuery, C> {
+        extends AbstractQueryToElastic<MatchNoneQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final MatchNoneQuery query, final Object props, final C context) {

@@ -11,7 +11,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = FieldScore.TYPE, type = FieldScore.class)
 public class FieldScoreToElastic<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends BaseScoreFunctionToElastic<FieldScore, C> {
+        extends AbstractScoreFunctionToElastic<FieldScore, C> {
 
     @Override
     protected ScoreFunctionBuilder<?> buildScoreFunction(

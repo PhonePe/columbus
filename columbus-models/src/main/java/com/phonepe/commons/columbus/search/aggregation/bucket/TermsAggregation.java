@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregation.bucket;
 
+import com.phonepe.commons.columbus.search.aggregation.AbstractAggregation;
 import com.phonepe.commons.columbus.search.aggregation.Aggregation;
-import com.phonepe.commons.columbus.search.aggregation.BaseAggregation;
 import com.phonepe.commons.columbus.search.aggregator.bucket.TermsAggregator;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public class TermsAggregation extends BaseAggregation {
+public class TermsAggregation extends AbstractAggregation {
 
     @Singular(ignoreNullCollections = true)
     private final List<@NonNull Bucket> buckets;

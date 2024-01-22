@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.search.aggregation.metrics;
 
-import com.phonepe.commons.columbus.search.aggregation.BaseAggregation;
+import com.phonepe.commons.columbus.search.aggregation.AbstractAggregation;
 import com.phonepe.commons.columbus.search.aggregator.metrics.StatsAggregator;
 import lombok.Data;
 import lombok.NonNull;
@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public class StatsAggregation extends BaseAggregation {
+public class StatsAggregation extends AbstractAggregation {
 
     private final long count;
     private final double minimum;

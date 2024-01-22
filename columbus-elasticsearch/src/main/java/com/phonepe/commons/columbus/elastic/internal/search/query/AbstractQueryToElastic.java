@@ -2,12 +2,12 @@ package com.phonepe.commons.columbus.elastic.internal.search.query;
 
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.elastic.search.query.QueryToElastic;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import org.elasticsearch.index.query.QueryBuilder;
 
 import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
-public abstract class BaseQueryToElastic<T extends BaseQuery, C extends ElasticQueryTransformationContext<C>>
+public abstract class AbstractQueryToElastic<T extends AbstractQuery, C extends ElasticQueryTransformationContext<C>>
         implements QueryToElastic<T, C> {
 
     @Override

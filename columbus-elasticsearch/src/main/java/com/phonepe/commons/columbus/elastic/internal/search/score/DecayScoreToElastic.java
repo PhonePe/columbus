@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @RegistryKey(name = DecayScore.TYPE, type = DecayScore.class)
 public class DecayScoreToElastic<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends BaseScoreFunctionToElastic<DecayScore, C> {
+        extends AbstractScoreFunctionToElastic<DecayScore, C> {
 
     @Override
     protected ScoreFunctionBuilder<?> buildScoreFunction(

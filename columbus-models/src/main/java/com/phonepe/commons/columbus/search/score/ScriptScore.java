@@ -11,7 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(ScriptScore.TYPE)
-public class ScriptScore extends BaseScoreFunction {
+public class ScriptScore extends AbstractScoreFunction {
 
     public static final String TYPE = "SCRIPT";
 

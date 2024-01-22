@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregation.bucket;
 
+import com.phonepe.commons.columbus.search.aggregation.AbstractAggregation;
 import com.phonepe.commons.columbus.search.aggregation.Aggregation;
-import com.phonepe.commons.columbus.search.aggregation.BaseAggregation;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FilterAggregator;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public class FilterAggregation extends BaseAggregation {
+public class FilterAggregation extends AbstractAggregation {
 
     private final long count;
 

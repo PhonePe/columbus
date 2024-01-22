@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @RegistryKey(name = ScriptScore.TYPE, type = ScriptScore.class)
 public class ScriptScoreToElastic<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends BaseScoreFunctionToElastic<ScriptScore, C> {
+        extends AbstractScoreFunctionToElastic<ScriptScore, C> {
 
     @Override
     protected ScoreFunctionBuilder<?> buildScoreFunction(

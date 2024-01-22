@@ -6,7 +6,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class BaseScoreFunction implements ScoreFunction {
+public abstract class AbstractScoreFunction implements ScoreFunction {
 
     private Float weight;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.phonepe.commons.columbus.search.misc.text.Analysis;
 import com.phonepe.commons.columbus.search.misc.text.Fuzziness;
 import com.phonepe.commons.columbus.search.misc.text.Terms;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(MultiMatchQuery.TYPE)
-public class MultiMatchQuery extends BaseQuery {
+public class MultiMatchQuery extends AbstractQuery {
 
     public static final String TYPE = "MULTI_MATCH";
 
@@ -45,7 +45,7 @@ public class MultiMatchQuery extends BaseQuery {
 
     @SuppressWarnings("unused")
     public abstract static class MultiMatchQueryBuilder<C extends MultiMatchQuery,
-            B extends MultiMatchQueryBuilder<C, B>> extends BaseQueryBuilder<C, B> {
+            B extends MultiMatchQueryBuilder<C, B>> extends AbstractQueryBuilder<C, B> {
 
         public B fieldName(final String fieldName) {
             return fieldName == null ? self() : fieldBoost(fieldName, 1.0f);

@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.compound;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
 import com.phonepe.commons.columbus.search.query.Query;
@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 @RegistryKey(name = BoolQuery.TYPE, type = BoolQuery.class)
 public class BoolQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<BoolQuery, C> {
+        extends AbstractQueryToElastic<BoolQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final BoolQuery query, final Object props, final C context) {

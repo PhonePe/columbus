@@ -14,7 +14,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = ScriptSort.TYPE, type = ScriptSort.class)
 public class ScriptSortToElastic<C extends ElasticSortTransformationContext<C>>
-        extends BaseSortToElastic<ScriptSort, C> {
+        extends AbstractSortToElastic<ScriptSort, C> {
 
     @Override
     protected SortBuilder<?> buildSort(final ScriptSort sort, final Object props, final C context) {

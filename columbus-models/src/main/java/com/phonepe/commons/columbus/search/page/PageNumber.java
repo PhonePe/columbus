@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(PageNumber.TYPE)
-public class PageNumber extends BasePageBounds {
+public class PageNumber extends AbstractPageBounds {
 
     public static final String TYPE = "NUMBER";
 

@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregator.metrics;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.aggregator.BaseAggregator;
+import com.phonepe.commons.columbus.search.aggregator.AbstractAggregator;
 import com.phonepe.commons.columbus.search.misc.query.Projection;
 import com.phonepe.commons.columbus.search.sort.Sort;
 import com.phonepe.commons.columbus.type.EntityType;
@@ -18,7 +18,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(TopHitsAggregator.TYPE)
-public class TopHitsAggregator<T> extends BaseAggregator {
+public class TopHitsAggregator<T> extends AbstractAggregator {
 
     public static final String TYPE = "TOP_HITS";
 

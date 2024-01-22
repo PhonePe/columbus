@@ -2,7 +2,7 @@ package com.phonepe.commons.columbus.search.query.compound;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import com.phonepe.commons.columbus.search.query.Query;
 import lombok.Data;
 import lombok.NonNull;
@@ -16,7 +16,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(BoolQuery.TYPE)
-public class BoolQuery extends BaseQuery {
+public class BoolQuery extends AbstractQuery {
 
     public static final String TYPE = "BOOL";
 

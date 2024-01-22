@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.compound;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.SearchEnums;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
@@ -15,7 +15,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = FunctionScoreQuery.TYPE, type = FunctionScoreQuery.class)
 public class FunctionScoreQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<FunctionScoreQuery, C> {
+        extends AbstractQueryToElastic<FunctionScoreQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final FunctionScoreQuery query, final Object props, final C context) {

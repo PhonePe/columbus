@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregation.bucket;
 
+import com.phonepe.commons.columbus.search.aggregation.AbstractAggregation;
 import com.phonepe.commons.columbus.search.aggregation.Aggregation;
-import com.phonepe.commons.columbus.search.aggregation.BaseAggregation;
 import com.phonepe.commons.columbus.search.aggregator.bucket.RangeAggregator;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public class RangeAggregation extends BaseAggregation {
+public class RangeAggregation extends AbstractAggregation {
 
     @Singular(ignoreNullCollections = true)
     private final Map<@NonNull String, @NonNull Bucket> buckets;

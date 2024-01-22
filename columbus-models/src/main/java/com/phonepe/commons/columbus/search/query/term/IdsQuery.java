@@ -2,7 +2,7 @@ package com.phonepe.commons.columbus.search.query.term;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.phonepe.commons.columbus.dao.id.Id;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.Singular;
@@ -15,7 +15,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(IdsQuery.TYPE)
-public class IdsQuery extends BaseQuery {
+public class IdsQuery extends AbstractQuery {
 
     public static final String TYPE = "IDS";
 

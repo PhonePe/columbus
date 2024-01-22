@@ -2,7 +2,7 @@ package com.phonepe.commons.columbus.internal.search.filter;
 
 import com.phonepe.commons.columbus.search.filter.Filter;
 import com.phonepe.commons.columbus.search.filter.visitor.FilterTransformationVisitor;
-import com.phonepe.commons.columbus.search.query.BaseQuery.BaseQueryBuilder;
+import com.phonepe.commons.columbus.search.query.AbstractQuery.AbstractQueryBuilder;
 import com.phonepe.commons.columbus.search.query.Query;
 import com.phonepe.commons.columbus.search.query.visitor.QueryTransformationContext;
 
@@ -25,5 +25,5 @@ public abstract class FilterToQuery<R, T extends Filter, P, C extends QueryTrans
     }
 
     @SuppressWarnings("java:S1452")
-    protected abstract BaseQueryBuilder<?, ?> toQueryBuilder(T filter, final P props);
+    protected abstract AbstractQueryBuilder<?, ?> toQueryBuilder(T filter, final P props);
 }

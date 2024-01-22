@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(RandomScore.TYPE)
-public class RandomScore extends BaseScoreFunction {
+public class RandomScore extends AbstractScoreFunction {
 
     public static final String TYPE = "RANDOM";
 

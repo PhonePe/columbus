@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.term;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
 import com.phonepe.commons.columbus.search.query.term.WildcardQuery;
@@ -11,7 +11,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = WildcardQuery.TYPE, type = WildcardQuery.class)
 public class WildcardQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<WildcardQuery, C> {
+        extends AbstractQueryToElastic<WildcardQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final WildcardQuery query, final Object props, final C context) {

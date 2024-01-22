@@ -254,8 +254,8 @@ this new class to support instantiation.
 #### Extending `Executor`
 
 To create a new executor or extend an existing one, the following steps can be followed:
-1. Identify the subtype of `Executor` which fits the use-case. For example, `BaseStorageClient` is an executor to
-   execute operations on storage. If none fit, you're likely defining a new use case, use `BaseExecutor`.
+1. Identify the subtype of `Executor` which fits the use-case. For example, `AbstractStorageClient` is an executor to
+   execute operations on storage. If none fit, you're likely defining a new use case, use `CommandExecutor`.
 2. Create an abstract subclass / implementation, retaining the self reference, and add any capabilities needed.
 3. Create a concrete, final subclass of the newly created abstract class.
 4. Use the new concrete class to create an executor.

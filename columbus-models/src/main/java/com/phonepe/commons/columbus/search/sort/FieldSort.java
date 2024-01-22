@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(FieldSort.TYPE)
-public class FieldSort extends BaseSort {
+public class FieldSort extends AbstractSort {
 
     public static final String TYPE = "FIELD";
 

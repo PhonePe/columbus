@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(FieldScore.TYPE)
-public class FieldScore extends BaseScoreFunction {
+public class FieldScore extends AbstractScoreFunction {
 
     public static final String TYPE = "FIELD";
 

@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class FieldQuery extends BaseQuery {
+public abstract class FieldQuery extends AbstractQuery {
 
     private String field;
 }

@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.query.compound;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import com.phonepe.commons.columbus.search.query.Query;
 import com.phonepe.commons.columbus.search.score.ScoreFunction;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(FunctionScoreQuery.TYPE)
-public class FunctionScoreQuery extends BaseQuery {
+public class FunctionScoreQuery extends AbstractQuery {
 
     public static final String TYPE = "FUNCTION_SCORE";
 

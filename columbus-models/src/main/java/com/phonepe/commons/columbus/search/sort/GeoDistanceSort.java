@@ -14,7 +14,7 @@ import java.util.List;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(GeoDistanceSort.TYPE)
-public class GeoDistanceSort extends BaseSort {
+public class GeoDistanceSort extends AbstractSort {
 
     public static final String TYPE = "GEO_DISTANCE";
 

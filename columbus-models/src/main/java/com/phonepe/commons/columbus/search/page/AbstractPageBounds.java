@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class BasePageBounds implements PageBounds {
+public abstract class AbstractPageBounds implements PageBounds {
 
     private Integer size;
 }

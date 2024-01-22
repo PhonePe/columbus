@@ -10,7 +10,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = RandomScore.TYPE, type = RandomScore.class)
 public class RandomScoreToElastic<C extends ElasticScoreFunctionTransformationContext<C>>
-        extends BaseScoreFunctionToElastic<RandomScore, C> {
+        extends AbstractScoreFunctionToElastic<RandomScore, C> {
 
     @Override
     protected ScoreFunctionBuilder<?> buildScoreFunction(

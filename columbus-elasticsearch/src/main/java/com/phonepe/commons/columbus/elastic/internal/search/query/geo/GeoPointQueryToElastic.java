@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.geo;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.MiscTransforms;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
@@ -14,7 +14,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = GeoPointQuery.TYPE, type = GeoPointQuery.class)
 public class GeoPointQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<GeoPointQuery, C> {
+        extends AbstractQueryToElastic<GeoPointQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final GeoPointQuery query, final Object props, final C context) {

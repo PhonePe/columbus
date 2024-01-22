@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(DecayScore.TYPE)
-public class DecayScore extends BaseScoreFunction {
+public class DecayScore extends AbstractScoreFunction {
 
     public static final String TYPE = "DECAY";
 

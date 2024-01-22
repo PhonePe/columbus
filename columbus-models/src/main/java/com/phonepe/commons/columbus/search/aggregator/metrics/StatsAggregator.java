@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.aggregator.metrics;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.aggregator.BaseAggregator;
+import com.phonepe.commons.columbus.search.aggregator.AbstractAggregator;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
@@ -11,7 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(StatsAggregator.TYPE)
-public class StatsAggregator extends BaseAggregator {
+public class StatsAggregator extends AbstractAggregator {
 
     public static final String TYPE = "STATS";
 

@@ -1,6 +1,6 @@
 package com.phonepe.commons.columbus.elastic.internal.search.query.text;
 
-import com.phonepe.commons.columbus.elastic.internal.search.query.BaseQueryToElastic;
+import com.phonepe.commons.columbus.elastic.internal.search.query.AbstractQueryToElastic;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.MiscTransforms;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.SearchEnums;
 import com.phonepe.commons.columbus.elastic.search.query.ElasticQueryTransformationContext;
@@ -17,7 +17,7 @@ import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
 @RegistryKey(name = MatchQuery.TYPE, type = MatchQuery.class)
 public class MatchQueryToElastic<C extends ElasticQueryTransformationContext<C>>
-        extends BaseQueryToElastic<MatchQuery, C> {
+        extends AbstractQueryToElastic<MatchQuery, C> {
 
     @Override
     protected QueryBuilder buildQuery(final MatchQuery query, final Object props, final C context) {

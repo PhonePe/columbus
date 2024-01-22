@@ -10,7 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(PageOffset.TYPE)
-public class PageOffset extends BasePageBounds {
+public class PageOffset extends AbstractPageBounds {
 
     public static final String TYPE = "OFFSET";
 

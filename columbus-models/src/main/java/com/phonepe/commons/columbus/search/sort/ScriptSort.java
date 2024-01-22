@@ -11,7 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(ScriptSort.TYPE)
-public class ScriptSort extends BaseSort {
+public class ScriptSort extends AbstractSort {
 
     public static final String TYPE = "SCRIPT";
 

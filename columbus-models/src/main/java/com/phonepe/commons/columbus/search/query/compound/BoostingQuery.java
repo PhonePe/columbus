@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.query.compound;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import com.phonepe.commons.columbus.search.query.Query;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(BoostingQuery.TYPE)
-public class BoostingQuery extends BaseQuery {
+public class BoostingQuery extends AbstractQuery {
 
     public static final String TYPE = "BOOSTING";
 

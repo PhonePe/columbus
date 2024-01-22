@@ -3,12 +3,12 @@ package com.phonepe.commons.columbus.elastic.internal.search.sort;
 import com.phonepe.commons.columbus.elastic.internal.search.utils.SearchEnums;
 import com.phonepe.commons.columbus.elastic.search.sort.ElasticSortTransformationContext;
 import com.phonepe.commons.columbus.elastic.search.sort.SortToElastic;
-import com.phonepe.commons.columbus.search.sort.BaseSort;
+import com.phonepe.commons.columbus.search.sort.AbstractSort;
 import org.elasticsearch.search.sort.SortBuilder;
 
 import static com.phonepe.commons.columbus.common.Predicates.applyIfNotNull;
 
-public abstract class BaseSortToElastic<T extends BaseSort, C extends ElasticSortTransformationContext<C>>
+public abstract class AbstractSortToElastic<T extends AbstractSort, C extends ElasticSortTransformationContext<C>>
         implements SortToElastic<T, C> {
 
     @Override

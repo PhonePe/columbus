@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class BaseSort implements Sort {
+public abstract class AbstractSort implements Sort {
 
     private SortOrder order;
 }

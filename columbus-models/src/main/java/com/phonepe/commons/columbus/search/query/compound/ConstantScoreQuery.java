@@ -1,7 +1,7 @@
 package com.phonepe.commons.columbus.search.query.compound;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.query.BaseQuery;
+import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import com.phonepe.commons.columbus.search.query.Query;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,7 +12,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @SuperBuilder(toBuilder = true)
 @JsonTypeName(ConstantScoreQuery.TYPE)
-public class ConstantScoreQuery extends BaseQuery {
+public class ConstantScoreQuery extends AbstractQuery {
 
     public static final String TYPE = "CONSTANT_SCORE";
 

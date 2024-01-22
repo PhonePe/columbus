@@ -5,7 +5,7 @@ import lombok.experimental.SuperBuilder;
 
 @Data
 @SuperBuilder(toBuilder = true)
-public abstract class BaseQuery implements Query {
+public abstract class AbstractQuery implements Query {
 
     private String name;
 

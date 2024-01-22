@@ -6,15 +6,15 @@ import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 /**
- * A base implementation of {@link StorageClient} with a given {@link StorageConfiguration}, which incorporates the
- * {@link CommandExecutor} to execute the different storage commands.
+ * An abstract implementation of {@link StorageClient} with a given {@link StorageConfiguration}, which incorporates
+ * the {@link CommandExecutor} to execute the different storage commands.
  *
  * @param <C> the type of the configuration.
  * @param <E> the type of the storage client.
  */
 @Getter
 @SuperBuilder(toBuilder = true)
-public abstract class BaseStorageClient<C extends StorageConfiguration, E extends BaseStorageClient<C, E>>
+public abstract class AbstractStorageClient<C extends StorageConfiguration, E extends AbstractStorageClient<C, E>>
         extends CommandExecutor<E> implements StorageClient {
 
     @NonNull
