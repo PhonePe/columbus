@@ -25,7 +25,7 @@
         <reflections.version>0.10.2</reflections.version>
         <commons.lang.version>3.12.0</commons.lang.version>
         <commons.collections.version>4.4</commons.collections.version>
-        <function.metrics.version>1.0.14</function.metrics.version>
+        <function.metrics.version>1.0.15</function.metrics.version>
 
         <!-- Test dependencies -->
         <junit.version>5.9.2</junit.version>
