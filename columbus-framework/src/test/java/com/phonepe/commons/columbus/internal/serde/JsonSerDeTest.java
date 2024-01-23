@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -84,6 +85,13 @@ class JsonSerDeTest {
         }
 
         @Test
+        @DisplayName("deserialize from null string")
+        void testFromNullString() {
+            final var data = serDe.fromString(null, mapType);
+            assertNull(data, "returns null for null input");
+        }
+
+        @Test
         @DisplayName("deserialize from string to named type")
         void testFromStringByName() {
             final var data = serDe.fromString(JSON_DATA, mapNamedType);
@@ -113,6 +121,13 @@ class JsonSerDeTest {
         void testFromBytes() {
             final var data = serDe.fromBytes(JSON_BYTES, sampleType);
             assertEquals(SAMPLE, data, "deserialization retains types");
+        }
+
+        @Test
+        @DisplayName("deserialize from null bytes")
+        void testFromNullBytes() {
+            final var data = serDe.fromBytes(null, sampleType);
+            assertNull(data, "returns null for null input");
         }
 
         @Test

@@ -32,6 +32,9 @@ public class JsonSerDe implements SerDe {
 
     @Override
     public <T> T fromString(final String data, final EntityType<T> type) {
+        if (data == null) {
+            return null;
+        }
         try {
             return mapper.readValue(data, getTypeReference(type));
         } catch (JsonProcessingException e) {
@@ -41,6 +44,9 @@ public class JsonSerDe implements SerDe {
 
     @Override
     public <T> T fromBytes(final byte[] data, final EntityType<T> type) {
+        if (data == null) {
+            return null;
+        }
         try {
             return mapper.readValue(data, getTypeReference(type));
         } catch (IOException e) {
