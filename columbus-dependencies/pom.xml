@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.phonepe.commons.columbus</groupId>
         <artifactId>columbus-bom</artifactId>
-        <version>2.0.0-RC2</version>
+        <version>2.0.0-SNAPSHOT</version>
         <relativePath>../columbus-bom</relativePath>
     </parent>
 
@@ -23,6 +23,7 @@
         <jackson.bom.version>2.13.4.20221013</jackson.bom.version>
         <dropwizard.bom.version>2.0.34</dropwizard.bom.version>
         <reflections.version>0.10.2</reflections.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
         <commons.lang.version>3.12.0</commons.lang.version>
         <commons.collections.version>4.4</commons.collections.version>
         <function.metrics.version>1.0.15</function.metrics.version>
@@ -82,6 +83,11 @@
                 <version>${reflections.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>${aspectj.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons.lang.version}</version>
@@ -115,4 +121,34 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>aspectj-maven-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjrt</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.aspectj</groupId>
+                            <artifactId>aspectjtools</artifactId>
+                            <version>${aspectj.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <aspectLibraries>
+                            <aspectLibrary>
+                                <groupId>io.appform.functionmetrics</groupId>
+                                <artifactId>function-metrics</artifactId>
+                            </aspectLibrary>
+                        </aspectLibraries>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 </project>

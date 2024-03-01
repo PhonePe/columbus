@@ -41,9 +41,6 @@ public class StoredEntityBatchIterator<T, E extends ElasticClient<E>> implements
         if (page == null) {
             page = search();
         } else if (loadNext) {
-            if (page.isEmpty()) {
-                return false;
-            }
             page = scroll();
         }
         loadNext = false;

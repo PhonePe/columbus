@@ -24,6 +24,9 @@ import com.phonepe.commons.columbus.storage.models.result.StoredEntity;
 import com.phonepe.commons.columbus.test.annotations.WithElasticClient;
 import com.phonepe.commons.columbus.test.annotations.WithElasticToolkit;
 import com.phonepe.commons.columbus.test.annotations.WithMockito;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.bytes.BytesArray;
+import org.elasticsearch.search.SearchHit;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +54,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @WithMockito
-@WithElasticClient.All
 @WithElasticToolkit.All
 class ScanCommandTest {
 
@@ -126,6 +128,7 @@ class ScanCommandTest {
     }
 
     @Nested
+    @WithElasticClient.All
     class SuccessTest {
 
         @Test
@@ -293,6 +296,9 @@ class ScanCommandTest {
         @Mock(answer = Answers.RETURNS_DEEP_STUBS)
         private ColumbusElasticClient storage;
 
+        @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+        private SearchResponse elasticResponse;
+
         @BeforeEach
         void setUp(final ElasticToolkit toolkit) {
             when(storage.toolkit()).thenReturn(toolkit);
@@ -306,6 +312,28 @@ class ScanCommandTest {
                     .build();
 
             when(storage.client().search(any(), any())).thenThrow(IOException.class);
+
+            final var handler = new ScanHandler<ElasticEntity, ColumbusElasticClient>();
+            final var scanner = handler.handle(command, storage);
+
+            assertThrows(IOException.class, () -> scanner.stream().toList(), "must throw on client failure");
+        }
+
+        @Test
+        @DisplayName("Scan Scroll fails")
+        void testScanScroll() throws IOException {
+            final var command = ScanCommand.forType(EntityHelpers.ENTITY_TYPE)
+                    .index(DUMMY_INDEX)
+                    .batchSize(1)
+                    .build();
+
+            final var hit = SearchHit.createFromMap(Map.of(
+                    "_id", "id",
+                    "_score", 1f,
+                    "_source", new BytesArray("{\"id\": \"id\"}")));
+            when(elasticResponse.getHits().getHits()).thenReturn(new SearchHit[]{hit});
+            when(storage.client().search(any(), any())).thenReturn(elasticResponse);
+            when(storage.client().scroll(any(), any())).thenThrow(IOException.class);
 
             final var handler = new ScanHandler<ElasticEntity, ColumbusElasticClient>();
             final var scanner = handler.handle(command, storage);
