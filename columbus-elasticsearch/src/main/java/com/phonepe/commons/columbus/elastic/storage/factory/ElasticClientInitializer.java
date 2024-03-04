@@ -5,7 +5,6 @@ import com.phonepe.commons.columbus.elastic.storage.ElasticClient;
 import com.phonepe.commons.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.commons.columbus.storage.settings.StorageSettings;
-import io.dropwizard.setup.Environment;
 
 /**
  * An interface to initialize {@link ElasticClient} using the different, possibly optional, attributes it needs.
@@ -21,8 +20,6 @@ public interface ElasticClientInitializer {
     void use(Toolkit toolkit);
 
     void use(StorageSettings settings);
-
-    void use(Environment environment);
 
     void use(ElasticToolkitInitializer toolkitInitializer);
 

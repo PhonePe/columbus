@@ -3,14 +3,11 @@ package com.phonepe.commons.columbus.elastic.internal.storage.factory.initialize
 import com.phonepe.commons.columbus.command.CommandHelpers;
 import com.phonepe.commons.columbus.core.utils.RegistryCreators;
 import com.phonepe.commons.columbus.elastic.internal.storage.ColumbusElasticClient;
-import com.phonepe.commons.columbus.elastic.internal.storage.lifecycle.ElasticClientHealthCheck;
-import com.phonepe.commons.columbus.elastic.internal.storage.lifecycle.ElasticClientManaged;
 import com.phonepe.commons.columbus.elastic.internal.storage.utils.ElasticRestClientUtils;
 import com.phonepe.commons.columbus.elastic.storage.ElasticClient;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.commons.columbus.reflect.Generics;
 import com.phonepe.commons.columbus.storage.StorageCommandHandler;
-import io.dropwizard.setup.Environment;
 import org.elasticsearch.client.RestHighLevelClient;
 
 /**
@@ -51,13 +48,12 @@ public class DefaultElasticClientInitializer extends LazyElasticClientInitialize
                 && getToolkit().isPresent()
                 && getConfiguration().isPresent()
                 && getRestClient().isPresent()
-                && getEnvironment().isPresent()
                 && getElasticToolkit().isPresent();
     }
 
     @Override
     protected ElasticClient<?> initializeElasticClient() {
-        final var client = ColumbusElasticClient.builder()
+        return ColumbusElasticClient.builder()
                 .resolver(CommandHelpers.resolver(RegistryCreators.createHandlerRegistry(
                         getToolkit().get().handlerFactory(),
                         Generics.typed(StorageCommandHandler.class),
@@ -67,20 +63,5 @@ public class DefaultElasticClientInitializer extends LazyElasticClientInitialize
                 .client(getRestClient().get())
                 .toolkit(getElasticToolkit().get())
                 .build();
-
-        bindLifecycle(getEnvironment().get(), client);
-
-        return client;
-    }
-
-    protected void bindLifecycle(final Environment environment, final ElasticClient<?> elasticClient) {
-        environment.lifecycle().manage(new ElasticClientManaged(elasticClient.client()));
-        final var healthCheckName = ElasticRestClientUtils.createHealthCheckName(elasticClient.name());
-        final var healthCheck = ElasticClientHealthCheck.builder()
-                .name(healthCheckName)
-                .client(elasticClient)
-                .failOnDegrade(elasticClient.getConfiguration().getHosts().isYellowUnhealthy())
-                .build();
-        environment.healthChecks().register(healthCheckName, healthCheck);
     }
 }

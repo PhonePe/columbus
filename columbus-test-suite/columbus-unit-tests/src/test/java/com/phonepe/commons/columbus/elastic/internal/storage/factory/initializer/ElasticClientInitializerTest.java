@@ -8,10 +8,8 @@ import com.phonepe.commons.columbus.elastic.storage.configuration.HostConfigurat
 import com.phonepe.commons.columbus.storage.commands.VersionCommand;
 import com.phonepe.commons.columbus.storage.settings.StorageSettings;
 import com.phonepe.commons.columbus.test.annotations.WithElasticContainer;
-import com.phonepe.commons.columbus.test.annotations.WithMockDropwizardEnvironment;
 import com.phonepe.commons.columbus.test.annotations.WithToolkit;
 import com.phonepe.commons.columbus.test.extensions.ElasticContainerExtension;
-import io.dropwizard.setup.Environment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.elasticsearch.ElasticsearchContainer;
@@ -22,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @WithToolkit.All
 @WithElasticContainer.Root
-@WithMockDropwizardEnvironment
 class ElasticClientInitializerTest {
 
     private static final VersionCommand VERSION = VersionCommand.builder().build();
@@ -31,8 +28,7 @@ class ElasticClientInitializerTest {
     @DisplayName("validate initialization step by step")
     void testInitializeInSteps(
             final Toolkit toolkit,
-            final ElasticsearchContainer elastic,
-            final Environment environment
+            final ElasticsearchContainer elastic
     ) {
         final var configuration = ElasticConfiguration.builder()
                 .enabled(true)
@@ -57,8 +53,6 @@ class ElasticClientInitializerTest {
         assertFalse(initializer.getElasticToolkit().isPresent(), "toolkit cannot be initialized");
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(configuration);
-        assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
-        initializer.use(environment);
         assertFalse(initializer.getElasticClient().isPresent(), "client cannot be initialized");
         initializer.use(new DefaultElasticToolkitInitializer());
         assertTrue(initializer.getElasticToolkit().isPresent(), "toolkit can be initialized");

@@ -1,14 +1,14 @@
 package com.phonepe.commons.columbus.elastic.storage;
 
 import com.phonepe.commons.columbus.common.http.Endpoint;
-import com.phonepe.commons.columbus.dropwizard.internal.storage.factory.DropwizardStorageClientFactory;
 import com.phonepe.commons.columbus.elastic.internal.storage.ColumbusElasticClient;
 import com.phonepe.commons.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.commons.columbus.elastic.storage.configuration.HostConfiguration;
+import com.phonepe.commons.columbus.internal.storage.factory.ColumbusStorageClientFactory;
 import com.phonepe.commons.columbus.storage.commands.VersionCommand;
-import com.phonepe.commons.columbus.test.annotations.WithDropwizardStorageFactory;
 import com.phonepe.commons.columbus.test.annotations.WithElasticContainer;
 import com.phonepe.commons.columbus.test.annotations.WithMockito;
+import com.phonepe.commons.columbus.test.annotations.WithStorageFactory;
 import com.phonepe.commons.columbus.test.extensions.ElasticContainerExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @WithMockito
-@WithDropwizardStorageFactory.All
+@WithStorageFactory.All
 @WithElasticContainer.Root
 class ElasticClientFactoryTest {
 
@@ -28,7 +28,7 @@ class ElasticClientFactoryTest {
 
     @Test
     @DisplayName("create client using factory")
-    void testClientFactory(final DropwizardStorageClientFactory factory, final ElasticsearchContainer elastic) {
+    void testClientFactory(final ColumbusStorageClientFactory factory, final ElasticsearchContainer elastic) {
         final var configuration = ElasticConfiguration.builder()
                 .enabled(true)
                 .name("elastic-test")

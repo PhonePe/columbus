@@ -1,6 +1,5 @@
 package com.phonepe.commons.columbus.elastic.internal.storage.factory;
 
-import com.phonepe.commons.columbus.dropwizard.storage.factory.DropwizardStorageFactoryContext;
 import com.phonepe.commons.columbus.elastic.internal.storage.factory.initializer.DefaultElasticClientInitializer;
 import com.phonepe.commons.columbus.elastic.internal.storage.toolkit.DefaultElasticToolkitInitializer;
 import com.phonepe.commons.columbus.elastic.storage.configuration.ElasticConfiguration;
@@ -8,6 +7,7 @@ import com.phonepe.commons.columbus.elastic.storage.factory.ElasticClientInitial
 import com.phonepe.commons.columbus.elastic.storage.factory.ElasticClientProvider;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
+import com.phonepe.commons.columbus.storage.factory.impl.ColumbusStorageFactoryContext;
 
 /**
  * An {@link ElasticClientProvider} that is used to create
@@ -17,11 +17,14 @@ import com.phonepe.commons.columbus.registry.factory.RegistryKey;
  * @param <C> the type of the context required.
  */
 @RegistryKey(name = ElasticConfiguration.TYPE, type = ElasticConfiguration.class)
-public final class ColumbusElasticClientProvider<C extends DropwizardStorageFactoryContext<C>>
+public final class ColumbusElasticClientProvider<C extends ColumbusStorageFactoryContext<C>>
         extends ElasticClientProvider<C> {
 
     @Override
-    protected ElasticClientInitializer getInitializer() {
+    protected ElasticClientInitializer getInitializer(
+            final ElasticConfiguration configuration,
+            final C context
+    ) {
         return new DefaultElasticClientInitializer();
     }
 

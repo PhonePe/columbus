@@ -10,7 +10,6 @@ import com.phonepe.commons.columbus.elastic.storage.factory.ElasticClientInitial
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.commons.columbus.storage.settings.StorageSettings;
-import io.dropwizard.setup.Environment;
 import org.elasticsearch.client.RestHighLevelClient;
 
 /**
@@ -25,7 +24,6 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
     private final LateInit<ElasticConfiguration> configuration = new LateInit<>("configuration");
     private final LateInit<Toolkit> toolkit = new LateInit<>("toolkit");
     private final LateInit<StorageSettings> settings = new LateInit<>("settings");
-    private final LateInit<Environment> environment = new LateInit<>("environment");
     private final LateInit<ElasticToolkitInitializer> elasticToolkitInitializer =
             new LateInit<>("elasticToolkitInitializer");
 
@@ -53,11 +51,6 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
     }
 
     @Override
-    public void use(final Environment environment) {
-        this.environment.set(environment);
-    }
-
-    @Override
     public void use(final ElasticToolkitInitializer toolkitInitializer) {
         elasticToolkitInitializer.set(toolkitInitializer);
     }
@@ -77,10 +70,6 @@ public abstract class LazyElasticClientInitializer implements ElasticClientIniti
 
     public Initializer<StorageSettings> getSettings() {
         return settings;
-    }
-
-    public Initializer<Environment> getEnvironment() {
-        return environment;
     }
 
     public Initializer<ElasticToolkitInitializer> getElasticToolkitInitializer() {

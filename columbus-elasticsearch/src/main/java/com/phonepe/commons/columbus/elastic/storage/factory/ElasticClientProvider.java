@@ -1,9 +1,9 @@
 package com.phonepe.commons.columbus.elastic.storage.factory;
 
-import com.phonepe.commons.columbus.dropwizard.storage.factory.DropwizardStorageFactoryContext;
 import com.phonepe.commons.columbus.elastic.storage.configuration.ElasticConfiguration;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkitInitializer;
 import com.phonepe.commons.columbus.storage.StorageClient;
+import com.phonepe.commons.columbus.storage.factory.impl.ColumbusStorageFactoryContext;
 import com.phonepe.commons.columbus.storage.factory.visitor.StorageClientProvider;
 
 /**
@@ -11,21 +11,23 @@ import com.phonepe.commons.columbus.storage.factory.visitor.StorageClientProvide
  *
  * @param <C> the type of the context required.
  */
-public abstract class ElasticClientProvider<C extends DropwizardStorageFactoryContext<C>>
+public abstract class ElasticClientProvider<C extends ColumbusStorageFactoryContext<C>>
         implements StorageClientProvider<ElasticConfiguration, C> {
 
     @Override
     public StorageClient visit(final ElasticConfiguration configuration, final Void props, final C context) {
-        final var initializer = getInitializer();
+        final var initializer = getInitializer(configuration, context);
         initializer.use(context.toolkit());
         initializer.use(context.settings());
-        initializer.use(context.dropwizardEnvironment());
         initializer.use(configuration);
         initializer.use(getElasticToolkitInitializer());
         return initializer.get();
     }
 
-    protected abstract ElasticClientInitializer getInitializer();
+    protected abstract ElasticClientInitializer getInitializer(
+            final ElasticConfiguration configuration,
+            final C context
+    );
 
     protected abstract ElasticToolkitInitializer getElasticToolkitInitializer();
 }
