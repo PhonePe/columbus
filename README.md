@@ -11,6 +11,7 @@ A one stop solution for all search and discovery problems.
 5. [Documentation](#documentation)
 6. [Testing](#testing)
 7. [Contributing](#contributing)
+8. [Troubleshooting](#troubleshooting)
 
 ## Features
 
@@ -57,6 +58,7 @@ For example, to use Columbus bundle, add the following dependency to `pom.xml`:
 ```
 
 The features provided by each module are specified in their README, linked in the [Features](#features) section above.
+The storage modules might have to be added as `dependencies` as well.
 
 ## Usage
 
@@ -188,3 +190,19 @@ TODO
 ## Contributing
 
 TODO
+
+## Troubleshooting
+
+Columbus uses Apache Commons for some of the utilities, and it might run into issues if the versions conflict.
+The following error indicates that the `commons-lang3` version does not match.
+```
+java.lang.NullPointerException: Cannot invoke "Object.equals(Object)" because "toTypeArg" is null
+```
+Add the following to `dependencyManagement` to resolve it:
+```xml
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.12.0</version>
+</dependency>
+```

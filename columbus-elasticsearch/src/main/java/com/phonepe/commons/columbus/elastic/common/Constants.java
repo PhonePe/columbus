@@ -27,6 +27,8 @@ public class Constants {
         public final String DELETE_INDEX = "deleteIndex";
         public final String PUT_MAPPING = "putMapping";
         public final String UPDATE_SETTINGS = "updateSettings";
+        public final String CREATE_INDEX_TEMPLATE = "createIndexTemplate";
+        public final String DELETE_INDEX_TEMPLATE = "deleteIndexTemplate";
         public final String GET_DOC = "getDoc";
         public final String INDEX_DOC = "indexDoc";
         public final String UPSERT_DOC = "upsertDoc";
