@@ -1,6 +1,7 @@
 package com.phonepe.commons.columbus.elastic.internal.storage.handlers.index.template;
 
 import com.phonepe.commons.columbus.elastic.common.Constants.Operations;
+import com.phonepe.commons.columbus.elastic.internal.dao.utils.DaoTransforms;
 import com.phonepe.commons.columbus.elastic.storage.ElasticClient;
 import com.phonepe.commons.columbus.elastic.storage.handlers.ElasticStorageCommandHandler;
 import com.phonepe.commons.columbus.registry.factory.RegistryKey;
@@ -35,11 +36,10 @@ public class CreateIndexTemplateHandler<E extends ElasticClient<E>>
     public Void handle(final CreateIndexTemplateCommand command, final E storage) {
         final var properties = command.getProperties();
         final var templateName = command.getTemplateName();
-        final var settings = Objects.<Map<String, Object>>requireNonNullElseGet(properties.getSettings(), Map::of);
         final var mapping = Objects.requireNonNullElseGet(properties.getSchema(), Map::of);
 
         final var template = new Template(
-                Settings.builder().loadFromMap(settings).build(),
+                Settings.builder().loadFromMap(DaoTransforms.getSettings(properties)).build(),
                 new CompressedXContent(storage.toolkit().serDe().toBytes(mapping)),
                 Map.of());
         final var indexTemplate = new ComposableIndexTemplate(
