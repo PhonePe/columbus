@@ -9,8 +9,8 @@ import java.util.Optional;
 /**
  * A registry that allows monitoring the successes and failures of get operations.
  * <p>
- * The {@link Listener}'s {@link Listener#success(K, V) success(key, value)} is called if a value is found for the key,
- * and {@link Listener#failure(K) failure(key)} is called if no value is found.
+ * The {@link Listener}'s {@link MonitoredRegistry.Listener#success(Object, Object) success(key, value)} is called if a
+ * value is found for the key, and {@link Listener#failure(Object) failure(key)} is called if no value is found.
  *
  * @param <K> the type of the key.
  * @param <V> the type of the values.

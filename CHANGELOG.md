@@ -1,5 +1,36 @@
 # Changelog
 
+## [2.0.1] - 2024-03-21
+
+### Breaking changes
+
+- Replace the v1 category/unit implementation with a new extensible, multi-module
+  framework. V1 APIs and features are not implicitly carried forward.
+- Move the rewritten implementation into the `com.phonepe.commons.columbus` namespace.
+
+### Added
+
+- Introduce framework utilities for reflection and mixins, registries, extensible
+  visitors, commands/executors, lazy initialization, entity types, and JSON serialization.
+- Introduce toolkit and storage initialization, configurable command handlers,
+  storage factories, and registration/override extension points.
+- Add data-access and search models for IDs, indices, routing, queries, filters,
+  scoring, sorting, pagination, and aggregations.
+- Support per-call visitor properties, text-match and constant-score filters,
+  wildcard queries, and scoring within AND filters.
+- Add Elasticsearch storage with index and entity operations, bulk commands,
+  search, scanning, index-template commands, and geographic point queries.
+- Add optional Dropwizard lifecycle/health-check integration and a Columbus bundle;
+  also support creating Elasticsearch storage without Dropwizard.
+- Add reusable JUnit extensions, in-memory test storage, and Elasticsearch
+  container utilities.
+- Add module guides, initialization examples, and extension documentation.
+
+### Fixed
+
+- Preserve all index settings when loading Elasticsearch index configuration.
+- Return `null` when deserializing null JSON strings or byte arrays.
+
 ## Legacy v1 releases
 
 Version 1.x features apply to the original implementation, replaced in v2.

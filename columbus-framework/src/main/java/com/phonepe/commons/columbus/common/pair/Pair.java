@@ -65,8 +65,8 @@ public class Pair<F, S> {
     }
 
     /**
-     * Combines the two values of the pair by applying {@link BiFunction#apply(F, S) combiner.apply(F, S)} with the
-     * {@link Pair#first} and {@link Pair#second} values.
+     * Combines the two values of the pair by applying {@link BiFunction#apply(Object, Object) combiner.apply(F, S)}
+     * with the {@link Pair#first} and {@link Pair#second} values.
      *
      * @param combiner the function to be applied with the values of the pair.
      * @param <T>      the type of the result of the combination.
