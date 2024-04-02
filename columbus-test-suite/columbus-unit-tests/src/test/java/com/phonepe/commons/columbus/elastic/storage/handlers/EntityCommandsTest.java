@@ -167,6 +167,43 @@ class EntityCommandsTest {
         }
 
         @Test
+        @DisplayName("upsert without changing entity")
+        void testUpsertWithoutChange(final StorageClient storage, final ValueId id) {
+            final var getCommand = GetCommand.forType(EntityHelpers.ENTITY_TYPE)
+                    .index(INDEX)
+                    .id(id)
+                    .build();
+            final var entity = ElasticEntity.builder()
+                    .id(id.getValue())
+                    .name("inserted")
+                    .count(3)
+                    .build();
+            final var insertCommand = InsertCommand.withValue(entity)
+                    .index(INDEX)
+                    .id(id)
+                    .build();
+            final var upsertCommand = UpsertCommand.withValue(entity)
+                    .index(INDEX)
+                    .id(id)
+                    .build();
+
+            insertCommand.execute(storage);
+            final var entityBefore = getCommand.execute(storage);
+            final var upsertResult = upsertCommand.execute(storage);
+            final var entityAfter = getCommand.execute(storage);
+
+            assertAll(
+                    "existing entity",
+                    () -> assertTrue(entityBefore.isPresent(), "entity must exist before upsert"),
+                    () -> assertEquals(entity, entityBefore.orElse(null), "entity must match inserted value"));
+            assertEquals(UpsertResult.UNALTERED, upsertResult, "entity must not be updated");
+            assertAll(
+                    "updated entity",
+                    () -> assertTrue(entityAfter.isPresent(), "entity must exist after upsert"),
+                    () -> assertEquals(entity, entityAfter.orElse(null), "entity must match updated value"));
+        }
+
+        @Test
         @DisplayName("delete non-existent entity")
         void testDeleteMissing(final StorageClient storage, final ValueId id) {
             final var deleteCommand = DeleteCommand.builder()

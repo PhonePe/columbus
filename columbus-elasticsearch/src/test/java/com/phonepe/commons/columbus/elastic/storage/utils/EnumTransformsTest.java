@@ -30,6 +30,7 @@ class EnumTransformsTest {
     void testUpsertResultTransforms() {
         assertEquals(UpsertResult.CREATED, toUpsertResult(Result.CREATED));
         assertEquals(UpsertResult.UPDATED, toUpsertResult(Result.UPDATED));
+        assertEquals(UpsertResult.UNALTERED, toUpsertResult(Result.NOOP));
     }
 
     @Test
@@ -37,7 +38,6 @@ class EnumTransformsTest {
     void testInvalidUpsertResultTransforms() {
         assertThrows(IllegalArgumentException.class, () -> toUpsertResult(Result.DELETED));
         assertThrows(IllegalArgumentException.class, () -> toUpsertResult(Result.NOT_FOUND));
-        assertThrows(IllegalArgumentException.class, () -> toUpsertResult(Result.NOOP));
     }
 
     @Test

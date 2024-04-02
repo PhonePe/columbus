@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.2] - 2024-04-02
+
+### Fixed
+
+- Return `UNALTERED` when an upsert does not change the stored document.
+
 ## [2.0.1] - 2024-03-21
 
 ### Breaking changes

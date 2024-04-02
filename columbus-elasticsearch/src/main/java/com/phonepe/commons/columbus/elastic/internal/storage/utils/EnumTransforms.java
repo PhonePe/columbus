@@ -26,7 +26,8 @@ public class EnumTransforms {
         return switch (result) {
             case CREATED -> UpsertResult.CREATED;
             case UPDATED -> UpsertResult.UPDATED;
-            case DELETED, NOT_FOUND, NOOP ->
+            case NOOP -> UpsertResult.UNALTERED;
+            case DELETED, NOT_FOUND ->
                     throw new IllegalArgumentException("Invalid result for upsert: '%s'".formatted(result));
         };
     }
