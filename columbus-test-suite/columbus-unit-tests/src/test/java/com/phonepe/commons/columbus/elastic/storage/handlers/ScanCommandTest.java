@@ -1,10 +1,8 @@
 package com.phonepe.commons.columbus.elastic.storage.handlers;
 
 import com.phonepe.commons.columbus.dao.id.Id;
-import com.phonepe.commons.columbus.dao.id.Ids;
 import com.phonepe.commons.columbus.dao.index.Index;
 import com.phonepe.commons.columbus.dao.index.IndexName;
-import com.phonepe.commons.columbus.dao.index.IndexProperties;
 import com.phonepe.commons.columbus.dao.index.Indices;
 import com.phonepe.commons.columbus.elastic.internal.storage.ColumbusElasticClient;
 import com.phonepe.commons.columbus.elastic.internal.storage.handlers.search.ScanHandler;
@@ -14,12 +12,7 @@ import com.phonepe.commons.columbus.search.misc.query.Projection;
 import com.phonepe.commons.columbus.search.sort.FieldSort;
 import com.phonepe.commons.columbus.search.sort.SortOrder;
 import com.phonepe.commons.columbus.storage.StorageClient;
-import com.phonepe.commons.columbus.storage.commands.entity.bulk.BulkInsertCommand;
-import com.phonepe.commons.columbus.storage.commands.index.CreateIndexCommand;
-import com.phonepe.commons.columbus.storage.commands.index.DeleteIndexCommand;
 import com.phonepe.commons.columbus.storage.commands.search.ScanCommand;
-import com.phonepe.commons.columbus.storage.models.RequestExecutionPolicy;
-import com.phonepe.commons.columbus.storage.models.entity.Entity;
 import com.phonepe.commons.columbus.storage.models.result.StoredEntity;
 import com.phonepe.commons.columbus.test.annotations.WithElasticClient;
 import com.phonepe.commons.columbus.test.annotations.WithElasticToolkit;
@@ -44,6 +37,9 @@ import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.phonepe.commons.columbus.elastic.storage.handlers.EntityHelpers.document;
+import static com.phonepe.commons.columbus.elastic.storage.handlers.IndexHelpers.deleteIndex;
+import static com.phonepe.commons.columbus.elastic.storage.handlers.IndexHelpers.insertEntities;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -76,55 +72,14 @@ class ScanCommandTest {
     };
 
     private static final Id[] IDS = Arrays.stream(DOCS)
-            .map(ScanCommandTest::id)
+            .map(EntityHelpers::id)
             .toArray(Id[]::new);
     private static final ElasticEntityId[] ENTITY_IDS = Arrays.stream(DOCS)
-            .map(ScanCommandTest::entityId)
+            .map(EntityHelpers::entityId)
             .toArray(ElasticEntityId[]::new);
 
     private static void createIndex(final StorageClient storage, final Index index) {
-        CreateIndexCommand.builder()
-                .index(index)
-                .properties(IndexProperties.builder()
-                        .numberOfShards(1)
-                        .numberOfReplicas(0)
-                        .schema(SCHEMA)
-                        .build())
-                .build()
-                .execute(storage);
-    }
-
-    private static void deleteIndex(final StorageClient storage, final IndexName index) {
-        DeleteIndexCommand.builder()
-                .index(index)
-                .build()
-                .execute(storage);
-    }
-
-    private static ElasticEntity document(final String id, final String name, final int count, final String key) {
-        return ElasticEntity.builder()
-                .id(id)
-                .name(name)
-                .count(count)
-                .attribute(key)
-                .build();
-    }
-
-    private static Entity<ElasticEntity> entity(final ElasticEntity entity) {
-        return Entity.<ElasticEntity>builder()
-                .id(Ids.value(entity.getId()))
-                .value(entity)
-                .build();
-    }
-
-    private static ElasticEntityId entityId(final ElasticEntity entity) {
-        return ElasticEntityId.builder()
-                .id(entity.getId())
-                .build();
-    }
-
-    private static Id id(final ElasticEntity entity) {
-        return Ids.value(entity.getId());
+        IndexHelpers.createIndex(storage, index, SCHEMA);
     }
 
     @Nested
@@ -244,7 +199,7 @@ class ScanCommandTest {
         @BeforeAll
         static void beforeAll(final StorageClient storage) {
             createIndex(storage, DATA_INDEX);
-            populateData(storage);
+            insertEntities(storage, DATA_INDEX, DOCS);
             createIndex(storage, EMPTY_INDEX);
         }
 
@@ -252,15 +207,6 @@ class ScanCommandTest {
         static void afterAll(final StorageClient storage) {
             deleteIndex(storage, DATA_INDEX);
             deleteIndex(storage, EMPTY_INDEX);
-        }
-
-        private static void populateData(final StorageClient storage) {
-            BulkInsertCommand.<ElasticEntity>builder()
-                    .index(DATA_INDEX)
-                    .entities(Arrays.stream(DOCS).map(ScanCommandTest::entity).toList())
-                    .executionPolicy(RequestExecutionPolicy.FORCE_COMPLETION)
-                    .build()
-                    .execute(storage);
         }
 
         private static void verifyEntities(final List<StoredEntity<ElasticEntity>> entities, final List<Integer> ids) {

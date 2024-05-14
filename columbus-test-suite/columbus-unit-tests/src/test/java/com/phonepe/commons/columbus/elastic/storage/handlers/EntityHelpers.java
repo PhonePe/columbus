@@ -1,5 +1,8 @@
 package com.phonepe.commons.columbus.elastic.storage.handlers;
 
+import com.phonepe.commons.columbus.dao.id.Id;
+import com.phonepe.commons.columbus.dao.id.Ids;
+import com.phonepe.commons.columbus.storage.models.entity.Entity;
 import com.phonepe.commons.columbus.type.EntityType;
 import com.phonepe.commons.columbus.type.Types;
 import lombok.experimental.UtilityClass;
@@ -26,5 +29,31 @@ class EntityHelpers {
 
     Map<String, Object> schemaWithAttributeType(final String type) {
         return schemaWithAttribute(Map.of("type", type));
+    }
+
+    static ElasticEntity document(final String id, final String name, final int count, final Object key) {
+        return ElasticEntity.builder()
+                .id(id)
+                .name(name)
+                .count(count)
+                .attribute(key)
+                .build();
+    }
+
+    static Entity<ElasticEntity> entity(final ElasticEntity entity) {
+        return Entity.<ElasticEntity>builder()
+                .id(Ids.value(entity.getId()))
+                .value(entity)
+                .build();
+    }
+
+    static ElasticEntityId entityId(final ElasticEntity entity) {
+        return ElasticEntityId.builder()
+                .id(entity.getId())
+                .build();
+    }
+
+    static Id id(final ElasticEntity entity) {
+        return Ids.value(entity.getId());
     }
 }

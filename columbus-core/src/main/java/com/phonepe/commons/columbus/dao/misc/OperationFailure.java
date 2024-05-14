@@ -14,5 +14,5 @@ public class OperationFailure {
     @NonNull
     private final String message;
 
-    private final Exception exception;
+    private final Throwable exception;
 }

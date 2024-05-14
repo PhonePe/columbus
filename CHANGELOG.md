@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3] - 2024-05-14
+
+### Added
+
+- Add `CopyCommand` to reindex documents from one or more source indices into
+  another, with asynchronous task-status lookup through `GetCopyStatusCommand`.
+
 ## [2.0.2] - 2024-04-02
 
 ### Fixed

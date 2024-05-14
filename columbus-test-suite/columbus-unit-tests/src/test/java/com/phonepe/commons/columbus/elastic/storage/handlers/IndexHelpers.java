@@ -1,0 +1,77 @@
+package com.phonepe.commons.columbus.elastic.storage.handlers;
+
+import com.phonepe.commons.columbus.dao.index.Index;
+import com.phonepe.commons.columbus.dao.index.IndexProperties;
+import com.phonepe.commons.columbus.search.sort.FieldSort;
+import com.phonepe.commons.columbus.search.sort.SortOrder;
+import com.phonepe.commons.columbus.storage.StorageClient;
+import com.phonepe.commons.columbus.storage.commands.entity.bulk.BulkInsertCommand;
+import com.phonepe.commons.columbus.storage.commands.index.CreateIndexCommand;
+import com.phonepe.commons.columbus.storage.commands.index.DeleteIndexCommand;
+import com.phonepe.commons.columbus.storage.commands.search.ScanCommand;
+import com.phonepe.commons.columbus.storage.models.RequestExecutionPolicy;
+import com.phonepe.commons.columbus.storage.models.entity.Entity;
+import com.phonepe.commons.columbus.storage.models.result.StoredEntity;
+import com.phonepe.commons.columbus.type.EntityType;
+import lombok.experimental.UtilityClass;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+@UtilityClass
+class IndexHelpers {
+
+    static void createIndex(final StorageClient storage, final Index index, final Map<String, Object> schema) {
+        CreateIndexCommand.builder()
+                .index(index)
+                .properties(IndexProperties.builder()
+                        .numberOfShards(1)
+                        .numberOfReplicas(0)
+                        .schema(schema)
+                        .build())
+                .build()
+                .execute(storage);
+    }
+
+    static void deleteIndex(final StorageClient storage, final Index index) {
+        DeleteIndexCommand.builder()
+                .index(index)
+                .build()
+                .execute(storage);
+    }
+
+    static void insertEntities(final StorageClient storage, final Index index, final ElasticEntity... entities) {
+        insertEntities(storage, index, Arrays.asList(entities));
+    }
+
+    static void insertEntities(final StorageClient storage, final Index index, final List<ElasticEntity> entities) {
+        insertAll(storage, index, entities.stream().map(EntityHelpers::entity).toList());
+    }
+
+    static void insertAll(final StorageClient storage, final Index index, final List<Entity<ElasticEntity>> entities) {
+        BulkInsertCommand.<ElasticEntity>builder()
+                .index(index)
+                .entities(entities)
+                .executionPolicy(RequestExecutionPolicy.FORCE_COMPLETION)
+                .build()
+                .execute(storage);
+    }
+
+    static Stream<ElasticEntity> readEntities(final StorageClient storage, final Index index) {
+        return readAll(storage, index, EntityHelpers.ENTITY_TYPE).map(StoredEntity::getValue);
+    }
+
+    static <T> Stream<StoredEntity<T>> readAll(final StorageClient storage, final Index index, final EntityType<T> type) {
+        return ScanCommand.forType(type)
+                .index(index)
+                .sort(FieldSort.builder()
+                        .order(SortOrder.ASC)
+                        .field("_id")
+                        .build())
+                .build()
+                .execute(storage)
+                .stream();
+    }
+}
