@@ -5,11 +5,12 @@
     <parent>
         <groupId>com.phonepe.commons.columbus</groupId>
         <artifactId>columbus-dependencies</artifactId>
-        <version>2.0.3</version>
+        <version>2.0.4</version>
         <relativePath>../columbus-dependencies</relativePath>
     </parent>
 
     <artifactId>columbus-framework</artifactId>
+
     <name>Columbus Framework</name>
     <description>
         The building blocks and utilities used by Columbus.

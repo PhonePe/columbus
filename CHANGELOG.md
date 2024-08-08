@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.4] - 2024-08-08
+
+### Added
+
+- Add the search-algorithms module with SymSpell correction, word splitting and
+  combining, and keyboard-aware edit distances.
+
 ## [2.0.3] - 2024-05-14
 
 ### Added

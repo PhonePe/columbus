@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.phonepe.commons.columbus</groupId>
         <artifactId>columbus</artifactId>
-        <version>2.0.3</version>
+        <version>2.0.4</version>
     </parent>
 
     <artifactId>columbus-bom</artifactId>
@@ -46,6 +46,11 @@
             <dependency>
                 <groupId>com.phonepe.commons.columbus</groupId>
                 <artifactId>columbus-elasticsearch</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.phonepe.commons.columbus</groupId>
+                <artifactId>columbus-search-algorithms</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
