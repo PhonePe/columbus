@@ -12,14 +12,14 @@ public class RangeAggregatorToElastic<C extends ElasticAggregatorTransformationC
         extends BucketAggregatorToElastic<RangeAggregator, C> {
 
     protected AggregationBuilder buildBucketAggregation(
-            final RangeAggregator aggregation,
+            final RangeAggregator aggregator,
             final Object props,
             final C context
     ) {
-        final var builder = AggregationBuilders.range(aggregation.getName())
-                .field(aggregation.getField());
+        final var builder = AggregationBuilders.range(aggregator.getName())
+                .field(aggregator.getField());
 
-        aggregation.getRanges().stream()
+        aggregator.getRanges().stream()
                 .map(MiscTransforms::toElastic)
                 .forEachOrdered(builder::addRange);
 

@@ -19,27 +19,27 @@ public class TermsAggregatorToElastic<C extends ElasticAggregatorTransformationC
         extends BucketAggregatorToElastic<TermsAggregator, C> {
 
     protected AggregationBuilder buildBucketAggregation(
-            final TermsAggregator aggregation,
+            final TermsAggregator aggregator,
             final Object props,
             final C context
     ) {
-        final var builder = AggregationBuilders.terms(aggregation.getName())
-                .field(aggregation.getField());
+        final var builder = AggregationBuilders.terms(aggregator.getName())
+                .field(aggregator.getField());
 
-        applyIfPositive(aggregation.getSize(), builder::size);
-        applyIfPositive(aggregation.getShardSize(), builder::shardSize);
+        applyIfPositive(aggregator.getSize(), builder::size);
+        applyIfPositive(aggregator.getShardSize(), builder::shardSize);
 
-        applyIfNotNull(aggregation.getIncludeExclude(), MiscTransforms::toElastic, builder::includeExclude);
+        applyIfNotNull(aggregator.getIncludeExclude(), MiscTransforms::toElastic, builder::includeExclude);
 
-        final var bucketOrders = aggregation.getOrders().stream().map(MiscTransforms::toElastic).toList();
+        final var bucketOrders = aggregator.getOrders().stream().map(MiscTransforms::toElastic).toList();
         applyIf(bucketOrders, CollectionUtils::isNotEmpty, builder::order);
 
-        applyIfNonNegative(aggregation.getMinDocCount(), builder::minDocCount);
-        applyIfNonNegative(aggregation.getShardMinDocCount(), builder::shardMinDocCount);
+        applyIfNonNegative(aggregator.getMinDocCount(), builder::minDocCount);
+        applyIfNonNegative(aggregator.getShardMinDocCount(), builder::shardMinDocCount);
 
-        applyIfNotNull(aggregation.getMissingValue(), builder::missing);
-        applyIfNotNull(aggregation.getCollectMode(), SearchEnums::toSubAggregationCollectionMode, builder::collectMode);
-        applyIfNotNull(aggregation.getShowCountError(), builder::showTermDocCountError);
+        applyIfNotNull(aggregator.getMissingValue(), builder::missing);
+        applyIfNotNull(aggregator.getCollectMode(), SearchEnums::toSubAggregationCollectionMode, builder::collectMode);
+        applyIfNotNull(aggregator.getShowCountError(), builder::showTermDocCountError);
 
         return builder;
     }

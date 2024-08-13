@@ -16,17 +16,17 @@ public class FiltersAggregatorToElastic<C extends ElasticAggregatorTransformatio
         extends BucketAggregatorToElastic<FiltersAggregator, C> {
 
     protected AggregationBuilder buildBucketAggregation(
-            final FiltersAggregator aggregation,
+            final FiltersAggregator aggregator,
             final Object props,
             final C context
     ) {
         final var queryTransformer = context.toolkit().queryTransformer();
-        final var filters = aggregation.getFilters().entrySet().stream()
+        final var filters = aggregator.getFilters().entrySet().stream()
                 .map(entry -> new KeyedFilter(entry.getKey(), queryTransformer.transform(entry.getValue(), props)))
                 .toArray(KeyedFilter[]::new);
 
-        final var builder = AggregationBuilders.filters(aggregation.getName(), filters);
-        applyIfNotNull(aggregation.getOtherBucketKey(), key -> builder.otherBucket(true).otherBucketKey(key));
+        final var builder = AggregationBuilders.filters(aggregator.getName(), filters);
+        applyIfNotNull(aggregator.getOtherBucketKey(), key -> builder.otherBucket(true).otherBucketKey(key));
         return builder;
     }
 }

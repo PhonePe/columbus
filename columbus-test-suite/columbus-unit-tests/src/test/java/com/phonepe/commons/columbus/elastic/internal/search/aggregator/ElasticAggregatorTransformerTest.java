@@ -5,7 +5,9 @@ import com.phonepe.commons.columbus.search.aggregator.AggregatorTransformer;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FilterAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FiltersAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.RangeAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.SamplerAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.TermsAggregator;
+import com.phonepe.commons.columbus.search.aggregator.metrics.CardinalityAggregator;
 import com.phonepe.commons.columbus.search.aggregator.metrics.StatsAggregator;
 import com.phonepe.commons.columbus.search.aggregator.metrics.TopHitsAggregator;
 import com.phonepe.commons.columbus.search.filter.general.EqualsFilter;
@@ -122,6 +124,42 @@ class ElasticAggregatorTransformerTest {
     }
 
     @Test
+    @DisplayName("Sampler")
+    void testSamplerAggregator() {
+        final var aggregator = SamplerAggregator.builder()
+                .name("sampler")
+                .shardSize(10)
+                .build();
+
+        final var expected = AggregationBuilders.sampler("sampler")
+                .shardSize(10);
+
+        final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+        assertEquals(expected, aggregationBuilder, "must return a sampler aggregation");
+    }
+
+    @Test
+    @DisplayName("Diversified Sampler")
+    void testDiversifiedSamplerAggregator() {
+        final var aggregator = SamplerAggregator.builder()
+                .name("diversified-sampler")
+                .shardSize(10)
+                .diversifyField("field")
+                .maxDuplicates(2)
+                .build();
+
+        final var expected = AggregationBuilders.diversifiedSampler("diversified-sampler")
+                .shardSize(10)
+                .field("field")
+                .maxDocsPerValue(2);
+
+        final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+        assertEquals(expected, aggregationBuilder, "must return a diversified sampler aggregation");
+    }
+
+    @Test
     @DisplayName("Stats")
     void testStatsAggregator() {
         final var aggregator = StatsAggregator.builder()
@@ -164,6 +202,24 @@ class ElasticAggregatorTransformerTest {
         final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
 
         assertEquals(expected, aggregationBuilder, "must return a top hits aggregation");
+    }
+
+    @Test
+    @DisplayName("Cardinality")
+    void testCardinalityAggregator() {
+        final var aggregator = CardinalityAggregator.builder()
+                .name("cardinality")
+                .field("field")
+                .missingValue(10)
+                .build();
+
+        final var expected = AggregationBuilders.cardinality("cardinality")
+                .field("field")
+                .missing(10);
+
+        final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+        assertEquals(expected, aggregationBuilder, "must return a cardinality aggregation");
     }
 
     @BeforeAll

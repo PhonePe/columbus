@@ -4,7 +4,9 @@ import com.phonepe.commons.columbus.core.toolkit.Toolkit;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FilterAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FiltersAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.RangeAggregationParser;
+import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.SamplerAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.TermsAggregationParser;
+import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.CardinalityAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.StatsAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.TopHitsAggregationParser;
 import com.phonepe.commons.columbus.test.annotations.WithToolkit;
@@ -54,6 +56,15 @@ class ElasticAggregationParserTest {
     }
 
     @Test
+    @DisplayName("invalid input to sampler parser")
+    void testParseInvalidSampler() {
+        final var parser = SamplerAggregationParser.builder().build();
+        final var result = ElasticStringTerms.builder().build();
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(result),
+                "must throw if input is not ParsedSampler");
+    }
+
+    @Test
     @DisplayName("invalid input to stats parser")
     void testParseInvalidStats() {
         final var parser = new StatsAggregationParser();
@@ -73,4 +84,14 @@ class ElasticAggregationParserTest {
         assertThrows(IllegalArgumentException.class, () -> parser.parse(result),
                 "must throw if input is not ParsedTopHits");
     }
+
+    @Test
+    @DisplayName("invalid input to cardinality parser")
+    void testParseInvalidCardinality() {
+        final var parser = new CardinalityAggregationParser();
+        final var result = ElasticStringTerms.builder().build();
+        assertThrows(IllegalArgumentException.class, () -> parser.parse(result),
+                "must throw if input is not ParsedCardinality");
+    }
+
 }

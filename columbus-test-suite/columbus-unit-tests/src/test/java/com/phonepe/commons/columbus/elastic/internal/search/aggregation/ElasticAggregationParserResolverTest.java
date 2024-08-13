@@ -4,7 +4,9 @@ import com.phonepe.commons.columbus.dao.id.Ids;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FilterAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FiltersAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.RangeAggregationParser;
+import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.SamplerAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.TermsAggregationParser;
+import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.CardinalityAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.StatsAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.metrics.TopHitsAggregationParser;
 import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkit;
@@ -12,13 +14,17 @@ import com.phonepe.commons.columbus.search.aggregation.AggregationParserResolver
 import com.phonepe.commons.columbus.search.aggregation.bucket.FilterAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.FiltersAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.RangeAggregation;
+import com.phonepe.commons.columbus.search.aggregation.bucket.SamplerAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.TermsAggregation;
+import com.phonepe.commons.columbus.search.aggregation.metrics.CardinalityAggregation;
 import com.phonepe.commons.columbus.search.aggregation.metrics.StatsAggregation;
 import com.phonepe.commons.columbus.search.aggregation.metrics.TopHitsAggregation;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FilterAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FiltersAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.RangeAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.SamplerAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.TermsAggregator;
+import com.phonepe.commons.columbus.search.aggregator.metrics.CardinalityAggregator;
 import com.phonepe.commons.columbus.search.aggregator.metrics.StatsAggregator;
 import com.phonepe.commons.columbus.search.aggregator.metrics.TopHitsAggregator;
 import com.phonepe.commons.columbus.search.misc.bucket.NamedRange;
@@ -333,6 +339,50 @@ class ElasticAggregationParserResolverTest {
     }
 
     @Test
+    @DisplayName("Sampler")
+    void testSamplerAggregation() {
+        final var aggregator = SamplerAggregator.builder()
+                .name("sampler")
+                .shardSize(1)
+                .subAggregator(TermsAggregator.builder()
+                        .name("keys")
+                        .field("other_field")
+                        .build())
+                .build();
+        final var result = ElasticSampler.builder()
+                .name("sampler")
+                .count(2)
+                .aggregations(new Aggregations(List.of(ElasticStringTerms.builder()
+                        .name("keys")
+                        .bucket(ElasticStringTerms.ElasticBucket.builder()
+                                .key("filtered")
+                                .docCount(2)
+                                .build())
+                        .build())))
+                .build();
+
+        final var expected = SamplerAggregation.builder()
+                .name("sampler")
+                .count(2)
+                .aggregation("keys", TermsAggregation.builder()
+                        .name("keys")
+                        .bucket(TermsAggregation.Bucket.builder()
+                                .key("filtered")
+                                .count(2)
+                                .build())
+                        .build())
+                .build();
+
+        final var aggregationParser = aggregationParserResolver.resolve(aggregator);
+
+        final var aggregation = aggregationParser.parse(result);
+
+        assertInstanceOf(SamplerAggregationParser.class, aggregationParser, "must return parser for sampler");
+        assertEquals(SamplerAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
+        assertEquals(expected, aggregation, "must return a sampler aggregation");
+    }
+
+    @Test
     @DisplayName("Top Hits")
     void testTopHitsAggregation() {
         final var aggregator = TopHitsAggregator.builder()
@@ -407,6 +457,32 @@ class ElasticAggregationParserResolverTest {
         assertInstanceOf(StatsAggregationParser.class, aggregationParser, "must return parser for stats");
         assertEquals(StatsAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
         assertEquals(expected, aggregation, "must return a stats aggregation");
+    }
+
+    @Test
+    @DisplayName("Cardinality")
+    void testCardinalityAggregation() {
+        final var aggregator = CardinalityAggregator.builder()
+                .name("cardinality")
+                .field("field")
+                .build();
+        final var result = ElasticCardinality.builder()
+                .name("cardinality")
+                .count(100)
+                .build();
+
+        final var expected = CardinalityAggregation.builder()
+                .name("cardinality")
+                .count(100)
+                .build();
+
+        final var aggregationParser = aggregationParserResolver.resolve(aggregator);
+
+        final var aggregation = aggregationParser.parse(result);
+
+        assertInstanceOf(CardinalityAggregationParser.class, aggregationParser, "must return parser for cardinality");
+        assertEquals(CardinalityAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
+        assertEquals(expected, aggregation, "must return a cardinality aggregation");
     }
 
     @BeforeAll

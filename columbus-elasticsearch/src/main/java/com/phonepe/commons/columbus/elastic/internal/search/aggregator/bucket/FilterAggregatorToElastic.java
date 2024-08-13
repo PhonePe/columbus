@@ -19,16 +19,16 @@ public class FilterAggregatorToElastic<C extends ElasticAggregatorTransformation
     private static final Query DEFAULT_FILTER = MatchAllQuery.builder().build();
 
     protected AggregationBuilder buildBucketAggregation(
-            final FilterAggregator aggregation,
+            final FilterAggregator aggregator,
             final Object props,
             final C context
     ) {
-        if (aggregation.getFilter() == null) {
-            log.warn("FilterAggregation(name={}) has no filter", aggregation.getName());
+        if (aggregator.getFilter() == null) {
+            log.warn("FilterAggregator(name={}) has no filter", aggregator.getName());
         }
-        final var filter = Objects.requireNonNullElse(aggregation.getFilter(), DEFAULT_FILTER);
+        final var filter = Objects.requireNonNullElse(aggregator.getFilter(), DEFAULT_FILTER);
         return AggregationBuilders.filter(
-                aggregation.getName(),
+                aggregator.getName(),
                 context.toolkit().queryTransformer().transform(filter, props));
     }
 }

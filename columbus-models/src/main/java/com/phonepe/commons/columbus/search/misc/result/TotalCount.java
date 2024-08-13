@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents the count of elements. If the {@link #count} is an approximate lower bound, {@link #exact} will be false.
+ */
 @Data
 @Builder
 public class TotalCount {

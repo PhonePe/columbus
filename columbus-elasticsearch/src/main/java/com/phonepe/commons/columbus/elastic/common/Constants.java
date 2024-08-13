@@ -39,6 +39,7 @@ public class Constants {
         public final String BULK_DELETE_DOC = "bulkDeleteDoc";
         public final String SEARCH_DOCS = "searchDocs";
         public final String SCROLL_DOCS = "scrollDocs";
+        public final String COUNT_DOCS = "countDocs";
         public final String REINDEX_DOCS = "reindexDocs";
         public final String REINDEX_ASYNC = "reindexAsync";
         public final String REINDEX_STATUS = "reindexStatus";
