@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.0.5] - 2024-08-13
+
+### Added
+
+- Add `CountCommand` to count matching documents without retrieving entities.
+- Add sampler and cardinality aggregations.
+- Add disjunction-max (`DisMaxQuery`) queries.
+- Add text analysis utilities with whitespace/regex tokenizers and stop-token filtering.
+
 ## [2.0.4] - 2024-08-08
 
 ### Added

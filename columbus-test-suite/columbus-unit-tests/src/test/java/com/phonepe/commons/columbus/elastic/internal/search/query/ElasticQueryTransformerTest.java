@@ -12,6 +12,7 @@ import com.phonepe.commons.columbus.search.query.QueryTransformer;
 import com.phonepe.commons.columbus.search.query.compound.BoolQuery;
 import com.phonepe.commons.columbus.search.query.compound.BoostingQuery;
 import com.phonepe.commons.columbus.search.query.compound.ConstantScoreQuery;
+import com.phonepe.commons.columbus.search.query.compound.DisMaxQuery;
 import com.phonepe.commons.columbus.search.query.compound.FunctionScoreQuery;
 import com.phonepe.commons.columbus.search.query.geo.GeoDistanceQuery;
 import com.phonepe.commons.columbus.search.query.geo.GeoPointQuery;
@@ -618,6 +619,29 @@ class ElasticQueryTransformerTest {
             final var queryBuilder = queryTransformer.transform(query);
 
             assertEquals(expected, queryBuilder, "must return a function score query");
+        }
+
+        @Test
+        @DisplayName("DisMax")
+        void testDisMaxQuery() {
+            final var query = DisMaxQuery.builder()
+                    .query(ALL_QUERY)
+                    .query(NONE_QUERY)
+                    .tieBreaker(0.5f)
+                    .boost(3f)
+                    .name("disMax")
+                    .build();
+
+            final var expected = QueryBuilders.disMaxQuery()
+                    .add(ALL_BUILDER)
+                    .add(NONE_BUILDER)
+                    .tieBreaker(0.5f)
+                    .boost(3f)
+                    .queryName("disMax");
+
+            final var queryBuilder = queryTransformer.transform(query);
+
+            assertEquals(expected, queryBuilder, "must return a dis max query");
         }
     }
 
