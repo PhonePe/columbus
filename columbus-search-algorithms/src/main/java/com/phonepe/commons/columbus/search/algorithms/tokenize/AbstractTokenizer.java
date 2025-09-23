@@ -8,6 +8,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @SuperBuilder
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public abstract class AbstractTokenizer implements Tokenizer {
 
     @Positive

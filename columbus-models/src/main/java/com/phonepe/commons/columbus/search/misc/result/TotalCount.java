@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Builder
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class TotalCount {
 
     private final long count;

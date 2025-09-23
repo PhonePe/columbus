@@ -22,6 +22,7 @@ import java.util.List;
  */
 @Data
 @Builder
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class CopyCommand implements Command<CopyCommand.Result> {
 
     public static final String COMMAND_NAME = "COPY";

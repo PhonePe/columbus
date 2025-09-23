@@ -7,6 +7,7 @@ import lombok.NonNull;
 import java.util.Objects;
 
 @Builder
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class WeightedDamerauLevenshteinDistance implements Distance<String> {
 
     @Builder.Default
@@ -27,9 +28,9 @@ public class WeightedDamerauLevenshteinDistance implements Distance<String> {
             return 0;
         }
 
-        if (from.length() == 0) {
+        if (from.isEmpty()) {
             return to.length() * insertionWeight;
-        } else if (to.length() == 0) {
+        } else if (to.isEmpty()) {
             return from.length() * deletionWeight;
         }
 
@@ -66,6 +67,7 @@ public class WeightedDamerauLevenshteinDistance implements Distance<String> {
         return distance > max ? -1 : distance;
     }
 
+    @SuppressWarnings("unused")
     public static class WeightedDamerauLevenshteinDistanceBuilder {
 
         public WeightedDamerauLevenshteinDistanceBuilder unitWeights() {

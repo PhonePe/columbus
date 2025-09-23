@@ -18,6 +18,7 @@ import java.util.Map;
 
 @Builder
 @Jacksonized
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public final class AnalyserImpl implements Analyser {
 
     private static final Tokenizer DEFAULT_TOKENIZER = WhitespaceTokenizer.builder().build();

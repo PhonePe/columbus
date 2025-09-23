@@ -27,7 +27,7 @@ public class UnigramCorrector {
         return lookup(phrase, Verbosity.TOP, maxEditDistance);
     }
 
-    @SuppressWarnings("java:S135")
+    @SuppressWarnings({"java:S135", "java:S3776", "SameParameterValue"})
     private List<Suggestion> lookup(final String phrase, final Verbosity verbosity, final double maxEditDistance) {
         List<Suggestion> suggestionItems = new ArrayList<>(symSpellConfig.getTopK());
         Set<String> consideredDeletes = new HashSet<>();

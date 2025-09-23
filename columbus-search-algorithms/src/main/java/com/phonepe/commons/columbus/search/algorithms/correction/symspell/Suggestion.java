@@ -9,6 +9,7 @@ import java.util.Comparator;
 @Getter
 @Setter
 @EqualsAndHashCode
+@SuppressWarnings("java:S1210") // Sonar does not identify Lombok's equals and hashcode
 public class Suggestion implements Comparator<Suggestion>, Comparable<Suggestion> {
 
     /**
@@ -30,13 +31,6 @@ public class Suggestion implements Comparator<Suggestion>, Comparable<Suggestion
      */
     private double score;
 
-    /**
-     * COnstructor  for Suggestion
-     *
-     * @param term
-     * @param distance
-     * @param count
-     */
     public Suggestion(String term, double distance, double count) {
         this.term = term;
         this.distance = distance;

@@ -4,6 +4,8 @@ import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.commons.columbus.search.aggregator.AggregatorTransformer;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FilterAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FiltersAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.HistogramAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.HistogramAggregator.IntervalType;
 import com.phonepe.commons.columbus.search.aggregator.bucket.RangeAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.SamplerAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.TermsAggregator;
@@ -23,6 +25,9 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregator.SubAggCollectionMode;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregator.KeyedFilter;
+import org.elasticsearch.search.aggregations.bucket.histogram.DateHistogramInterval;
+import org.elasticsearch.search.aggregations.bucket.histogram.DoubleBounds;
+import org.elasticsearch.search.aggregations.bucket.histogram.LongBounds;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -349,6 +354,308 @@ class ElasticAggregatorTransformerTest {
             final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
 
             assertEquals(expected, aggregationBuilder, "must return a filters aggregation with other bucket");
+        }
+    }
+
+    @Nested
+    class Histogram {
+
+        @Test
+        @DisplayName("numeric, unbounded")
+        void testNumericUnboundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("histogram")
+                    .field("field")
+                    .intervalType(IntervalType.NUMERIC)
+                    .interval("10")
+                    .offset("1")
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.histogram("histogram")
+                    .field("field")
+                    .interval(10)
+                    .offset(1)
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("numeric, hard bounded")
+        void testNumericHardBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("histogram")
+                    .field("field")
+                    .intervalType(IntervalType.NUMERIC)
+                    .interval("10")
+                    .offset("1")
+                    .minValue(10d)
+                    .maxValue(50d)
+                    .softBounds(false)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.histogram("histogram")
+                    .field("field")
+                    .interval(10)
+                    .offset(1)
+                    .hardBounds(new DoubleBounds(10d, 50d))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("numeric, partially soft bounded")
+        void testNumericPartiallySoftBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("histogram")
+                    .field("field")
+                    .intervalType(IntervalType.NUMERIC)
+                    .interval("10")
+                    .offset("1")
+                    .minValue(10d)
+                    .softBounds(true)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.histogram("histogram")
+                    .field("field")
+                    .interval(10)
+                    .offset(1)
+                    .extendedBounds(new DoubleBounds(10d, null))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("fixed date, unbounded")
+        void testFixedDateUnboundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.FIXED_DATE)
+                    .interval("10d")
+                    .offset("1d")
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .fixedInterval(DateHistogramInterval.days(10))
+                    .offset("1d")
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("fixed date, hard bounded")
+        void testFixedDateHardBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.FIXED_DATE)
+                    .interval("10d")
+                    .offset("1d")
+                    .minValue(170000000000L)
+                    .maxValue(180000000000L)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .fixedInterval(DateHistogramInterval.days(10))
+                    .offset("1d")
+                    .hardBounds(new LongBounds(170000000000L, 180000000000L))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("fixed date, partially soft bounded")
+        void testFixedDatePartiallySoftBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.FIXED_DATE)
+                    .interval("10d")
+                    .offset("1d")
+                    .minValue(170000000000L)
+                    .softBounds(true)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .fixedInterval(DateHistogramInterval.days(10))
+                    .offset("1d")
+                    .extendedBounds(new LongBounds(170000000000L, null))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("calendar date, unbounded")
+        void testCalendarDateUnboundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.CALENDAR_DATE)
+                    .interval("1M")
+                    .offset("1d")
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .calendarInterval(DateHistogramInterval.MONTH)
+                    .offset("1d")
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("calendar date, hard bounded")
+        void testCalendarDateHardBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.CALENDAR_DATE)
+                    .interval("1y")
+                    .offset("1d")
+                    .minValue(170000000000L)
+                    .maxValue(180000000000L)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .calendarInterval(DateHistogramInterval.YEAR)
+                    .offset("1d")
+                    .hardBounds(new LongBounds(170000000000L, 180000000000L))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
+        }
+
+        @Test
+        @DisplayName("calendar date, partially soft bounded")
+        void testCalendarDatePartiallySoftBoundedAggregator() {
+            final var aggregator = HistogramAggregator.builder()
+                    .name("date_histogram")
+                    .field("field")
+                    .intervalType(IntervalType.CALENDAR_DATE)
+                    .interval("1q")
+                    .offset("1d")
+                    .minValue(170000000000L)
+                    .softBounds(true)
+                    .order(BucketSortOrder.count().build())
+                    .subAggregator(TermsAggregator.builder()
+                            .name("keys")
+                            .field("other_field")
+                            .order(BucketSortOrder.key().build())
+                            .build())
+                    .build();
+
+            final var expected = AggregationBuilders.dateHistogram("date_histogram")
+                    .field("field")
+                    .calendarInterval(DateHistogramInterval.QUARTER)
+                    .offset("1d")
+                    .extendedBounds(new LongBounds(170000000000L, null))
+                    .order(BucketOrder.count(false))
+                    .subAggregation(AggregationBuilders.terms("keys")
+                            .field("other_field")
+                            .order(BucketOrder.key(true)));
+
+            final var aggregationBuilder = aggregatorTransformer.transform(aggregator);
+
+            assertEquals(expected, aggregationBuilder, "must return a date histogram aggregation");
         }
     }
 }

@@ -43,6 +43,7 @@ public class BulkGetHandler<T, E extends ElasticClient<E>>
 
     @Override
     @SneakyThrows
+    @SuppressWarnings("java:S1854") // useless variable? Fix sonar
     public BulkGetCommand.Result<T> handle(final BulkGetCommand<T> command, final E storage) {
         final var context = new Context();
         context.toolkit = storage.toolkit();

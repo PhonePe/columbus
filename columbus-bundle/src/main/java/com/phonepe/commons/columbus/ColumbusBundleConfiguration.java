@@ -21,6 +21,7 @@ import java.util.List;
 @Data
 @Builder
 @Jacksonized
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class ColumbusBundleConfiguration implements ColumbusConfiguration {
 
     @Builder.Default

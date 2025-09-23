@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @Builder
 @Jacksonized
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class Endpoint {
 
     @NotBlank

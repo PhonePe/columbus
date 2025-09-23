@@ -3,6 +3,7 @@ package com.phonepe.commons.columbus.elastic.internal.search.aggregation;
 import com.phonepe.commons.columbus.dao.id.Ids;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FilterAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.FiltersAggregationParser;
+import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.HistogramAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.RangeAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.SamplerAggregationParser;
 import com.phonepe.commons.columbus.elastic.internal.search.aggregation.parser.bucket.TermsAggregationParser;
@@ -13,6 +14,7 @@ import com.phonepe.commons.columbus.elastic.storage.toolkit.ElasticToolkit;
 import com.phonepe.commons.columbus.search.aggregation.AggregationParserResolver;
 import com.phonepe.commons.columbus.search.aggregation.bucket.FilterAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.FiltersAggregation;
+import com.phonepe.commons.columbus.search.aggregation.bucket.HistogramAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.RangeAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.SamplerAggregation;
 import com.phonepe.commons.columbus.search.aggregation.bucket.TermsAggregation;
@@ -21,6 +23,8 @@ import com.phonepe.commons.columbus.search.aggregation.metrics.StatsAggregation;
 import com.phonepe.commons.columbus.search.aggregation.metrics.TopHitsAggregation;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FilterAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.FiltersAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.HistogramAggregator;
+import com.phonepe.commons.columbus.search.aggregator.bucket.HistogramAggregator.IntervalType;
 import com.phonepe.commons.columbus.search.aggregator.bucket.RangeAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.SamplerAggregator;
 import com.phonepe.commons.columbus.search.aggregator.bucket.TermsAggregator;
@@ -336,6 +340,156 @@ class ElasticAggregationParserResolverTest {
         assertInstanceOf(FiltersAggregationParser.class, aggregationParser, "must return parser for filters");
         assertEquals(FiltersAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
         assertEquals(expected, aggregation, "must return a filters aggregation");
+    }
+
+    @Test
+    @DisplayName("Histogram")
+    void testHistogramAggregation() {
+        final var aggregator = HistogramAggregator.builder()
+                .name("histogram")
+                .field("field")
+                .intervalType(IntervalType.NUMERIC)
+                .interval("10")
+                .minValue(10)
+                .subAggregator(TermsAggregator.builder()
+                        .name("keys")
+                        .field("other_field")
+                        .build())
+                .build();
+        final var result = ElasticHistogram.builder()
+                .name("histogram")
+                .bucket(ElasticHistogram.ElasticBucket.builder()
+                        .key(10d)
+                        .docCount(100)
+                        .aggregations(new Aggregations(List.of(ElasticStringTerms.builder()
+                                .name("keys")
+                                .bucket(ElasticStringTerms.ElasticBucket.builder()
+                                        .key("10_1")
+                                        .docCount(15)
+                                        .build())
+                                .build())))
+                        .build())
+                .bucket(ElasticHistogram.ElasticBucket.builder()
+                        .key(20d)
+                        .docCount(10)
+                        .aggregations(new Aggregations(List.of(ElasticStringTerms.builder()
+                                .name("keys")
+                                .bucket(ElasticStringTerms.ElasticBucket.builder()
+                                        .key("20_1")
+                                        .docCount(5)
+                                        .build())
+                                .build())))
+                        .build())
+                .build();
+
+        final var expected = HistogramAggregation.builder()
+                .name("histogram")
+                .bucket("10.0", HistogramAggregation.Bucket.builder()
+                        .key(10d)
+                        .count(100)
+                        .aggregation("keys", TermsAggregation.builder()
+                                .name("keys")
+                                .bucket(TermsAggregation.Bucket.builder()
+                                        .key("10_1")
+                                        .count(15)
+                                        .build())
+                                .build())
+                        .build())
+                .bucket("20.0", HistogramAggregation.Bucket.builder()
+                        .key(20d)
+                        .count(10)
+                        .aggregation("keys", TermsAggregation.builder()
+                                .name("keys")
+                                .bucket(TermsAggregation.Bucket.builder()
+                                        .key("20_1")
+                                        .count(5)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        final var aggregationParser = aggregationParserResolver.resolve(aggregator);
+
+        final var aggregation = aggregationParser.parse(result);
+
+        assertInstanceOf(HistogramAggregationParser.class, aggregationParser, "must return parser for histogram");
+        assertEquals(HistogramAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
+        assertEquals(expected, aggregation, "must return a histogram aggregation");
+    }
+
+    @Test
+    @DisplayName("FixedDateHistogram")
+    void testFixedDateHistogramAggregation() {
+        final var aggregator = HistogramAggregator.builder()
+                .name("date_histogram")
+                .field("field")
+                .intervalType(IntervalType.FIXED_DATE)
+                .interval("100s")
+                .minValue(1700000000000L)
+                .subAggregator(TermsAggregator.builder()
+                        .name("keys")
+                        .field("other_field")
+                        .build())
+                .build();
+        final var result = ElasticDateHistogram.builder()
+                .name("date_histogram")
+                .bucket(ElasticDateHistogram.ElasticBucket.builder()
+                        .key(1700000000000L)
+                        .docCount(100)
+                        .aggregations(new Aggregations(List.of(ElasticStringTerms.builder()
+                                .name("keys")
+                                .bucket(ElasticStringTerms.ElasticBucket.builder()
+                                        .key("1_1")
+                                        .docCount(15)
+                                        .build())
+                                .build())))
+                        .build())
+                .bucket(ElasticDateHistogram.ElasticBucket.builder()
+                        .key(1700000100000L)
+                        .docCount(10)
+                        .aggregations(new Aggregations(List.of(ElasticStringTerms.builder()
+                                .name("keys")
+                                .bucket(ElasticStringTerms.ElasticBucket.builder()
+                                        .key("2_1")
+                                        .docCount(5)
+                                        .build())
+                                .build())))
+                        .build())
+                .build();
+
+        final var expected = HistogramAggregation.builder()
+                .name("date_histogram")
+                .bucket("1700000000000", HistogramAggregation.Bucket.builder()
+                        .key(1700000000000L)
+                        .count(100)
+                        .aggregation("keys", TermsAggregation.builder()
+                                .name("keys")
+                                .bucket(TermsAggregation.Bucket.builder()
+                                        .key("1_1")
+                                        .count(15)
+                                        .build())
+                                .build())
+                        .build())
+                .bucket("1700000100000", HistogramAggregation.Bucket.builder()
+                        .key(1700000100000L)
+                        .count(10)
+                        .aggregation("keys", TermsAggregation.builder()
+                                .name("keys")
+                                .bucket(TermsAggregation.Bucket.builder()
+                                        .key("2_1")
+                                        .count(5)
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        final var aggregationParser = aggregationParserResolver.resolve(aggregator);
+
+        final var aggregation = aggregationParser.parse(result);
+
+        assertInstanceOf(HistogramAggregationParser.class, aggregationParser, "must return parser for histogram");
+        assertEquals(HistogramAggregator.TYPE, aggregation.getType(), "type must match that of aggregator");
+        assertEquals(expected, aggregation, "must return a histogram aggregation");
     }
 
     @Test

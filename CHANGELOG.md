@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.6] - 2025-09-23
+
+### Added
+
+- Add numeric and date histogram aggregations, including Elasticsearch request
+  transformation and result parsing.
+
 ## [2.0.5] - 2024-08-13
 
 ### Added

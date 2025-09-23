@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class SymSpellConfig {
 
     /**

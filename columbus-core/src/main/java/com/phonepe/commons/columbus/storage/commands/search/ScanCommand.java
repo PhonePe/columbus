@@ -23,6 +23,7 @@ import java.util.stream.Stream;
  */
 @Data
 @Builder
+@SuppressWarnings("java:S1170") // Sonar does not identify Lombok's builder default
 public class ScanCommand<T> implements Command<Scanner<T>> {
 
     public static final String COMMAND_NAME = "SCAN";

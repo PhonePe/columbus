@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
  * A collection of constant values used within the module.
  */
 @UtilityClass
+@SuppressWarnings({"java:S116", "java:S1170"}) // Sonar does not identify Lombok's utility class
 public class Constants {
 
     public final String NAME = "ELASTIC";
