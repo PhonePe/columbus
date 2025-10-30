@@ -18,6 +18,7 @@ import com.phonepe.commons.columbus.search.query.geo.GeoDistanceQuery;
 import com.phonepe.commons.columbus.search.query.geo.GeoPointQuery;
 import com.phonepe.commons.columbus.search.query.simple.MatchAllQuery;
 import com.phonepe.commons.columbus.search.query.simple.MatchNoneQuery;
+import com.phonepe.commons.columbus.search.query.special.KnnQuery;
 import com.phonepe.commons.columbus.search.query.special.ScriptQuery;
 import com.phonepe.commons.columbus.search.query.term.FieldExistsQuery;
 import com.phonepe.commons.columbus.search.query.term.FuzzyQuery;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @WithElasticToolkit.All
 class ElasticQueryTransformerTest {
@@ -726,6 +728,19 @@ class ElasticQueryTransformerTest {
             final var queryBuilder = queryTransformer.transform(query);
 
             assertEquals(expected, queryBuilder, "must return a script query");
+        }
+
+        @Test
+        @DisplayName("Knn")
+        void testKnnQuery() {
+            final Query query = KnnQuery.builder()
+                    .name("knn")
+                    .boost(2f)
+                    .field("embedding")
+                    .queryVector(List.of(1f, 2f))
+                    .build();
+
+            assertThrows(IllegalArgumentException.class, () -> queryTransformer.transform(query));
         }
     }
 }

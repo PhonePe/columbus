@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.7] - 2025-10-30
+
+### Added
+
+- Introduce kNN query models, standard/kNN/RRF retriever models, and `RetrieverCommand`.
+  Elasticsearch v7 explicitly rejects kNN queries; executable v9 retrievers
+  arrive in 2.1.1.
+
 ## [2.0.6] - 2025-09-23
 
 ### Added
