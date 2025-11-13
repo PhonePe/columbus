@@ -40,45 +40,4 @@ class ToolkitInitializerTest {
                 () -> assertNotNull(toolkit.visitorFactory(), "must have a valid visitor factory"),
                 () -> assertNotNull(toolkit.handlerFactory(), "must have a valid handler factory"));
     }
-
-    @Test
-    @DisplayName("initialize without type registry")
-    void testInitializeWithoutTypeRegistry(final ObjectMapper mapper) {
-        final var initializer = ToolkitHelpers.initializer();
-        initializer.use(mapper);
-        assertThrows(IllegalStateException.class, initializer::get, "cannot initialize toolkit");
-        initializer.use(settings);
-
-        final var toolkit = initializer.get();
-
-        assertAll(
-                "toolkit",
-                () -> assertNotNull(toolkit, "must return a valid toolkit"),
-                () -> assertNotNull(toolkit.reflect(), "must have a valid reflect"),
-                () -> assertNotNull(toolkit.serDe(), "must have a valid mapper"),
-                () -> assertNotNull(toolkit.registryFactory(), "must have a valid registry factory"),
-                () -> assertNotNull(toolkit.visitorFactory(), "must have a valid visitor factory"),
-                () -> assertNotNull(toolkit.handlerFactory(), "must have a valid handler factory"));
-    }
-
-    @Test
-    @DisplayName("initialize with null type registry")
-    void testInitializeWithNullTypeRegistry(final ObjectMapper mapper) {
-        final var initializer = ToolkitHelpers.initializer();
-        initializer.use((TypeRegistry) null);
-        initializer.use(mapper);
-        assertThrows(IllegalStateException.class, initializer::get, "cannot initialize toolkit");
-        initializer.use(settings);
-
-        final var toolkit = initializer.get();
-
-        assertAll(
-                "toolkit",
-                () -> assertNotNull(toolkit, "must return a valid toolkit"),
-                () -> assertNotNull(toolkit.reflect(), "must have a valid reflect"),
-                () -> assertNotNull(toolkit.serDe(), "must have a valid mapper"),
-                () -> assertNotNull(toolkit.registryFactory(), "must have a valid registry factory"),
-                () -> assertNotNull(toolkit.visitorFactory(), "must have a valid visitor factory"),
-                () -> assertNotNull(toolkit.handlerFactory(), "must have a valid handler factory"));
-    }
 }

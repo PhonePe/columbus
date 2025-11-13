@@ -12,6 +12,6 @@ public class KnnQueryToElastic<C extends ElasticQueryTransformationContext<C>>
 
     @Override
     protected QueryBuilder buildQuery(final KnnQuery query, final Object props, final C context) {
-        throw new IllegalArgumentException("Knn query is not supported in this ES version");
+        throw new UnsupportedOperationException("Knn query is not supported in this ES version");
     }
 }

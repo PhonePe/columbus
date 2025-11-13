@@ -740,7 +740,7 @@ class ElasticQueryTransformerTest {
                     .queryVector(List.of(1f, 2f))
                     .build();
 
-            assertThrows(IllegalArgumentException.class, () -> queryTransformer.transform(query));
+            assertThrows(UnsupportedOperationException.class, () -> queryTransformer.transform(query));
         }
     }
 }

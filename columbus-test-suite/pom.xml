@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.phonepe.commons.columbus</groupId>
         <artifactId>columbus-dependencies</artifactId>
-        <version>2.0.7</version>
+        <version>2.1.0</version>
         <relativePath>../columbus-dependencies</relativePath>
     </parent>
 
@@ -20,7 +20,9 @@
     <modules>
         <module>columbus-core-test-suite</module>
         <module>columbus-elasticsearch-test-suite</module>
+        <module>columbus-elasticsearch9-test-suite</module>
         <module>columbus-unit-tests</module>
+        <module>columbus-unit-tests-es9</module>
     </modules>
 
     <properties>

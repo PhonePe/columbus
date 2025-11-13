@@ -3,6 +3,7 @@ package com.phonepe.commons.columbus.type;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.phonepe.commons.columbus.internal.type.DelegatingTypeRegistry;
 import com.phonepe.commons.columbus.internal.type.RegisteredTypeResolver;
+import com.phonepe.commons.columbus.registry.Registries;
 import com.phonepe.commons.columbus.registry.Registry;
 import lombok.experimental.UtilityClass;
 
@@ -40,6 +41,10 @@ public class Types {
             return typeRegistry;
         }
         return DelegatingTypeRegistry.of(registry);
+    }
+
+    public TypeRegistry defaultTypeRegistry() {
+        return Types.typeRegistry(Registries.empty());
     }
 
     public TypeResolver resolver(final TypeRegistry typeRegistry) {

@@ -5,6 +5,7 @@ import com.phonepe.commons.columbus.core.toolkit.Toolkit;
 import com.phonepe.commons.columbus.reflect.Reflect;
 import com.phonepe.commons.columbus.registry.factory.RegistryFactory;
 import com.phonepe.commons.columbus.serde.SerDe;
+import com.phonepe.commons.columbus.type.TypeResolver;
 import com.phonepe.commons.columbus.visitor.factory.VisitorRegistryFactory;
 import lombok.Data;
 import lombok.NonNull;
@@ -24,6 +25,9 @@ public class ToolkitData implements Toolkit {
 
     @NonNull
     private final SerDe serDe;
+
+    @NonNull
+    private final TypeResolver typeResolver;
 
     @NonNull
     private final RegistryFactory registryFactory;

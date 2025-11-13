@@ -2,7 +2,6 @@ package com.phonepe.commons.columbus.search.retriever;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.phonepe.commons.columbus.search.filter.Filter;
 import com.phonepe.commons.columbus.search.misc.query.Collapse;
 import com.phonepe.commons.columbus.search.query.Query;
 import com.phonepe.commons.columbus.search.sort.Sort;

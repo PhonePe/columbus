@@ -7,11 +7,13 @@ import com.phonepe.commons.columbus.core.toolkit.ToolkitHelpers;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitInitializer;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitSettings;
 import com.phonepe.commons.columbus.internal.ColumbusData;
+import com.phonepe.commons.columbus.registry.Registries;
 import com.phonepe.commons.columbus.storage.StorageClient;
 import com.phonepe.commons.columbus.storage.StorageConfiguration;
 import com.phonepe.commons.columbus.storage.Storages;
 import com.phonepe.commons.columbus.storage.factory.StorageClientFactory;
 import com.phonepe.commons.columbus.storage.settings.StorageSettings;
+import com.phonepe.commons.columbus.type.Types;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,7 +37,7 @@ public class DefaultColumbusInitializer extends LazyColumbusInitializer {
                 settings.getToolkitInitializer(),
                 ToolkitHelpers::initializer);
         initializer.use(Objects.requireNonNullElseGet(settings.getToolkitSettings(), ToolkitSettings::defaults));
-        Predicates.applyIfNotNull(settings.getTypeRegistry(), initializer::use);
+        initializer.use(Objects.requireNonNullElseGet(settings.getTypeRegistry(), Types::defaultTypeRegistry));
         return initializer;
     }
 

@@ -4,6 +4,7 @@ import com.phonepe.commons.columbus.command.factory.HandlerRegistryFactory;
 import com.phonepe.commons.columbus.reflect.Reflect;
 import com.phonepe.commons.columbus.registry.factory.RegistryFactory;
 import com.phonepe.commons.columbus.serde.SerDe;
+import com.phonepe.commons.columbus.type.TypeResolver;
 import com.phonepe.commons.columbus.visitor.factory.VisitorRegistryFactory;
 
 /**
@@ -14,6 +15,8 @@ public interface Toolkit {
     Reflect reflect();
 
     SerDe serDe();
+
+    TypeResolver typeResolver();
 
     RegistryFactory registryFactory();
 

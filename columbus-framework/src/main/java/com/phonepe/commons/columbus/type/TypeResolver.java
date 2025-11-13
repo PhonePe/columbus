@@ -1,5 +1,7 @@
 package com.phonepe.commons.columbus.type;
 
+import java.lang.reflect.Type;
+
 /**
  * A helper to resolve an {@link EntityType} to a {@link JavaType}.
  */
@@ -15,4 +17,13 @@ public interface TypeResolver {
      *                                  registered for that name.
      */
     <T> JavaType<T> toJavaType(EntityType<T> type);
+
+    /**
+     * Get the raw {@link Type} representing the given {@link EntityType}.
+     * @param type the type to be converted.
+     * @return the raw {@link Type} type.
+     */
+    default Type toRawType(EntityType<?> type) {
+        return toJavaType(type).getType().getType();
+    }
 }

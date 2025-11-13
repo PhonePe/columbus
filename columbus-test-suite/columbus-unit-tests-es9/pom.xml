@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.phonepe.commons.columbus</groupId>
+        <artifactId>columbus-test-suite</artifactId>
+        <version>2.1.0</version>
+    </parent>
+
+    <artifactId>columbus-unit-tests-es9</artifactId>
+
+    <name>Columbus Unit Tests for ES9</name>
+    <description>
+        A collection of unit tests for Columbus ES9.
+    </description>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-core-test-suite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-dropwizard</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-bundle</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-elasticsearch9</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.phonepe.commons.columbus</groupId>
+            <artifactId>columbus-elasticsearch9-test-suite</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

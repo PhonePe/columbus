@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phonepe.commons.columbus.core.toolkit.Toolkit;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitHelpers;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitSettings;
+import com.phonepe.commons.columbus.registry.Registries;
 import com.phonepe.commons.columbus.test.annotations.WithToolkit;
 import com.phonepe.commons.columbus.test.value.AnnotatedValueExtension;
 import com.phonepe.commons.columbus.test.value.ValueProps;
+import com.phonepe.commons.columbus.type.Types;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.platform.commons.support.AnnotationSupport;
 
@@ -24,6 +26,7 @@ public class ToolkitExtension extends AnnotatedValueExtension<Toolkit> {
         final var initializer = ToolkitHelpers.initializer();
         initializer.use(mapper);
         initializer.use(ToolkitSettings.defaults());
+        initializer.use(Types.typeRegistry(Registries.empty()));
         return initializer.get();
     }
 

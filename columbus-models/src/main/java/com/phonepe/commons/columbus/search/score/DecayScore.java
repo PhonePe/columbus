@@ -1,6 +1,7 @@
 package com.phonepe.commons.columbus.search.score;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
@@ -23,6 +24,15 @@ public class DecayScore extends AbstractScoreFunction {
     private Object offset;
 
     private Double decay;
+
+    @Builder.Default
+    private DecayScoreType decayScoreType = DecayScoreType.NUMERIC;
+
+    public enum DecayScoreType {
+        NUMERIC,
+        GEO,
+        DATE
+    }
 
     @Override
     public @NonNull String getType() {

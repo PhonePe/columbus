@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
+import java.util.function.LongConsumer;
 import java.util.function.Predicate;
 
 /**
@@ -33,6 +34,12 @@ public class Predicates {
     }
 
     public static void applyIfNonNegative(@Nullable final Integer value, final IntConsumer consumer) {
+        if (value != null && value >= 0) {
+            consumer.accept(value);
+        }
+    }
+
+    public static void applyIfNonNegative(@Nullable final Long value, final LongConsumer consumer) {
         if (value != null && value >= 0) {
             consumer.accept(value);
         }

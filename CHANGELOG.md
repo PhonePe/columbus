@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0] - 2025-11-13
+
+### Added
+
+- Add Elasticsearch v9 storage using the Elasticsearch Java API Client, alongside
+  the existing v7 implementation.
+- Add Elasticsearch v9 test utilities and container-backed command tests.
+
 ## [2.0.7] - 2025-10-30
 
 ### Added

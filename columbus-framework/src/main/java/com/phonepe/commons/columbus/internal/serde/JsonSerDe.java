@@ -23,7 +23,7 @@ public class JsonSerDe implements SerDe {
     private final ObjectMapper mapper;
 
     @Builder.Default
-    private final TypeResolver typeResolver = Types.resolver(Types.typeRegistry(Registries.empty()));
+    private final TypeResolver typeResolver = Types.resolver(Types.defaultTypeRegistry());
 
     @Override
     public String format() {

@@ -12,6 +12,7 @@ import com.phonepe.commons.columbus.reflect.Reflect;
 import com.phonepe.commons.columbus.registry.factory.RegistryFactory;
 import com.phonepe.commons.columbus.serde.SerDe;
 import com.phonepe.commons.columbus.type.TypeRegistry;
+import com.phonepe.commons.columbus.type.TypeResolver;
 import com.phonepe.commons.columbus.visitor.factory.VisitorRegistryFactory;
 
 /**
@@ -30,6 +31,8 @@ public abstract class LazyToolkitInitializer implements ToolkitInitializer {
     private final LazyInit<Reflect> reflect =
             new LazyInit<>("reflect", this::canInitializeReflect, this::initializeReflect);
     private final LazyInit<SerDe> serDe = new LazyInit<>("serDe", this::canInitializeSerDe, this::initializeSerDe);
+    private final LazyInit<TypeResolver> typeResolver =
+            new LazyInit<>("typeResolver", this::canInitializeTypeResolver, this::initializeTypeResolver);
     private final LazyInit<RegistryFactory> registryFactory =
             new LazyInit<>("registryFactory", this::canInitializeRegistryFactory, this::initializeRegistryFactory);
     private final LazyInit<VisitorRegistryFactory> visitorFactory =
@@ -67,6 +70,10 @@ public abstract class LazyToolkitInitializer implements ToolkitInitializer {
         return typeRegistry;
     }
 
+    protected Initializer<TypeResolver> getTypeResolver() {
+        return typeResolver;
+    }
+
     protected Initializer<ToolkitSettings> getSettings() {
         return settings;
     }
@@ -102,6 +109,10 @@ public abstract class LazyToolkitInitializer implements ToolkitInitializer {
     protected abstract boolean canInitializeSerDe();
 
     protected abstract SerDe initializeSerDe();
+
+    protected abstract boolean canInitializeTypeResolver();
+
+    protected abstract TypeResolver initializeTypeResolver();
 
     protected abstract boolean canInitializeRegistryFactory();
 

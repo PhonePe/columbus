@@ -10,4 +10,6 @@ import com.phonepe.commons.columbus.search.aggregator.Aggregator;
 public interface AggregationParser<R> {
 
     Aggregation parse(R result);
+
+    Aggregation parse(R result, String name);
 }
