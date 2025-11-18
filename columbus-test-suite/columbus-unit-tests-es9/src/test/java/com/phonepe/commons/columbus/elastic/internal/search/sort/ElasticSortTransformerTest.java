@@ -119,9 +119,9 @@ class ElasticSortTransformerTest {
                         .lat(10d)
                         .lon(20d)
                         .build())
-                .distanceType("Arc")
-                .distanceUnit("Kilometers")
-                .sortMode("Min")
+                .distanceType("arc")
+                .distanceUnit("km")
+                .sortMode("min")
                 .ignoreMissingField(true)
                 .build();
 

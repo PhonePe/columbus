@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @WithMockito
 @WithElasticClient.All
 @WithElasticToolkit.All
-public class RetrieverCommandTest {
+class RetrieverCommandTest {
 
     @Test
     @DisplayName("Retriever")
@@ -36,7 +36,6 @@ public class RetrieverCommandTest {
                 .build();
 
         final Retriever knnRetriever = KnnRetriever.builder()
-                .field("embeddings")
                 .queryVector(List.of(1.0f, 2.0f, 3.0f))
                 .k(5)
                 .numCandidates(10)
@@ -48,9 +47,9 @@ public class RetrieverCommandTest {
                 .retriever(knnRetriever)
                 .build();
 
-        assertEquals(standardRetriever.getType(), StandardRetriever.TYPE);
-        assertEquals(knnRetriever.getType(), KnnRetriever.TYPE);
-        assertEquals(rffRetriever.getType(), RrfRetriever.TYPE);
+        assertEquals(StandardRetriever.TYPE, standardRetriever.getType());
+        assertEquals(KnnRetriever.TYPE, knnRetriever.getType());
+        assertEquals(RrfRetriever.TYPE, rffRetriever.getType());
 
         final var command = RetrieverCommand.forType(EntityHelpers.ENTITY_TYPE)
                 .indices(List.of(IndexName.builder().name("test-index").build()))

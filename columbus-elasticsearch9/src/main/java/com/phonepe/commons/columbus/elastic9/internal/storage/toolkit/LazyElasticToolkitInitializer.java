@@ -1,5 +1,6 @@
 package com.phonepe.commons.columbus.elastic9.internal.storage.toolkit;
 
+import co.elastic.clients.elasticsearch._types.Retriever;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
@@ -23,6 +24,7 @@ import com.phonepe.commons.columbus.search.aggregation.AggregationParserResolver
 import com.phonepe.commons.columbus.search.aggregator.AggregatorTransformer;
 import com.phonepe.commons.columbus.search.page.PageResolver;
 import com.phonepe.commons.columbus.search.query.QueryTransformer;
+import com.phonepe.commons.columbus.search.retriever.RetrieverTransformer;
 import com.phonepe.commons.columbus.search.score.ScoreFunctionTransformer;
 import com.phonepe.commons.columbus.search.sort.SortTransformer;
 import com.phonepe.commons.columbus.storage.settings.StorageSettings;
@@ -54,6 +56,9 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
 
     private final LazyInit<QueryTransformer<QueryVariant, Object>> queryTransformer =
             new LazyInit<>("queryTransformer", this::canInitializeQueryTransformer, this::initializeQueryTransformer);
+    private final LazyInit<RetrieverTransformer<Retriever, Object>> retrieverTransformer =
+            new LazyInit<>("retrieverTransformer", this::canInitializeRetrieverTransformer,
+                    this::initializeRetrieverTransformer);
     private final LazyInit<SortTransformer<SortOptions, Object>> sortTransformer =
             new LazyInit<>("sortTransformer", this::canInitializeSortTransformer, this::initializeSortTransformer);
     private final LazyInit<ScoreFunctionTransformer<FunctionScore, Object>> scoreFunctionTransformer =
@@ -124,6 +129,10 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
         return queryTransformer;
     }
 
+    public Initializer<RetrieverTransformer<Retriever, Object>> getRetrieverTransformer() {
+        return retrieverTransformer;
+    }
+
     public Initializer<SortTransformer<SortOptions, Object>> getSortTransformer() {
         return sortTransformer;
     }
@@ -166,7 +175,11 @@ public abstract class LazyElasticToolkitInitializer implements ElasticToolkitIni
 
     protected abstract boolean canInitializeQueryTransformer();
 
+    protected abstract boolean canInitializeRetrieverTransformer();
+
     protected abstract QueryTransformer<QueryVariant, Object> initializeQueryTransformer();
+
+    protected abstract RetrieverTransformer<Retriever, Object> initializeRetrieverTransformer();
 
     protected abstract boolean canInitializeSortTransformer();
 

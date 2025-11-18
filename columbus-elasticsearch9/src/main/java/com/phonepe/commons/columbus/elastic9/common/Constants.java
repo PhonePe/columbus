@@ -44,6 +44,7 @@ public class Constants {
         public final String REINDEX_DOCS = "reindexDocs";
         public final String REINDEX_ASYNC = "reindexAsync";
         public final String REINDEX_STATUS = "reindexStatus";
+        public final String RETRIEVE_DOCS = "retrieveDocs";
     }
 
     /**

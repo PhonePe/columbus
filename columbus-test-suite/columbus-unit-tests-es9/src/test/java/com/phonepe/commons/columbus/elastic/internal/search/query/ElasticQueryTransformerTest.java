@@ -491,7 +491,7 @@ class ElasticQueryTransformerTest {
                     .fieldName("field")
                     .fieldNames(null)
                     .fieldNames(List.of("field2"))
-                    .matchType("BestFields")
+                    .matchType("best_fields")
                     .value("query")
                     .fieldBoost("boost_field", 2.00f)
                     .tieBreaker(0.3f)

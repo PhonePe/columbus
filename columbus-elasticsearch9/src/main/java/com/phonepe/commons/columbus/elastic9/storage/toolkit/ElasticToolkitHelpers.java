@@ -24,6 +24,7 @@ import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticAggrega
 import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticAggregatorTransformer;
 import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticPageResolver;
 import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticQueryTransformer;
+import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticRetrieverTransformer;
 import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticScoreFunctionTransformer;
 import com.phonepe.commons.columbus.elastic9.internal.search.impl.ElasticSortTransformer;
 import com.phonepe.commons.columbus.elastic9.internal.storage.toolkit.DefaultElasticToolkitInitializer;
@@ -38,6 +39,8 @@ import com.phonepe.commons.columbus.search.page.PageBounds;
 import com.phonepe.commons.columbus.search.page.visitor.PageResolutionVisitor;
 import com.phonepe.commons.columbus.search.query.Query;
 import com.phonepe.commons.columbus.search.query.visitor.QueryTransformationVisitor;
+import com.phonepe.commons.columbus.search.retriever.Retriever;
+import com.phonepe.commons.columbus.search.retriever.visitor.RetrieverTransformationVisitor;
 import com.phonepe.commons.columbus.search.score.ScoreFunction;
 import com.phonepe.commons.columbus.search.score.visitor.ScoreFunctionTransformationVisitor;
 import com.phonepe.commons.columbus.search.sort.Sort;
@@ -129,6 +132,25 @@ public class ElasticToolkitHelpers {
                         ElasticQueryTransformer.class,
                         Query.class,
                         Query::getType,
+                        overrides)))
+                .toolkit(toolkit)
+                .build();
+    }
+
+    public ElasticRetrieverTransformer elasticRetrieverTransformer(
+            final VisitorRegistryFactory visitorFactory,
+            final ElasticToolkit toolkit,
+            @Nullable final RegistrySettings overrides
+    ) {
+        return ElasticRetrieverTransformer.builder()
+                .resolver(VisitorHelpers.resolver(RegistryCreators.createVisitorRegistry(
+                        visitorFactory,
+                        Generics.<RetrieverTransformationVisitor<co.elastic.clients.elasticsearch._types.Retriever, Retriever, Object,
+                                ElasticRetrieverTransformer>>typed(
+                                        RetrieverTransformationVisitor.class),
+                        ElasticRetrieverTransformer.class,
+                        Retriever.class,
+                        Retriever::getType,
                         overrides)))
                 .toolkit(toolkit)
                 .build();

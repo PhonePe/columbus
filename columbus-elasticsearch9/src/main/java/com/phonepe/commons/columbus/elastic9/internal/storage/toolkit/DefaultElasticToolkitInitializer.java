@@ -1,5 +1,6 @@
 package com.phonepe.commons.columbus.elastic9.internal.storage.toolkit;
 
+import co.elastic.clients.elasticsearch._types.Retriever;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
@@ -21,6 +22,7 @@ import com.phonepe.commons.columbus.search.aggregation.AggregationParserResolver
 import com.phonepe.commons.columbus.search.aggregator.AggregatorTransformer;
 import com.phonepe.commons.columbus.search.page.PageResolver;
 import com.phonepe.commons.columbus.search.query.QueryTransformer;
+import com.phonepe.commons.columbus.search.retriever.RetrieverTransformer;
 import com.phonepe.commons.columbus.search.score.ScoreFunctionTransformer;
 import com.phonepe.commons.columbus.search.sort.SortTransformer;
 import com.phonepe.commons.columbus.visitor.factory.VisitorRegistryFactory;
@@ -113,6 +115,19 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     }
 
     @Override
+    protected boolean canInitializeRetrieverTransformer() {
+        return getToolkit().isPresent() && getToolkitData().isPresent();
+    }
+
+    @Override
+    protected RetrieverTransformer<Retriever, Object> initializeRetrieverTransformer() {
+        return ElasticToolkitHelpers.elasticRetrieverTransformer(
+                getVisitorFactory(),
+                getToolkitData().get(),
+                getVisitorOverrides());
+    }
+
+    @Override
     protected boolean canInitializeSortTransformer() {
         return getToolkit().isPresent() && getToolkitData().isPresent();
     }
@@ -178,6 +193,7 @@ public class DefaultElasticToolkitInitializer extends LazyElasticToolkitInitiali
     protected ElasticToolkit initializeElasticToolkit() {
         return getToolkitData().get()
                 .queryTransformer(getQueryTransformer().get())
+                .retrieverTransformer(getRetrieverTransformer().get())
                 .sortTransformer(getSortTransformer().get())
                 .scoreFunctionTransformer(getScoreFunctionTransformer().get())
                 .aggregatorTransformer(getAggregatorTransformer().get())

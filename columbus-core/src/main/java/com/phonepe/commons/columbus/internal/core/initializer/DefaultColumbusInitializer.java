@@ -1,13 +1,11 @@
 package com.phonepe.commons.columbus.internal.core.initializer;
 
 import com.phonepe.commons.columbus.Columbus;
-import com.phonepe.commons.columbus.common.Predicates;
 import com.phonepe.commons.columbus.core.toolkit.Toolkit;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitHelpers;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitInitializer;
 import com.phonepe.commons.columbus.core.toolkit.ToolkitSettings;
 import com.phonepe.commons.columbus.internal.ColumbusData;
-import com.phonepe.commons.columbus.registry.Registries;
 import com.phonepe.commons.columbus.storage.StorageClient;
 import com.phonepe.commons.columbus.storage.StorageConfiguration;
 import com.phonepe.commons.columbus.storage.Storages;

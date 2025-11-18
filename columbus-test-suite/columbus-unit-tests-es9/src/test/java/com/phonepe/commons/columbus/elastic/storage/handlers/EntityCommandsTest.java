@@ -4,7 +4,6 @@ import co.elastic.clients.elasticsearch.core.DeleteRequest;
 import co.elastic.clients.elasticsearch.core.GetRequest;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.UpdateRequest;
-import co.elastic.clients.json.JsonData;
 import com.phonepe.commons.columbus.core.toolkit.Toolkit;
 import com.phonepe.commons.columbus.dao.id.Ids;
 import com.phonepe.commons.columbus.dao.id.ValueId;

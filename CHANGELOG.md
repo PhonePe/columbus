@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.1] - 2025-11-18
+
+### Added
+
+- Implement Elasticsearch v9 retriever execution for standard, kNN, reciprocal
+  rank fusion (RRF), linear, and pinned retrievers.
+
+### Changed
+
+- Share common search options between search and retriever commands.
+- Allow RRF rank parameters to be omitted instead of sending primitive defaults.
+
 ## [2.1.0] - 2025-11-13
 
 ### Added

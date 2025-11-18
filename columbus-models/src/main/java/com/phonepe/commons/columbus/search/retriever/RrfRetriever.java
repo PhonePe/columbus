@@ -26,9 +26,9 @@ public class RrfRetriever implements Retriever {
     @Singular(value = "filter", ignoreNullCollections = true)
     private List<@NonNull Query> filterClauses;
 
-    private int rankConstant;
+    private Integer rankConstant;
 
-    private int rankWindowSize;
+    private Integer rankWindowSize;
 
     @Override
     public @NonNull String getType() {

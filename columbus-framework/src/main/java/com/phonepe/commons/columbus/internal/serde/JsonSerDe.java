@@ -3,7 +3,6 @@ package com.phonepe.commons.columbus.internal.serde;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.phonepe.commons.columbus.registry.Registries;
 import com.phonepe.commons.columbus.serde.SerDe;
 import com.phonepe.commons.columbus.type.EntityType;
 import com.phonepe.commons.columbus.type.TypeResolver;

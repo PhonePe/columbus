@@ -9,10 +9,13 @@ import co.elastic.clients.elasticsearch._types.RescoreVector;
 import co.elastic.clients.elasticsearch._types.Script;
 import co.elastic.clients.elasticsearch._types.ScriptSource;
 import co.elastic.clients.elasticsearch._types.Time;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.AggregationRange;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsExclude;
 import co.elastic.clients.elasticsearch._types.aggregations.TermsInclude;
 import co.elastic.clients.elasticsearch._types.query_dsl.GeoShapeFieldQuery;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.FieldCollapse;
 import co.elastic.clients.elasticsearch.core.search.HitsMetadata;
 import co.elastic.clients.elasticsearch.core.search.InnerHits;
@@ -25,7 +28,10 @@ import com.phonepe.commons.columbus.common.Elements;
 import com.phonepe.commons.columbus.common.pair.Pair;
 import com.phonepe.commons.columbus.common.pair.PairFunctions;
 import com.phonepe.commons.columbus.dao.id.Ids;
+import com.phonepe.commons.columbus.elastic9.dao.node.ElasticNode;
+import com.phonepe.commons.columbus.elastic9.internal.storage.utils.ElasticClientUtils;
 import com.phonepe.commons.columbus.elastic9.storage.toolkit.ElasticToolkit;
+import com.phonepe.commons.columbus.search.aggregator.Aggregator;
 import com.phonepe.commons.columbus.search.misc.bucket.BucketSortOrder;
 import com.phonepe.commons.columbus.search.misc.bucket.IncludeExclude;
 import com.phonepe.commons.columbus.search.misc.bucket.NamedRange;
@@ -39,17 +45,22 @@ import com.phonepe.commons.columbus.search.misc.result.TotalCount;
 import com.phonepe.commons.columbus.search.query.special.KnnQuery;
 import com.phonepe.commons.columbus.search.sort.SortOrder;
 import com.phonepe.commons.columbus.serde.SerDe;
+import com.phonepe.commons.columbus.storage.commands.search.SearchBase;
+import com.phonepe.commons.columbus.storage.models.result.SearchResult;
 import com.phonepe.commons.columbus.type.EntityType;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 
 import javax.annotation.Nullable;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static co.elastic.clients.elasticsearch._types.SortOrder.Asc;
@@ -176,6 +187,50 @@ public class MiscTransforms {
         return new GeoShapeFieldQuery.Builder()
                 .shape(JsonData.from(jsonData))
                 .build();
+    }
+
+    public <T> SearchRequest.Builder toElastic(final SearchBase<T> command, final ElasticToolkit toolkit) {
+        final var searchRequest = new SearchRequest.Builder();
+
+        command.getIndexBoosts().forEach((key, value) -> {
+            final var indexName = ElasticClientUtils.resolveIndexName(toolkit, key);
+            searchRequest
+                    .index(indexName)
+                    .indicesBoost(NamedValue.of(indexName, (double) value));
+        });
+
+        command.getAggregators().stream()
+                .collect(Collectors.toMap(Aggregator::getName, toolkit.aggregatorTransformer()::transform))
+                .forEach(searchRequest::aggregations);
+
+        applyIfNotNull(
+                command.getCollapse(),
+                collapse -> MiscTransforms.toElastic(collapse, toolkit),
+                searchRequest::collapse);
+
+        applyIfNotNull(command.getPostFilter(), toolkit.queryTransformer()::transform, searchRequest::postFilter);
+
+        applyIfNotNull(command.getProjection(), MiscTransforms::toElastic, searchRequest::source);
+
+        Optional.ofNullable(command.getPage())
+                .map(toolkit.pageResolver()::resolve)
+                .ifPresent(page -> {
+                    applyIfNotNull(page.getSize(), searchRequest::size);
+                    applyIfNotNull(page.getFrom(), searchRequest::from);
+                    applyIfNotNull(page.getAfterKeys(),
+                            keys -> keys.stream().map(FieldValue::of).forEach(searchRequest::searchAfter));
+                });
+
+        final var node = Optional.ofNullable(command.getNodeId())
+                .map(toolkit.nodeIdResolver()::resolve);
+
+        node.map(ElasticNode::getRouting)
+                .filter(CollectionUtils::isNotEmpty)
+                .map(routing -> String.join( ",", routing))
+                .ifPresent(searchRequest::routing);
+        node.map(ElasticNode::getPreference).ifPresent(searchRequest::preference);
+
+        return searchRequest;
     }
 
     public <T> Result<T> fromElastic(
@@ -357,5 +412,27 @@ public class MiscTransforms {
             throw new IllegalArgumentException(String.format("Unsupported location value: %s. Location should be comma "
                     + "delimited lat long or Location object", location));
         }
+    }
+
+    public <T> SearchResult<T> fromElastic(final SearchResponse response, final SearchBase<T> command,
+                                           final ElasticToolkit toolkit) {
+        final var builder = SearchResult.<T>builder()
+                .result(MiscTransforms.fromElastic(
+                        response.hits(),
+                        toolkit.serDe(),
+                        command.getCollapse())
+                );
+
+        if (response.aggregations() != null) {
+            final var parsers = command.getAggregators().stream()
+                    .collect(Collectors.toMap(Aggregator::getName, toolkit.aggregationParserResolver()::resolve));
+
+            final Map<String, Aggregate> aggregates = response.aggregations();
+            aggregates.forEach((key, aggregate) ->
+                    builder.aggregation(key, parsers.get(key).parse(aggregate, key)));
+        }
+
+        return builder.build();
+
     }
 }

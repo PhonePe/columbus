@@ -1,5 +1,6 @@
 package com.phonepe.commons.columbus.elastic9.internal.storage.toolkit;
 
+import co.elastic.clients.elasticsearch._types.Retriever;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
@@ -18,6 +19,7 @@ import com.phonepe.commons.columbus.search.aggregation.AggregationParserResolver
 import com.phonepe.commons.columbus.search.aggregator.AggregatorTransformer;
 import com.phonepe.commons.columbus.search.page.PageResolver;
 import com.phonepe.commons.columbus.search.query.QueryTransformer;
+import com.phonepe.commons.columbus.search.retriever.RetrieverTransformer;
 import com.phonepe.commons.columbus.search.score.ScoreFunctionTransformer;
 import com.phonepe.commons.columbus.search.sort.SortTransformer;
 import com.phonepe.commons.columbus.serde.SerDe;
@@ -57,6 +59,8 @@ public class ElasticToolkitData implements ElasticToolkit {
 
     private final LateInit<QueryTransformer<QueryVariant, Object>> queryTransformer = new LateInit<>("Query");
 
+    private final LateInit<RetrieverTransformer<Retriever, Object>> retrieverTransformer = new LateInit<>("Retriever");
+
     private final LateInit<SortTransformer<SortOptions, Object>> sortTransformer = new LateInit<>("Sort");
 
     private final LateInit<AggregatorTransformer<Aggregation, Object>> aggregatorTransformer =
@@ -71,6 +75,11 @@ public class ElasticToolkitData implements ElasticToolkit {
     @Override
     public QueryTransformer<QueryVariant, Object> queryTransformer() {
         return queryTransformer.get();
+    }
+
+    @Override
+    public RetrieverTransformer<Retriever, Object> retrieverTransformer() {
+        return retrieverTransformer.get();
     }
 
     @Override
@@ -95,6 +104,11 @@ public class ElasticToolkitData implements ElasticToolkit {
 
     public ElasticToolkitData queryTransformer(final QueryTransformer<QueryVariant, Object> queryTransformer) {
         this.queryTransformer.set(queryTransformer);
+        return this;
+    }
+
+    public ElasticToolkitData retrieverTransformer(final RetrieverTransformer<Retriever, Object> retrieverTransformer) {
+        this.retrieverTransformer.set(retrieverTransformer);
         return this;
     }
 

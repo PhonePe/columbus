@@ -78,7 +78,7 @@ class ElasticAggregatorTransformerTest {
                 .minDocCount(1)
                 .shardMinDocCount(0)
                 .missingValue("missing")
-                .collectMode("DepthFirst")
+                .collectMode("depth_first")
                 .showCountError(false)
                 .subAggregator(TermsAggregator.builder()
                         .name("keys")
