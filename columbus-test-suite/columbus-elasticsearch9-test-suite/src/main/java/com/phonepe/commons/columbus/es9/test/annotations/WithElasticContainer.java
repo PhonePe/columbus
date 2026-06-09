@@ -18,6 +18,8 @@ public @interface WithElasticContainer {
 
     String image() default ElasticContainerExtension.DEFAULT_ELASTIC_SEARCH_IMAGE;
 
+    String imageEnvOverride() default ElasticContainerExtension.ELASTIC_SEARCH_DOCKER_IMAGE_ENV;
+
     String version() default ElasticContainerExtension.DEFAULT_ELASTIC_SEARCH_VERSION;
 
     String password() default "";

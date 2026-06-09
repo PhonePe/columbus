@@ -16,17 +16,24 @@ public class ElasticContainerExtension extends AnnotatedValueExtension<Elasticse
     public static final String DEFAULT_ELASTIC_SEARCH_IMAGE = "docker.elastic.co/elasticsearch/elasticsearch";
     public static final String DEFAULT_ELASTIC_SEARCH_VERSION = "7.10.2";
     public static final int ELASTIC_SEARCH_PORT = 9200;
+    public static final String ELASTIC_SEARCH_DOCKER_IMAGE_ENV = "ELASTIC_SEARCH_DOCKER_IMAGE";
 
     @Override
     protected ElasticsearchContainer initialize(final ExtensionContext context) {
         final var annotation = getAnnotation(context);
-        final var image = annotation.map(WithElasticContainer::image)
+        final var image = annotation.map(WithElasticContainer::imageEnvOverride)
                 .filter(StringUtils::isNotBlank)
+                .map(System::getenv)
+                .filter(StringUtils::isNotBlank)
+                .or(() -> annotation.map(WithElasticContainer::image)
+                        .filter(StringUtils::isNotBlank))
                 .orElse(DEFAULT_ELASTIC_SEARCH_IMAGE);
         final var version = annotation.map(WithElasticContainer::version)
                 .filter(StringUtils::isNotBlank)
                 .orElse(DEFAULT_ELASTIC_SEARCH_VERSION);
-        final var elasticClientImage = DockerImageName.parse(image).withTag(version);
+        final var elasticClientImage = DockerImageName.parse(image)
+                .withTag(version)
+                .asCompatibleSubstituteFor(DEFAULT_ELASTIC_SEARCH_IMAGE);
         final var container = new ElasticsearchContainer(elasticClientImage);
         annotation.map(WithElasticContainer::password)
                 .filter(StringUtils::isNotBlank)
