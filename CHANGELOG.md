@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.2] - 2026-06-10
+
+### Added
+
+- Add JSON schema descriptions and explicit polymorphic subtype metadata across
+  search and aggregation models.
+- Allow Elasticsearch test-container images to be overridden through environment variables.
+
 ## [2.1.1] - 2025-11-18
 
 ### Added

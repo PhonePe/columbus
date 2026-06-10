@@ -1,5 +1,7 @@
 package com.phonepe.commons.columbus.search.query.term;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.phonepe.commons.columbus.dao.id.Id;
 import com.phonepe.commons.columbus.search.query.AbstractQuery;
@@ -11,6 +13,7 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
 
+@JsonClassDescription("Query that matches documents by their unique document IDs")
 @Data
 @Jacksonized
 @SuperBuilder(toBuilder = true)
@@ -19,6 +22,7 @@ public class IdsQuery extends AbstractQuery {
 
     public static final String TYPE = "IDS";
 
+    @JsonPropertyDescription("List of document IDs to match")
     @Singular(ignoreNullCollections = true)
     private List<@NonNull Id> ids;
 

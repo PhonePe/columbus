@@ -5,7 +5,7 @@
 
     <groupId>com.phonepe.commons.columbus</groupId>
     <artifactId>columbus</artifactId>
-    <version>2.1.2-SNAPSHOT</version>
+    <version>2.1.2</version>
     <packaging>pom</packaging>
 
     <name>Columbus</name>
@@ -54,6 +54,7 @@
             ${project.basedir}/../${columbus.test.report.path}
         </sonar.coverage.jacoco.xmlReportPaths>
         <!--Exclude columbus-elasticsearch9 from sonar as it contains lot of copied code from columbus-elasticsearch-->
+        <!-- Also excluding models as DTO objects can contain similar fields -->
         <sonar.cpd.exclusions>
             **com/phonepe/commons/columbus/elastic9/**,
             **com/phonepe/commons/columbus/es9/**

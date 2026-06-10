@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.phonepe.commons.columbus</groupId>
         <artifactId>columbus-dependencies</artifactId>
-        <version>2.1.1</version>
+        <version>2.1.2</version>
         <relativePath>../columbus-dependencies</relativePath>
     </parent>
 
@@ -15,6 +15,12 @@
     <description>
         A collection of models used by Columbus APIs.
     </description>
+
+    <properties>
+        <sonar.cpd.exclusions>
+            **com/phonepe/commons/columbus/search/**
+        </sonar.cpd.exclusions>
+    </properties>
 
     <dependencies>
         <dependency>

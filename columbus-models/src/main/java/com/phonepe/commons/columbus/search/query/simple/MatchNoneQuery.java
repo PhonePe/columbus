@@ -1,5 +1,6 @@
 package com.phonepe.commons.columbus.search.query.simple;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.phonepe.commons.columbus.search.query.AbstractQuery;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
 
+@JsonClassDescription("Query that matches no documents in the index")
 @Data
 @Jacksonized
 @SuperBuilder(toBuilder = true)

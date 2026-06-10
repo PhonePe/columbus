@@ -1,5 +1,7 @@
 package com.phonepe.commons.columbus.search.query.text;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.phonepe.commons.columbus.search.misc.text.Analysis;
 import com.phonepe.commons.columbus.search.misc.text.Fuzziness;
@@ -14,6 +16,7 @@ import lombok.extern.jackson.Jacksonized;
 import java.util.Collection;
 import java.util.Map;
 
+@JsonClassDescription("Query that searches for the same value across multiple fields with optional field-specific boosting")
 @Data
 @Jacksonized
 @SuperBuilder(toBuilder = true)
@@ -22,20 +25,32 @@ public class MultiMatchQuery extends AbstractQuery {
 
     public static final String TYPE = "MULTI_MATCH";
 
+    @JsonPropertyDescription("Type of multi-match query (best_fields, most_fields, cross_fields, phrase, phrase_prefix, bool_prefix)")
     private String matchType;
 
+    @JsonPropertyDescription("The text value to search for across multiple fields")
     private Object value;
 
+    @JsonPropertyDescription("Map of field names to their boost values")
     @Singular(ignoreNullCollections = true)
     private Map<@NonNull String, @NonNull Float> fieldBoosts;
+
+    @JsonPropertyDescription("Tie breaker for combining scores from multiple fields")
     private Float tieBreaker;
 
+    @JsonPropertyDescription("Text analysis settings including analyzer and operator")
     private Analysis analysis;
+
+    @JsonPropertyDescription("Term matching settings like minimum should match")
     private Terms terms;
+
+    @JsonPropertyDescription("Fuzzy matching configuration for handling typos")
     private Fuzziness fuzziness;
 
+    @JsonPropertyDescription("Maximum positions between terms for phrase queries")
     private Integer slop;
 
+    @JsonPropertyDescription("Whether to ignore errors during query execution")
     private Boolean ignoreErrors;
 
     @Override
