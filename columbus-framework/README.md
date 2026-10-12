@@ -23,7 +23,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-framework</artifactId>
 </dependency>
 ```
@@ -51,12 +51,12 @@ Reflect reflect = factory.create(settings);
 
 #### Methods
 
-Use the provided methods on [`Reflect`](src/main/java/com/phonepe/platform/columbus/reflect/Reflect.java) to fetch
+Use the provided methods on [`Reflect`](src/main/java/com/phonepe/columbus/reflect/Reflect.java) to fetch
 annotations, subtypes, and subtypes with a given annotation.
 
 #### Utilities
 
-See [`Generics`](src/main/java/com/phonepe/platform/columbus/reflect/Generics.java) for utilities on `Type`.
+See [`Generics`](src/main/java/com/phonepe/columbus/reflect/Generics.java) for utilities on `Type`.
 
 ### Advanced Usage
 
@@ -128,7 +128,7 @@ Integer two = chain.get("two");
 #### Types
 
 Different types of registries that are available for use can be found in, and created
-using, [Registries](src/main/java/com/phonepe/platform/columbus/registry/Registries.java).
+using, [Registries](src/main/java/com/phonepe/columbus/registry/Registries.java).
 
 ### Advanced Usage
 
@@ -143,9 +143,9 @@ Registries whose values are instances of different types can be created using an
 classes with `@ReflectKey` and specify `name` and / or `type`. Use a `ReflectFactory` and `ReflectOptions` to collect
 the classes and their annotations to create a registry.
 
-See [BaseType](src/test/java/com/phonepe/platform/columbus/internal/registry/factory/BaseType.java) for an example.
+See [BaseType](src/test/java/com/phonepe/columbus/internal/registry/factory/BaseType.java) for an example.
 
-See [RegistryHelpers](src/main/java/com/phonepe/platform/columbus/registry/RegistryHelpers.java) to create options for
+See [RegistryHelpers](src/main/java/com/phonepe/columbus/registry/RegistryHelpers.java) to create options for
 specific registries.
 
 ---
@@ -176,14 +176,14 @@ props, thereby avoiding duplication of instances.
    corresponding visitors.
 5. Create resolver and context instances and use it.
 
-See [Visitors](src/test/java/com/phonepe/platform/columbus/internal/visitor/Visitors.java) for an example.
+Some examples can be found [here](src/test/java/com/phonepe/columbus/internal/visitor/example/).
 
 ### Advanced Usage
 
 Use `VisitorRegistryFactory` to create registries of visitors using the annotation.
 See [Registry factory](#registry-factory) for more details.
 
-See [VisitorHelpers](src/main/java/com/phonepe/platform/columbus/visitor/VisitorHelpers.java) to create different
+See [VisitorHelpers](src/main/java/com/phonepe/columbus/visitor/VisitorHelpers.java) to create different
 options and specific registries.
 
 ---
@@ -203,14 +203,14 @@ This library provides an easy way to define commands and executors, and also ext
 4. Determine a strategy to differentiate between all the commands and create a registry.
 5. Create resolver and executor instances and use it.
 
-See [Commands](src/test/java/com/phonepe/platform/columbus/internal/command/Commands.java) for an example.
+See [Commands](src/test/java/com/phonepe/columbus/internal/command/Commands.java) for an example.
 
 ### Advanced Usage
 
 Use `HandlerRegistryFactory` to create registries of handlers using the annotation.
 See [Registry factory](#registry-factory) for more details.
 
-See [CommandHelpers](src/main/java/com/phonepe/platform/columbus/command/CommandHelpers.java) to create different
+See [CommandHelpers](src/main/java/com/phonepe/columbus/command/CommandHelpers.java) to create different
 options and specific registries.
 
 ---
@@ -229,7 +229,7 @@ Create a serde with the help of the factory.
 ```java
 JsonSerDe serDe = SerDes.json(/* Jackson's ObjectMapper */ mapper, typeResolver);
 ```
-See [SerDe](src/main/java/com/phonepe/platform/columbus/serde/SerDe.java) for the different methods supported.
+See [SerDe](src/main/java/com/phonepe/columbus/serde/SerDe.java) for the different methods supported.
 
 ---
 

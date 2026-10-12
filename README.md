@@ -21,7 +21,7 @@ A one stop solution for all search and discovery problems.
     1. Support for single and bulk CRUD requests.
     2. Support for filters, sorters, aggregations, scoring, pagination, etc.
 3. Easily integrate with Dropwizard application using [Bundle](columbus-bundle/README.md).
-4. An implementation of storage over [ElasticSearch](columbus-elasticsearch/README.md).
+4. An implementation of storage over [ElasticSearch](columbus-elasticsearch-v7/README.md).
 5. Support for extending various components by simply implementing some interfaces and registering them.
 6. A [Test Suite](columbus-test-suite) to easily write tests while using Columbus.
 
@@ -39,7 +39,7 @@ Add the following dependency in `dependencyManagement` (of root pom):
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-bom</artifactId>
     <version>${columbus.version}</version>
     <type>pom</type>
@@ -52,7 +52,7 @@ For example, to use Columbus bundle, add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-bundle</artifactId>
 </dependency>
 ```

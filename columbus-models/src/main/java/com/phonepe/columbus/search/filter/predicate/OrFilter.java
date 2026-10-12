@@ -1,0 +1,24 @@
+package com.phonepe.columbus.search.filter.predicate;
+
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.phonepe.columbus.search.filter.CompoundFilter;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
+
+@JsonClassDescription("Filter that matches documents where at least one child filter matches (logical OR)")
+@Data
+@Jacksonized
+@SuperBuilder(toBuilder = true)
+@JsonTypeName(OrFilter.TYPE)
+public class OrFilter extends CompoundFilter {
+
+    public static final String TYPE = "OR";
+
+    @Override
+    public @NonNull String getType() {
+        return TYPE;
+    }
+}

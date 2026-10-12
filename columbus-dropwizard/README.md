@@ -13,7 +13,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-dropwizard</artifactId>
 </dependency>
 ```

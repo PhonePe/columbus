@@ -1,0 +1,41 @@
+package com.phonepe.columbus.elastic7.internal.storage.lifecycle;
+
+import org.elasticsearch.client.RestHighLevelClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+@ExtendWith(MockitoExtension.class)
+class ElasticClientManagedTest {
+
+    @Mock
+    private RestHighLevelClient client;
+    private ElasticClientManaged managed;
+
+    @BeforeEach
+    void setUp() {
+        managed = new ElasticClientManaged(client);
+    }
+
+    @Test
+    void testStart() {
+        managed.start();
+
+        verifyNoInteractions(client);
+    }
+
+    @Test
+    void testStop() throws Exception {
+        managed.stop();
+
+        verify(client, times(1)).close();
+        verifyNoMoreInteractions(client);
+    }
+}

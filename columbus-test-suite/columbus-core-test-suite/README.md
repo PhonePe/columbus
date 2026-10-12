@@ -13,7 +13,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-core-test-suite</artifactId>
 </dependency>
 ```
@@ -31,11 +31,11 @@ inject the value in tests and/or setup methods. `@ValueProps` can be used to mod
 The values are stored in the extension context provided by Junit. The values are shared within the context, and are
 inherited from parent contexts. A new value is created only if a value is not already present.
 
-See [MapperExtension](src/main/java/com/phonepe/platform/columbus/test/extensions/MapperExtension.java) and
-[WithMapper](src/main/java/com/phonepe/platform/columbus/test/annotations/WithMapper.java) for a usage with no
+See [MapperExtension](src/main/java/com/phonepe/columbus/test/extensions/MapperExtension.java) and
+[WithMapper](src/main/java/com/phonepe/columbus/test/annotations/WithMapper.java) for a usage with no
 additional dependencies.
-See [SerDeExtension](src/main/java/com/phonepe/platform/columbus/test/extensions/SerDeExtension.java) and
-[WithSerDe](src/main/java/com/phonepe/platform/columbus/test/annotations/WithSerDe.java) for a usage with
+See [SerDeExtension](src/main/java/com/phonepe/columbus/test/extensions/SerDeExtension.java) and
+[WithSerDe](src/main/java/com/phonepe/columbus/test/annotations/WithSerDe.java) for a usage with
 additional dependencies.
 
 Every annotation has 2 additional flavours for simpler cases:
@@ -46,4 +46,4 @@ Every annotation has 2 additional flavours for simpler cases:
 - **All**: the value is added to the current context, along with all its dependencies. This makes it easier to add a
   default value without having to add annotations of all its dependencies.
 
-See [tests](src/test/java/com/phonepe/platform/columbus/test/extensions) for some usage examples.
+See [tests](src/test/java/com/phonepe/columbus/test/extensions) for some usage examples.

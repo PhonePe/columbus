@@ -24,7 +24,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-models</artifactId>
 </dependency>
 ```
@@ -39,7 +39,7 @@ Either add the version, or include the bom in `dependencyManagement` as specifie
 
 Represents a (mostly) unique identifier of an entity.
 
-See [Ids](src/main/java/com/phonepe/platform/columbus/dao/id/Ids.java) for different ways to create them.
+See [Ids](src/main/java/com/phonepe/columbus/dao/id/Ids.java) for different ways to create them.
 
 #### Usage
 
@@ -52,7 +52,7 @@ ValueId value = Ids.value("entity-id");
 
 Represents an index or table that stores (homogeneous) entities.
 
-See [Indices](src/main/java/com/phonepe/platform/columbus/dao/index/Indices.java) for different ways to create them.
+See [Indices](src/main/java/com/phonepe/columbus/dao/index/Indices.java) for different ways to create them.
 
 #### Usage
 
@@ -66,7 +66,7 @@ IndexReference reference = Indices.reference("key");
 Represents a routing logic to a part of an index. This could be used to represent partitioning, sharding, replication,
 and their combinations.
 
-See [NodeIds](src/main/java/com/phonepe/platform/columbus/dao/node/NodeIds.java) for different ways to create them.
+See [NodeIds](src/main/java/com/phonepe/columbus/dao/node/NodeIds.java) for different ways to create them.
 
 #### Usage
 
@@ -87,7 +87,7 @@ ReplicatedRoutingKey routing = NodeIds.routingKeys(List.of("route"), "replica");
 Represents a certain criteria to select a subset of data. This can be a simple leaf query, or a complex nested query.
 
 A simplified set of queries are also defined as
-[Filters](src/main/java/com/phonepe/platform/columbus/search/filter/Filter.java).
+[Filters](src/main/java/com/phonepe/columbus/search/filter/Filter.java).
 
 Columbus is capable of supporting any query / filter as required by the storage. The current set follows the Lucene and
 ElasticSearch DSLs.

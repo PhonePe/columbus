@@ -1,0 +1,32 @@
+package com.phonepe.columbus.elastic7.internal.search.query.geo;
+
+import com.phonepe.columbus.elastic7.internal.search.query.AbstractQueryToElastic;
+import com.phonepe.columbus.elastic7.internal.search.utils.MiscTransforms;
+import com.phonepe.columbus.elastic7.internal.search.utils.SearchEnums;
+import com.phonepe.columbus.elastic7.search.query.ElasticQueryTransformationContext;
+import com.phonepe.columbus.registry.factory.RegistryKey;
+import com.phonepe.columbus.search.query.geo.GeoDistanceQuery;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+
+import java.util.Objects;
+
+import static com.phonepe.columbus.common.Predicates.applyIfNotNull;
+
+@RegistryKey(name = GeoDistanceQuery.TYPE, type = GeoDistanceQuery.class)
+public class GeoDistanceQueryToElastic<C extends ElasticQueryTransformationContext<C>>
+        extends AbstractQueryToElastic<GeoDistanceQuery, C> {
+
+    @Override
+    protected QueryBuilder buildQuery(final GeoDistanceQuery query, final Object props, final C context) {
+        final var center = Objects.requireNonNull(query.getCenter(), "center must not be null");
+        final var builder = QueryBuilders.geoDistanceQuery(query.getField())
+                .point(MiscTransforms.toElasticGeoPoint(center));
+
+        applyIfNotNull(query.getDistance(), builder::distance);
+        applyIfNotNull(query.getDistanceType(), SearchEnums::toGeoDistance, builder::geoDistance);
+        applyIfNotNull(query.getIgnoreMissingField(), builder::ignoreUnmapped);
+
+        return builder;
+    }
+}

@@ -17,7 +17,7 @@ Add the following dependency to `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>com.phonepe.commons.columbus</groupId>
+    <groupId>com.phonepe.columbus</groupId>
     <artifactId>columbus-core</artifactId>
 </dependency>
 ```
@@ -30,7 +30,7 @@ Either add the version, or include the bom in `dependencyManagement` as specifie
 
 A collection of all the building blocks used by Columbus.
 
-An initializer ([ToolkitInitializer](src/main/java/com/phonepe/platform/columbus/core/toolkit/ToolkitInitializer.java))
+An initializer ([ToolkitInitializer](src/main/java/com/phonepe/columbus/core/toolkit/ToolkitInitializer.java))
 is used to create an instance of the toolkit. The object is configured lazily using the provided dependencies.
 
 ### Usage
@@ -49,7 +49,7 @@ Toolkit toolkit = initializer.get();
 ### Advanced Usage
 
 The initializer can be completely customized by providing a custom implementation extending
-[DefaultToolkitInitializer](src/main/java/com/phonepe/platform/columbus/internal/core/toolkit/DefaultToolkitInitializer.java)
+[DefaultToolkitInitializer](src/main/java/com/phonepe/columbus/internal/core/toolkit/DefaultToolkitInitializer.java)
 or its parents. The lazy initializers allow for different dependencies to exist without having to modify the order of
 execution of the methods.
 
@@ -67,8 +67,8 @@ supported by any special storages, without affecting other storages.
 #### Commands
 
 Columbus defines a set of commands commonly used to store and operate on the data in a storage.
-See [index commands](src/main/java/com/phonepe/platform/columbus/storage/commands/index) to manage the index, and
-[entity commands](src/main/java/com/phonepe/platform/columbus/storage/commands/entity) and their bulk variants to
+See [index commands](src/main/java/com/phonepe/columbus/storage/commands/index) to manage the index, and
+[entity commands](src/main/java/com/phonepe/columbus/storage/commands/entity) and their bulk variants to
 manage the data.
 
 New `Command`s can be created by implementing the interface, and registering an implementation of
@@ -83,7 +83,7 @@ corresponding configuration.
 New storages can be registered by creating a configuration extending `StorageConfiguration`, a client implementing
 `StorageClient` and a provider extending `StorageClientProvider`.
 
-See [MemoryStorageProvider](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/platform/columbus/test/storage/memory/factory/MemoryStorageProvider.java)
+See [MemoryStorageProvider](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/columbus/test/storage/memory/factory/MemoryStorageProvider.java)
 for an example.
 
 ### Usage
@@ -109,7 +109,7 @@ StorageClient storage = factory.create(configuration);
 
 New commands can be created by simply implementing the `Command` interface, and creating a `CommandHandler` by extending
 the `StorageCommandHandler` or its subtype corresponding to the `StorageClient` being used, and implement the `handle()`
-method. See [VersionHandler](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/platform/columbus/test/storage/memory/handlers/VersionHandler.java)
+method. See [VersionHandler](../columbus-test-suite/columbus-core-test-suite/src/main/java/com/phonepe/columbus/test/storage/memory/handlers/VersionHandler.java)
 for an example.
 
 #### Factory
@@ -120,9 +120,9 @@ with another abstract class and adding necessary members to it. Finally, create 
 complete the hierarchy.
 
 See
-[ColumbusStorageFactoryContext](src/main/java/com/phonepe/platform/columbus/storage/factory/impl/ColumbusStorageFactoryContext.java)
+[ColumbusStorageFactoryContext](src/main/java/com/phonepe/columbus/storage/factory/impl/ColumbusStorageFactoryContext.java)
 and its final subclass
-[ColumbusStorageClientFactory](src/main/java/com/phonepe/platform/columbus/internal/storage/factory/ColumbusStorageClientFactory.java)
+[ColumbusStorageClientFactory](src/main/java/com/phonepe/columbus/internal/storage/factory/ColumbusStorageClientFactory.java)
 for an example.
 
 The visitor will only pick those `StorageClientProvider`s which can work with the provided context class.
@@ -193,7 +193,7 @@ To extend any of the contexts, the following steps can be followed:
 5. Use the new concrete class to create visitors.
 
 An example for extension can be seen in subclasses of
-[StorageClientFactoryContext](src/main/java/com/phonepe/platform/columbus/storage/factory/visitor/StorageClientFactoryContext.java)
+[StorageClientFactoryContext](src/main/java/com/phonepe/columbus/storage/factory/visitor/StorageClientFactoryContext.java)
 with `ColumbusStorageClientFactory` being one of the concrete classes.
 
 #### Extending `EntityVisitor`
