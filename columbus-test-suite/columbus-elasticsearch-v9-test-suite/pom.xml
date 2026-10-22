@@ -10,9 +10,9 @@
 
     <artifactId>columbus-elasticsearch-v9-test-suite</artifactId>
 
-    <name>Columbus Test Suite for ElasticSearch9</name>
+    <name>Columbus Test Suite for ElasticSearch v9</name>
     <description>
-        A collection of utilities to write tests while using ElasticSearch with Columbus.
+        A collection of utilities to write tests while using ElasticSearch v9 with Columbus.
     </description>
 
     <dependencies>

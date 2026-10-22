@@ -11,9 +11,9 @@
 
     <artifactId>columbus-elasticsearch-v7</artifactId>
 
-    <name>Columbus ElasticSearch</name>
+    <name>Columbus ElasticSearch v7</name>
     <description>
-        Implement all storage and search features with ElasticSearch.
+        Implement all storage and search features with ElasticSearch v7.
     </description>
 
     <properties>

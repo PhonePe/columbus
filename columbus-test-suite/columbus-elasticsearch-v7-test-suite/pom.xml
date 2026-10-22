@@ -10,9 +10,9 @@
 
     <artifactId>columbus-elasticsearch-v7-test-suite</artifactId>
 
-    <name>Columbus Test Suite for ElasticSearch</name>
+    <name>Columbus Test Suite for ElasticSearch v7</name>
     <description>
-        A collection of utilities to write tests while using ElasticSearch with Columbus.
+        A collection of utilities to write tests while using ElasticSearch v7 with Columbus.
     </description>
 
     <dependencies>

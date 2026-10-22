@@ -11,9 +11,9 @@
 
     <artifactId>columbus-elasticsearch-v9</artifactId>
 
-    <name>Columbus ElasticSearch9</name>
+    <name>Columbus ElasticSearch v9</name>
     <description>
-        Implement all storage and search features with ElasticSearch.
+        Implement all storage and search features with ElasticSearch v9.
     </description>
 
     <properties>

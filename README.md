@@ -189,7 +189,20 @@ TODO
 
 ## Contributing
 
-TODO
+### License headers
+
+Columbus is licensed under the [Apache License, Version 2.0](LICENSE). All Java source and test files must include the
+license header. Before submitting changes, run from the repository root:
+
+```sh
+mvn license:format
+git diff
+mvn validate
+```
+
+The formatter updates files in place without duplicating matching headers; review and commit those changes. Normal
+builds check headers during `validate` without modifying files. Configure IDE cleanup and formatting to preserve the
+license comments, and retain any existing third-party attribution notices.
 
 ## Troubleshooting
 
