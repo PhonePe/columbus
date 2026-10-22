@@ -1,6 +1,6 @@
-# Columbus ElasticSearch
+# Columbus ElasticSearch v7
 
-Implement all storage and search features with ElasticSearch.
+Implement all storage and search features with ElasticSearch v7.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ Add the following dependency to `pom.xml`:
 ```xml
 <dependency>
     <groupId>com.phonepe.columbus</groupId>
-    <artifactId>columbus-elasticsearch</artifactId>
+    <artifactId>columbus-elasticsearch-v7</artifactId>
 </dependency>
 ```
 

@@ -21,7 +21,8 @@ A one stop solution for all search and discovery problems.
     1. Support for single and bulk CRUD requests.
     2. Support for filters, sorters, aggregations, scoring, pagination, etc.
 3. Easily integrate with Dropwizard application using [Bundle](columbus-bundle/README.md).
-4. An implementation of storage over [ElasticSearch](columbus-elasticsearch-v7/README.md).
+4. Storage implementations for [Elasticsearch v7](columbus-elasticsearch-v7/README.md)
+   and [Elasticsearch v9](columbus-elasticsearch-v9/README.md).
 5. Support for extending various components by simply implementing some interfaces and registering them.
 6. A [Test Suite](columbus-test-suite) to easily write tests while using Columbus.
 
@@ -181,11 +182,38 @@ And more...
 
 ## Documentation
 
-TODO
+See the module guides for API details and examples:
+
+- [Framework](columbus-framework/README.md): registries, visitors, commands, and serialization.
+- [Models](columbus-models/README.md): data access and search models.
+- [Core](columbus-core/README.md): storage commands, initialization, and extension points.
+- [Bundle](columbus-bundle/README.md) and [Dropwizard](columbus-dropwizard/README.md): application integration.
+- [Elasticsearch v7](columbus-elasticsearch-v7/README.md): storage configuration and usage.
+- [Elasticsearch v9](columbus-elasticsearch-v9/README.md): storage configuration and Java API Client integration.
+- Test utilities: [Core](columbus-test-suite/columbus-core-test-suite/README.md),
+  [Elasticsearch v7](columbus-test-suite/columbus-elasticsearch-v7-test-suite/README.md), and
+  [Elasticsearch v9](columbus-test-suite/columbus-elasticsearch-v9-test-suite/README.md).
 
 ## Testing
 
-TODO
+Use Java 17 and Maven, and run commands from the repository root.
+Elasticsearch tests use Testcontainers and require a running Docker-compatible
+container runtime with access to pull Elasticsearch images.
+
+```sh
+# Run all tests.
+mvn clean test
+
+# Run a module and its required reactor modules (example: core).
+mvn -pl columbus-core -am test
+
+# Run tests and generate the aggregate coverage report.
+mvn clean verify
+```
+
+Test results are written to each module's `target/surefire-reports/`.
+The aggregate coverage report is at
+`columbus-test-report/target/site/jacoco-aggregate/index.html`.
 
 ## Contributing
 
