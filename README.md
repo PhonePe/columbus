@@ -189,6 +189,8 @@ TODO
 
 ## Contributing
 
+Please follow our [Code of Conduct](CODE_OF_CONDUCT.md) when participating in the project.
+
 ### License headers
 
 Columbus is licensed under the [Apache License, Version 2.0](LICENSE). All Java source and test files must include the
