@@ -1,5 +1,27 @@
 # Changelog
 
+## [Unreleased]
+
+### Breaking changes
+
+- Change Maven group IDs and Java packages from `com.phonepe.commons.columbus`
+  to `com.phonepe.columbus`.
+- Rename the Elasticsearch artifacts to `columbus-elasticsearch-v7` and
+  `columbus-elasticsearch-v9`, with corresponding `elastic7` and `elastic9`
+  packages and versioned test modules.
+
+### Added
+
+- Add the Apache License 2.0 and enforce license headers in Java source and test files.
+- Adopt Contributor Covenant 3.0.
+- Add build/test instructions and an Elasticsearch v9 module guide.
+
+### Changed
+
+- Remove the PhonePe parent POM dependency so builds resolve from public Maven Central.
+- Update build plugins and Lombok, restore Javadoc generation from delomboked
+  sources, and include `META-INF/LICENSE` in binary JARs.
+
 ## [2.1.2] - 2026-06-10
 
 ### Added
