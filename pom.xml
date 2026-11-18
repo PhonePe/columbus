@@ -11,6 +11,7 @@
     <description>
         A one stop solution for all search and discovery requirements.
     </description>
+    <url>https://github.com/PhonePe/columbus</url>
 
     <licenses>
         <license>
@@ -40,6 +41,17 @@
             </roles>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/PhonePe/columbus.git</connection>
+        <developerConnection>scm:git:https://github.com/PhonePe/columbus.git</developerConnection>
+        <url>https://github.com/PhonePe/columbus</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/PhonePe/columbus/issues</url>
+    </issueManagement>
 
     <modules>
         <module>columbus-bom</module>
@@ -74,6 +86,8 @@
         <maven.deploy.plugin.version>3.1.4</maven.deploy.plugin.version>
         <maven.aspectj.plugin.version>1.14.0</maven.aspectj.plugin.version>
         <maven.license.plugin.version>5.1.2</maven.license.plugin.version>
+        <maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+        <central.publishing.plugin.version>0.12.0</central.publishing.plugin.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
@@ -327,6 +341,22 @@ limitations under the License.
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
+                <version>${central.publishing.plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <publishingServerId>central</publishingServerId>
+                    <autoPublish>false</autoPublish>
+                    <excludeArtifacts>
+                        <excludeArtifact>columbus-test-report</excludeArtifact>
+                        <excludeArtifact>columbus-core-tests</excludeArtifact>
+                        <excludeArtifact>columbus-elasticsearch-v7-tests</excludeArtifact>
+                        <excludeArtifact>columbus-elasticsearch-v9-tests</excludeArtifact>
+                    </excludeArtifacts>
+                </configuration>
+            </plugin>
         </plugins>
 
         <resources>
@@ -343,5 +373,33 @@ limitations under the License.
             </resource>
         </resources>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+                        <configuration>
+                            <bestPractices>true</bestPractices>
+                            <passphraseEnvName>MAVEN_GPG_PASSPHRASE</passphraseEnvName>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
