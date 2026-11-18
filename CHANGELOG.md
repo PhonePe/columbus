@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [2.2.0] - 2026-11-19
 
 ### Breaking changes
 
@@ -15,12 +15,15 @@
 - Add the Apache License 2.0 and enforce license headers in Java source and test files.
 - Adopt Contributor Covenant 3.0.
 - Add build/test instructions and an Elasticsearch v9 module guide.
+- Configure release publishing to Maven Central through GitHub Releases, including
+  artifact signing and exclusion of verification-only modules.
 
 ### Changed
 
 - Remove the PhonePe parent POM dependency so builds resolve from public Maven Central.
 - Update build plugins and Lombok, restore Javadoc generation from delomboked
   sources, and include `META-INF/LICENSE` in binary JARs.
+- Add GitHub SCM and issue-tracking metadata to published Maven artifacts.
 
 ## [2.1.2] - 2026-06-10
 
