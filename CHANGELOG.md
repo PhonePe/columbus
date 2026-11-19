@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1] - 2026-11-19
+
+### Changed
+
+- Publish releases to Maven Central automatically after validation, without requiring manual approval in the Central
+  Portal.
+
 ## [2.2.0] - 2026-11-19
 
 ### Breaking changes
